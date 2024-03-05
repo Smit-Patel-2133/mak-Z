@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import WLogo from '../../assets/picture/white_logo.png'
 
-const Login = props => {
+const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const handleUsernameChange = (event) => {
@@ -21,8 +22,6 @@ const Login = props => {
         <>
             <img loading="lazy" src={WLogo} alt="logo"
                  className="max-w-full w-[100px] mt-10 ml-10 rounded-full"/>
-            <h1>smit 1</h1>
-            <h1>This is for text</h1>
             <div className="flex justify-center items-center mt-20 px-16 py-12 text-sm leading-5 bg-white sm:px-5">
                 <form
                     className="flex flex-col justify-center items-center px-20 py-8 bg-gray-100 w-[500px] sm:px-5 sm:py-4">
