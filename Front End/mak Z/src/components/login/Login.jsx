@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import WLogo from '../../assets/picture/white_logo.png'
 
-const Login = props => {
+const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const handleUsernameChange = (event) => {
