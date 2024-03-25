@@ -1,0 +1,54 @@
+.toolBar{
+    background-color: black;
+    color: white;
+    width: 35px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    float: left;
+}
+.toolBar li{
+    font-size: x-large;
+    text-align: center;
+    position: relative;
+}
+.toolBar li::after{
+    position: absolute;
+    content: '';
+    width: 29px;
+    background-color: rgb(90, 89, 89);
+    height: 1.5px;
+    bottom: -3px;
+    left: 3px;
+}
+.elements{
+    background-color: rgb(41, 41, 41);
+    color: white;
+    float: left;
+    overflow: hidden;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: 1.5s ease-in-out;
+}
+.add:hover{
+    cursor: pointer;
+}
+.add:hover .elements{
+    width: 0px !important;
+}
+.style{
+    width: 250px;
+    float: right;
+    background-color: rgb(41, 41, 41);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.main{
+    position: relative;
+}
+.edit{
+    border: 1px;
+}
