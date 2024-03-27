@@ -45,9 +45,35 @@ app.post('/SignUp', (req, res) => {
     });
 });
 
-app.post('/Login',(req,res)=>{
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
 
-})
+    // Check if the email exists in the database
+    connection.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
+        if (error) {
+            console.error('Error checking email:', error);
+            res.status(500).json({ error: 'Internal server error', details: error.message });
+            return;
+        }
+
+        // If the email doesn't exist, send a response indicating the user is not found
+        if (results.length === 0) {
+            res.status(404).json({ error: 'User not found', details: 'User with provided email does not exist' });
+            return;
+        }
+
+        // Verify password
+        const user = results[0];
+        if (user.password !== password) {
+            res.status(401).json({ error: 'Unauthorized', details: 'Incorrect password' });
+            return;
+        }
+
+        // Password is correct, send success response
+        res.json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email } });
+    });
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

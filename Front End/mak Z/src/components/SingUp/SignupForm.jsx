@@ -52,7 +52,7 @@ const SignupForm = () => {
                     className="flex flex-col justify-center px-8 py-9 max-w-full bg-white rounded-lg shadow-sm w-[448px] max-md:px-5 max-md:mt-10"
                     onSubmit={handleSubmit}
                 >
-                    <div className="self-center text-2xl leading-8 text-center whitespace-nowrap text-neutral-900">
+                    <div className="text-3xl font-extrabold text-gray-800 mb-8 self-center text-2xl leading-8 text-center whitespace-nowrap text-neutral-900">
                         Sign up to Mak-Z
                     </div>
                     <div className="mt-5">

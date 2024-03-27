@@ -1,38 +1,27 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import WLogo from "../../assets/picture/white_noBG.png";
-import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-import SignupForm from "../SingUp/SignupForm";
 
-
-const Login = () => {
-    const navigate = useNavigate();
+const ForgotPassword = () => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
+    const handleOldPasswordChange = (event) => {
+        setOldPassword(event.target.value);
     };
-    const handleNewUser=()=>{
-        navigate('/signup');
-    }
 
-    const handleSubmit = async (e)=> {
-        e.preventDefault();
-       
-        try {
-            const response = await axios.post('http://localhost:5000/login', {email,password});
+    const handleNewPasswordChange = (event) => {
+        setNewPassword(event.target.value);
+    };
 
-            setMessage(response.data);
-            navigate('/home');
-        } catch (error) {
-            setMessage(error.response.data);
-        }
-
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Your logic to handle password change
+        
     };
 
     return (
@@ -44,24 +33,36 @@ const Login = () => {
             />
             <form className="max-w-md w-full bg-white rounded-md shadow-md p-6" onSubmit={handleSubmit}>
                 <h2 className="text-3xl font-extrabold text-gray-800 mb-8">
-                    Sign in to your account
+                    Change password
                 </h2>
                 <div className="mb-4">
                     <input
                         type="email"
-                        placeholder="Email address"
-                        aria-label="Email address"
+                        placeholder="Email"
+                        aria-label="Email"
                         className="w-full px-3 py-2.5 text-gray-800 bg-white rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        value={email}
                         onChange={handleEmailChange}
                     />
                 </div>
                 <div className="mb-4">
                     <input
                         type="password"
-                        placeholder="Password"
-                        aria-label="Password"
+                        placeholder="Old Password"
+                        aria-label="Old Password"
                         className="w-full px-3 py-2.5 text-gray-800 bg-white rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        onChange={handlePasswordChange}
+                        value={oldPassword}
+                        onChange={handleOldPasswordChange}
+                    />
+                </div>
+                <div className="mb-4">
+                    <input
+                        type="password"
+                        placeholder="New Password"
+                        aria-label="New Password"
+                        className="w-full px-3 py-2.5 text-gray-800 bg-white rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        value={newPassword}
+                        onChange={handleNewPasswordChange}
                     />
                 </div>
                 <div className="flex justify-between items-center mb-4">
@@ -70,7 +71,7 @@ const Login = () => {
                         className="font-medium text-gray-600 focus:outline-none hover:underline"
                         tabIndex="0"
                     >
-                        Forgot your password?
+                        login?
                     </button>
                 </div>
                 
@@ -79,22 +80,12 @@ const Login = () => {
                     className="w-full px-6 py-2.5 font-medium text-white bg-blue-500 rounded-md focus:outline-none hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     tabIndex="0"
                 >
-                    Sign in
+                    Change Password
                 </button>
             </form>
-            <div className="flex justify-between items-center mb-4 p-5">
-                New to Mak-Z?  
-                    <button
-                        type="button"
-                        className="font-medium text-gray-600 focus:outline-none hover:underline ml-3"
-                        tabIndex="0"
-                        onCl={handleNewUser}
-                    >
-                        Join Now
-                    </button>
-                </div>
+            
         </div>
     );
 };
 
-export default Login;
+export default ForgotPassword;
