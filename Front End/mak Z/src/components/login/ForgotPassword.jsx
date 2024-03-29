@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import WLogo from "../../assets/picture/white_noBG.png";
 
 const ForgotPassword = () => {
+    const navigate = useNavigate(); // Initialize navigate from react-router-dom
     const [email, setEmail] = useState("");
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [message, setMessage] = useState("");
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -18,10 +22,22 @@ const ForgotPassword = () => {
         setNewPassword(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Your logic to handle password change
-        
+
+        try {
+            const response = await axios.post('http://localhost:5000/change-password', {
+                email: email,
+                oldPassword: oldPassword,
+                newPassword: newPassword
+            });
+
+            setMessage(response.data.message);
+
+            navigate('/login');
+        } catch (error) {
+            setMessage(error.response.data.error);
+        }
     };
 
     return (
@@ -65,16 +81,7 @@ const ForgotPassword = () => {
                         onChange={handleNewPasswordChange}
                     />
                 </div>
-                <div className="flex justify-between items-center mb-4">
-                    <button
-                        type="button"
-                        className="font-medium text-gray-600 focus:outline-none hover:underline"
-                        tabIndex="0"
-                    >
-                        login?
-                    </button>
-                </div>
-                
+                {message && <p className="text-red-500 mb-4">{message}</p>}
                 <button
                     type="submit"
                     className="w-full px-6 py-2.5 font-medium text-white bg-blue-500 rounded-md focus:outline-none hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -83,7 +90,6 @@ const ForgotPassword = () => {
                     Change Password
                 </button>
             </form>
-            
         </div>
     );
 };

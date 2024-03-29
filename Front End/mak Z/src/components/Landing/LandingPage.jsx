@@ -1,8 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Login from "../login/Login.jsx";
-import SignupForm from "../SingUp/SignupForm.jsx";
-import SignUp from "../SingUp/SignupForm.jsx";
+
 const LandingPage = () => {
     return (
         <div>

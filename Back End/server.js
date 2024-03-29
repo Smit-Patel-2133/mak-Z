@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Endpoint to add user
+// Endpoint to add user signUp
 app.post('/SignUp', (req, res) => {
     const { name, email, password } = req.body;
 
@@ -44,7 +44,7 @@ app.post('/SignUp', (req, res) => {
         });
     });
 });
-
+//End point for user login
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -74,6 +74,38 @@ app.post('/login', (req, res) => {
     });
 });
 
+
+// Endpoint to change password
+app.post('/change-password', (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+
+    // Check if the email and old password match in the database
+    connection.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, oldPassword], (error, results) => {
+        if (error) {
+            console.error('Error checking email and old password:', error);
+            res.status(500).json({ error: 'Internal server error', details: error.message });
+            return;
+        }
+
+        // If no matching user found, send error response
+        if (results.length === 0) {
+            res.status(401).json({ error: 'Unauthorized', details: 'Email or old password is incorrect' });
+            return;
+        }
+
+        // Update the password for the user
+        connection.query('UPDATE users SET password = ? WHERE email = ?', [newPassword, email], (error, results) => {
+            if (error) {
+                console.error('Error updating password:', error);
+                res.status(500).json({ error: 'Internal server error', details: error.message });
+                return;
+            }
+            console.log('Password updated successfully');
+            // Send success response
+            res.json({ message: 'Password updated successfully' });
+        });
+    });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
