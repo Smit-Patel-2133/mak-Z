@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import WLogo from "../../assets/picture/white_noBG.png";
+import React, {useState} from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import login_girl from '../../assets/Auth Pictures/draw2.svg'
 
-const Login = () => {
-    const navigate = useNavigate();
+const LoginForm = () => {
+    const navigate = useNavigate(); // Initialize useNavigate hook
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -17,60 +17,91 @@ const Login = () => {
         setPassword(event.target.value);
     };
 
-    const handleNewUser = () => {
-        navigate('/signup');
-    };
-
-    const handleChangePassword = () => {
-        navigate('/forgot-password'); // Corrected handler name and navigation path
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:5000/login', { email, password });
-            setMessage(response.data.message);
-            if (response.data.message === "User not found") {
-                // Display appropriate message to the user
-                setMessage("User not found. Please check your credentials or sign up.");
+            const response = await axios.post('http://localhost:5000/login', {email, password});
+            if (response.data.message === "Login successful") {
+                navigate('/home'); // Redirect to home upon successful login
             } else {
-                navigate('/home');
+                setMessage(response.data.message);
             }
         } catch (error) {
             setMessage(error.response.data.error);
         }
     };
 
+
     return (
-        <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-            <img src={WLogo} alt="logo" className="max-w-full w-[120px] mt-10 ml-10 rounded-full absolute top-0 left-0"/>
-            <form className="max-w-md w-full bg-white rounded-md shadow-md p-6" onSubmit={handleSubmit}>
-                <h2 className="text-3xl font-extrabold text-gray-800 mb-8"> Sign in to your account </h2>
-                <div className="mb-4">
-                    <input type="email" placeholder="Email address" aria-label="Email address" className="w-full px-3 py-2.5 text-gray-800 bg-white rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onChange={handleEmailChange}/>
+        <>
+            <form onSubmit={handleSubmit}>
+                <div className="mb-6">
+                    <input
+                        type="text"
+                        value={email}
+                        onChange={handleEmailChange}
+                        className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        placeholder="Email address"
+                    />
                 </div>
-                <div className="mb-4">
-                    <input type="password" placeholder="Password" aria-label="Password" className="w-full px-3 py-2.5 text-gray-800 bg-white rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"  onChange={handlePasswordChange}/>
+                <div className="mb-6">
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                        placeholder="Password"
+                    />
                 </div>
-                <div className="flex justify-between items-center mb-4">
-                    {/* Corrected onClick handler */}
-                    <button type="button" className="font-medium text-gray-600 focus:outline-none hover:underline" tabIndex="0" onClick={handleChangePassword}>
-                        Forgot your password?
-                    </button>
+                <div className="flex justify-between items-center mb-6">
+                    <a
+                        className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"
+                        onClick={(e) => navigate('/forgot-password')}
+                    >
+                        Forgot password?
+                    </a>
                 </div>
-                {message && <p className="text-red-500 mb-4">{message}</p>}
-                <button type="submit" className="w-full px-6 py-2.5 font-medium text-white bg-blue-500 rounded-md focus:outline-none hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" tabIndex="0">
+                {message && <p className="text-red-500">{message}</p>}
+                <button
+                    type="submit"
+                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                    data-mdb-ripple="true"
+                    data-mdb-ripple-color="light"
+                >
                     Sign in
                 </button>
             </form>
-            <div className="flex justify-between items-center mb-4 p-5">
-                New to Mak-Z?
-                <button type="button" className="font-medium text-gray-600 focus:outline-none hover:underline ml-3" tabIndex="0" onClick={handleNewUser}>
-                    Join Now
-                </button>
+            <div className="flex items-center mb-6 pt-4">
+                <p className="text-gray-600 ml-4">Don't have an account? </p>
+                <a
+                    className="text-blue-500 ml-2 hover:underline"
+                    onClick={() => navigate('/signup')}
+                >Sign up</a>
             </div>
-        </div>
+        </>
+    );
+}
+
+const Login = () => {
+    return (
+        <section className="h-screen">
+            <div className="container px-6 py-12 h-full">
+                <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+                    <div className="md:w-8/12 lg:w-6/12 mb-12 md:mb-0">
+                        <img
+                            src={login_girl}
+                            className="w-full"
+                            alt="Phone image"
+                        />
+                    </div>
+                    <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
+                        <h2 className="pb-6 text-3xl font-bold">Login</h2>
+                        <LoginForm/>
+                    </div>
+                </div>
+            </div>
+        </section>
     );
 };
 

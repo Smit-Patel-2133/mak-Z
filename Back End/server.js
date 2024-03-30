@@ -1,9 +1,9 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const sql = require('./db');
+
 const app = express();
-const connection = require('./db');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -13,98 +13,41 @@ app.use((req, res, next) => {
     next();
 });
 
-// Endpoint to add user signUp
-app.post('/SignUp', (req, res) => {
+// Endpoint to handle user sign-up
+app.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
 
-    // Check if the email already exists in the database
-    connection.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
-        if (error) {
-            console.error('Error checking email:', error);
-            res.status(500).json({ error: 'Internal server error', details: error.message });
-            return;
+    try {
+        const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
+        if (existingUser.length > 0) {
+            return res.status(400).json({ error: 'User already registered', details: 'Email is already in use' });
         }
 
-        // If the email already exists, send a response indicating the user is already registered
-        if (results.length > 0) {
-            res.status(400).json({ error: 'User already registered', details: 'Email is already in use' });
-            return;
-        }
+        await sql`INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password})`;
 
-        // If the email doesn't exist, insert the new user into the database
-        connection.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, password], (error, results) => {
-            if (error) {
-                console.error('Error adding user:', error);
-                res.status(500).json({ error: 'Internal server error', details: error.message });
-                return;
-            }
-            console.log('User added successfully');
-            // Send success response
-            res.json({ message: 'User added successfully' });
-        });
-    });
+        console.log('User added successfully');
+        res.json({ message: 'User added successfully' });
+    } catch (error) {
+        console.error('Error adding user:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
 });
-//End point for user login
-app.post('/login', (req, res) => {
+
+// Endpoint to handle user login
+app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Check if the email exists in the database
-    connection.query('SELECT * FROM users WHERE email = ?', [email], (error, results) => {
-        if (error) {
-            console.error('Error checking email:', error);
-            res.status(500).json({ error: 'Internal server error', details: error.message });
-            return;
+    try {
+        const user = await sql`SELECT * FROM users WHERE email = ${email} AND password = ${password}`;
+        if (user.length === 0) {
+            return res.status(401).json({ error: 'Unauthorized', message: 'Incorrect email or password' });
         }
 
-        // If the email doesn't exist, send a response indicating the user is not found
-        if (results.length === 0) {
-            res.status(404).json({ error: 'User not found', details: 'User with provided email does not exist' });
-            return;
-        }
-
-        // Verify password
-        const user = results[0];
-        if (user.password !== password) {
-            res.status(401).json({ error: 'Unauthorized', details: 'Incorrect password' });
-            return;
-        }
-
-        // Password is correct, send success response
-        res.json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email } });
-    });
-});
-
-
-// Endpoint to change password
-app.post('/change-password', (req, res) => {
-    const { email, oldPassword, newPassword } = req.body;
-
-    // Check if the email and old password match in the database
-    connection.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, oldPassword], (error, results) => {
-        if (error) {
-            console.error('Error checking email and old password:', error);
-            res.status(500).json({ error: 'Internal server error', details: error.message });
-            return;
-        }
-
-        // If no matching user found, send error response
-        if (results.length === 0) {
-            res.status(401).json({ error: 'Unauthorized', details: 'Email or old password is incorrect' });
-            return;
-        }
-
-        // Update the password for the user
-        connection.query('UPDATE users SET password = ? WHERE email = ?', [newPassword, email], (error, results) => {
-            if (error) {
-                console.error('Error updating password:', error);
-                res.status(500).json({ error: 'Internal server error', details: error.message });
-                return;
-            }
-            console.log('Password updated successfully');
-            // Send success response
-            res.json({ message: 'Password updated successfully' });
-        });
-    });
+        res.json({ message: 'Login successful' });
+    } catch (error) {
+        console.error('Error checking email and password:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
 });
 
 const PORT = process.env.PORT || 5000;

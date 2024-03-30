@@ -1,20 +1,22 @@
 // db.js
-const mysql = require("mysql");
+const postgres = require("postgres");
+require("dotenv").config();
 
-const connection = mysql.createConnection({
-    host: "sql6.freesqldatabase.com",
-    user: "sql6688118",
-    password: "TMzE6q22ER",
-    database: "sql6688118",
-    port: 3306,
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
+
+const sql = postgres({
+    host: PGHOST,
+    database: PGDATABASE,
+    username: PGUSER,
+    password: PGPASSWORD,
+    port: 5432,
+    ssl: "require",
+    connection: {
+        options: `project=${ENDPOINT_ID}`,
+    },
 });
 
-connection.connect((err) => {
-    if (err) {
-        console.error("Database connection failed: ", err);
-    } else {
-        console.log("Connected to the database");
-    }
-});
+module.exports = sql; // Export sql directly as a function
 
-module.exports = connection;
+
+
