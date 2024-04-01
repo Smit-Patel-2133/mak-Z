@@ -1,0 +1,64 @@
+h2{
+    text-align: center;
+    margin: 30px;
+    color: rgb(197, 96, 7);
+    font-weight: 700;
+}
+h2::after{
+    position: absolute;
+    content: "";
+    width: 135px;
+    height: 3px;
+    left: 45%;
+    bottom: -3px;
+    background-color: rgb(197, 96, 7);
+}
+.about_site{
+    text-align: center;
+    margin-top: 40px;
+    color: rgb(60, 123, 196);
+}
+.about_site::after{
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 2px;
+    margin-top: 40px;
+    left: 47.5%;
+    background-color: rgb(60, 123, 196);
+}
+.about_site_read_more{
+    position: relative;
+    margin-top: 40px;
+    width: 148px;
+    height: 44px;
+}
+.about_site_read_more .span_1{
+    border: 1px solid rgb(60, 123, 196);
+    color: rgb(60, 123, 196);
+    padding: 10px 20px 10px 15px;
+}
+.about_site_read_more .span_2{
+    background-color: rgb(60, 123, 196);
+    color: white;
+    padding: 11px;
+}
+.about_site_read_more .read_more{
+    position: absolute;
+    top: -10px;
+    left: 100%;
+    text-decoration: none;
+    height: 43px;
+    width: 0%;
+    overflow: hidden;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    background-color: rgb(60, 123, 196);
+    color: white;
+    text-align: center;
+    transition: 0.3s ease-out;
+}
+.about_site_read_more:hover .read_more{
+    left: 0%;
+    width: 99%;
+}

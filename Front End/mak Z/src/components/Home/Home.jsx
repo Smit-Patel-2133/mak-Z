@@ -1,11 +1,15 @@
 import React from 'react';
-import Navbar from '../Navbar/Navbar';
-import SliderImages from '../SliderImages/SliderImages'
+import Header from '../Header/Header';
+import SliderImages from '../SliderImages/SliderImages';
+import AboutSite from '../AboutSite/AboutSite';
+import FeedBack from '../FeedBack/FeedBack.jsx';
 const Home = () => {
     return (
         <div>
-         <Navbar/>
+         <Header/>
          <SliderImages/>
+         <AboutSite/>
+         <FeedBack/>
         </div>
     );
 };

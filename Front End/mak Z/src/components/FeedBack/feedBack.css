@@ -1,0 +1,126 @@
+.feedback{
+    background-color: black;
+    position: relative;
+    margin-top: 20px;
+    overflow: hidden;
+    padding-bottom: 500px;
+}
+.feedbackFront{
+    width: 100%;
+    min-width: 900px !important;
+    min-height: 650px !important;
+    opacity: .3;
+}
+.feedback h1{
+    position: absolute;
+    color: white;
+    top: 10%;
+    left: 45%;
+}
+.feedback h1::after{
+    content: '';
+    position: absolute;
+    width: 97px;
+    height: 3px;
+    background-color: white;
+    top: 100%;
+    left: 24%;
+}
+.feedbackSlider{
+    position: absolute;
+    min-width: 85%;
+    min-height: 55%;
+    top: 200px;
+    left: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    overflow: hidden;
+}
+.mySlides{
+    position: absolute;
+    width: 40%;
+    height: auto;
+    border-block-start-style: none;
+    left: 110%;
+    top: 5%;
+    opacity: 1;
+    color: white;
+    background: transparent;
+    transition: 1s ease-in-out;
+}
+.mySlides::before{
+    content: "";
+    position: absolute;
+    top: 13px;
+    width: 100%;
+    height: calc(100% - 13px);
+    border: 1px solid white;
+    background: #000;
+    opacity: .7;
+    border-block-start-style: none;
+}
+.mySlides div{
+    padding-left: 5px;
+    padding-bottom: 20px;
+    position: relative;
+}
+.mySlides h6{
+    bottom: 3%;
+    color: rgb(221, 148, 79);
+    padding-left: 20px;
+    font-weight: bold;
+}
+.mySlides p{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.mySlides p::before{
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 1px;
+    background-color: white;
+    top: 12px;
+    left: 0px;
+}
+.mySlides p::after{
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 1px;
+    background-color: white;
+    top: 12px;
+    right: 0px;
+}
+.mySlides img{
+    position: absolute;
+    right: 5%;
+    bottom: -20px;
+    width: 70px;
+    height: 70px;
+    border: 1px solid white;
+    border-radius: 50%;
+    opacity: 1;
+}
+.mySlides:hover::before ,.mySlides:hover.mySlides img{
+    border-color:rgb(8, 92, 201);
+}
+.mySlides:hover p::before,.mySlides:hover p::after{
+    background-color: rgb(8, 92, 201);
+}
+@keyframes slideActive{
+    from{left:110%;}
+    to{left:55%}
+}
+@keyframes slideActive1{
+    from{left:55%;}
+    to{left:5%}
+}
+@keyframes slideActive2{
+    from{left:5%;}
+    to{left:-50%}
+}
+@keyframes slideActive3 {
+    from{left:-50%}
+    to{left:110%}
+}
