@@ -1,51 +1,33 @@
 .navbar{
     width: 100%;
     display: flex;
-    align-items: center;
-    justify-self: space-between;
-    background: #fff;
+    background: black;
     padding: 1px 3%;
 }
 .logo{
     width: 150px;
     cursor: pointer;
 }
-ul{
+.navbar ul{
     flex: 1;
     list-style:  none;
     text-align: center;
+    margin-top: 30px;
 }
-ul li{
+.navbar li{
     display: inline-block;
     margin: 10px 20px;
     font-size: 18px;
     cursor: pointer;
+    color: white;
+    float: right;
+    justify-content: center;
 }
-.toggle-icon{
+.navbar li img{
+    height: 50px;
     width: 50px;
-    cursor: pointer;
-    margin-left: 40px;
+    border-radius: 50%;
+    margin-top: -10px;
 }
-.search-box{
-    display:flex;
-    align-items: center;
-    background: #242424;
-    padding: 10px 20px;
-    border-radius: 30px;
-}
-.search-box input{
-    padding: 6px;
-    background: transparent;
-    border: 0;
-    outline: 0;
-    color: #fff;
-    font-size: 18px;
-    max-width: 200px;
-}
-.search-box input::placeholder{
-    color: #fff;
-}
-.search-box img{
-    width: 20px;
-    cursor: pointer;
-}
+
+

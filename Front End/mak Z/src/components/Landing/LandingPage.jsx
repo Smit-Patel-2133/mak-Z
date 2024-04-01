@@ -9,11 +9,11 @@ const LandingPage = () => {
 
     return (
         <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white relative">
-            <div className="absolute top-10 animate-fade-in">
+            <div className="absolute top-10 animate-fade-in ">
                 <img src={WLNB} className="h-10 sm:h-20 md:h-20 lg:h-20 xl:h-20" alt="Logo" />
             </div>
-            <div className="mt-20 text-center mb-3 animate-slide-up">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-6 md:mb-8 font-semibold">
+            <div className="pt-20 text-center mb-3 animate-slide-up">
+                <h1 className="text-3xl pt-5 sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-6 md:mb-8 font-semibold">
                     Tech doesn't have to feel like
                     <br className="mt-2 sm:mt-4 md:mt-6 lg:mt-8" /> {/* Adjust the margin top as needed */}
                     a different language

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import LandingPage from "./components/Landing/LandingPage.jsx";
 import SignupForm from "./components/SingUp/SignupForm.jsx";

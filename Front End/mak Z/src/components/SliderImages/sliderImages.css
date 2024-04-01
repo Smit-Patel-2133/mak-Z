@@ -1,0 +1,27 @@
+.slider img{
+    width:100%;
+    opacity: .8;
+    height: 500px !important;
+    overflow: hidden;
+}
+.main{
+    position: relative;
+    background-color: black;
+}
+.content{
+    position: absolute;
+    color: white;
+    top: 50%;
+    left: 10%;
+}
+.content h3{
+    font-size: xx-large;
+    font-weight: 500;
+}
+.content button{
+    padding: 10px;
+    border: 1px solid rgb(21, 21, 21);
+    background-color: rgb(21, 21, 21);
+    border-radius: 10px;
+    font-size: large;
+}
