@@ -39,7 +39,7 @@ const AboutSite = () => {
         </Col>
         <Col xl={1} md={0}></Col>
         <Col xl={6} md={7}>
-            <video controls autoPlay loop width="600" height="400">
+            <video width="600" height="400" autoPlay muted>
                 <source src={demoVideo} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>

@@ -28,4 +28,15 @@ function showSlide(){
     slides[slideIndex-1].style.animation="slideActive 2s forwards";
     setTimeout(showSlide,10000);
 }
-showSlide();
+function waitForClass(className, callback) {
+    var checkInterval = setInterval(function() {
+        var elements = document.getElementsByClassName(className);
+        if (elements.length > 0) {
+            clearInterval(checkInterval);
+            callback();
+        }
+    }, 100);
+}
+waitForClass('mySlides', function() {
+    showSlide();
+});

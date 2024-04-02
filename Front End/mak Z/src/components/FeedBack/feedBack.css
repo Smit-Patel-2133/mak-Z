@@ -3,12 +3,11 @@
     position: relative;
     margin-top: 20px;
     overflow: hidden;
-    padding-bottom: 500px;
 }
 .feedbackFront{
     width: 100%;
     min-width: 900px !important;
-    min-height: 650px !important;
+    max-height: 650px !important;
     opacity: .3;
 }
 .feedback h1{
