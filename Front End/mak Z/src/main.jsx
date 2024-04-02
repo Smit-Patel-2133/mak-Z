@@ -9,6 +9,9 @@ import SignupForm from "./components/SingUp/SignupForm.jsx";
 import Login from "./components/login/Login.jsx";
 import Home from "./components/Home/Home.jsx";
 import ForgotPassword from './components/login/ForgotPassword.jsx';
+import EditPage from './components/EditPage/EditPage.jsx';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 const router=createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<App/>}>
         <Route path='' element={<LandingPage/>}/>
@@ -16,7 +19,7 @@ const router=createBrowserRouter(createRoutesFromElements(
         <Route path='/login' element={<Login/>}/>
         <Route path='/home' element={<Home/>}/>
         <Route path='/forgot-password' element={<ForgotPassword/>}/>
-
+        <Route path='/editPage' element={<EditPage/>}/>
     </Route>
 
 ))

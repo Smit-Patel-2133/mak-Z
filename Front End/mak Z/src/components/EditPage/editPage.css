@@ -7,6 +7,11 @@
     min-height: 100vh;
     float: left;
 }
+.toolBar ul, .list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 .toolBar li{
     font-size: x-large;
     text-align: center;
@@ -23,20 +28,22 @@
 }
 .elements{
     background-color: rgb(41, 41, 41);
+    left: 35px;
     color: white;
     float: left;
     overflow: hidden;
-    width: 200px;
+    width: 0px;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     transition: 1.5s ease-in-out;
+    white-space: nowrap;
 }
 .add:hover{
     cursor: pointer;
 }
-.add:hover .elements{
-    width: 0px !important;
+.elementHovered{
+    width: 200px;
 }
 .style{
     width: 250px;
@@ -45,10 +52,68 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: 1.5s ease-in-out;
 }
 .main{
     position: relative;
 }
+.elements h5{
+    margin-top: 10px;
+    margin-left: 32px;
+    position: relative;
+}
+.elements h5::after{
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 105px;
+    background-color: white;
+    bottom: -7px;
+    left: 17px;
+}
+.mainList{
+    width: 100% !important;
+    margin-left: 0px !important;
+    border: 0px !important;
+    height: auto !important;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.mainList::after{
+    content: '';
+    position: absolute;
+    background-color: rgb(136, 134, 134);
+    height: 1px;
+    min-width: 160px;
+    bottom: 0px;
+    left: 20px;
+}
+.list li{
+    margin: 5px 10px;
+    width: 80px;
+    height: 70px;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px 0px;
+    overflow: hidden;
+    float: left;
+    cursor: pointer;
+}
+.list svg{
+    font-size: x-large;
+}
 .edit{
-    border: 1px;
+    width: calc(100% - 305px);
+    border: 1px solid rgb(105, 104, 104);
+    margin: 30px 10px;
+    float: left;
+    height: auto;
+    border-radius: 10px;
+    min-height: 700px !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.styleHovered{
+    width: 0px;
 }

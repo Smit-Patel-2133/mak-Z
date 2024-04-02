@@ -11,7 +11,7 @@ const Header = () => {
         <ul>
             <li><img src={toogle_dark} alt="Profile" /></li>
             <li><a href="/login">Login</a></li>
-            <li><a href="/home">Contect Us</a></li>
+            <li><a href="/home">Contact Us</a></li>
             <li><a href="/home">About Us</a></li>
             <li><a href="/home">Template</a></li>
             <li><a href="/home">Home</a></li>
