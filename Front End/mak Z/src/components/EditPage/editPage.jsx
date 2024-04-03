@@ -1,6 +1,6 @@
-import { useState } from "react";
+import React, { useState , useRef, useEffect } from "react";
 import './editPage.css';
-import Header from '../Header/Header';
+import UserPage from '../UserPage/UserPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faParagraph } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,6 +8,7 @@ const editPage = () => {
 
     const [elementHover, setElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
+    var [cName, changeClass] = useState('');
 
     function mouseOver(){
         setElementHover(true); 
@@ -17,6 +18,18 @@ const editPage = () => {
         setElementHover(false); 
         setStyleHover(true)
     }
+    const elementRef = useRef(null);
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        console.log('Item dropped!');
+    };
+
+    const logOuterHTML = () => {
+      if (elementRef.current) {
+        console.log(elementRef.current.outerHTML);
+      }
+    };
 
     return(
         <>
@@ -33,30 +46,30 @@ const editPage = () => {
                         <ul>
                             <li className="mainList">
                                 <p>Text</p>
-                                <li>
+                                <li draggable='true' className="paragraph">
                                     <FontAwesomeIcon icon={faParagraph} />
                                     <p>Paragraph</p>
                                 </li>
-                                <li>
+                                <li draggable='true'>
                                     <FontAwesomeIcon icon={faParagraph} />
                                     <p>Paragraph</p>
                                 </li>
-                                <li>
+                                <li draggable='true'>
                                     <FontAwesomeIcon icon={faParagraph} />
                                     <p>Paragraph</p>
                                 </li>
-                                <li>
+                                <li draggable='true'>
                                     <FontAwesomeIcon icon={faParagraph} />
                                     <p>Paragraph</p>
                                 </li>
                             </li>
                             <li className="mainList">
                                 <p>Text</p>
-                                <li>
+                                <li draggable='true'>
                                     <FontAwesomeIcon icon={faParagraph} />
                                     <p>Paragraph</p>
                                 </li>
-                                <li>
+                                <li draggable='true'>
                                     <FontAwesomeIcon icon={faParagraph} />
                                     <p>Paragraph</p>
                                 </li>
@@ -65,9 +78,7 @@ const editPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="edit">
-
-            </div>
+            <UserPage className="edit" c={cName} onDrop={handleDrop}/>
             <div className={`style ${styleHover ? '' : 'styleHovered'}`}></div>
         </div>
         </>
