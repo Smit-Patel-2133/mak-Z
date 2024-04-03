@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import './editPage.css';
 import Header from '../Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +20,6 @@ const editPage = () => {
 
     return(
         <>
-        <Header />
         <div className="main">
             <div className="tags">
                 <div className="toolBar">
