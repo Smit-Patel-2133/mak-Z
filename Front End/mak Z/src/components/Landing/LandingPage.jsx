@@ -21,7 +21,7 @@ const LandingPage = () => {
                 <h6 className="text-base sm:text-lg font-light mb-2 sm:mb-3">
                     Flow into growth with Mak-Z
                 </h6>
-                <button onClick={() => navigate('./login')} className='bg-black border-2 border-amber-400 text-amber-400 px-3 sm:px-4 py-1 sm:py-2 rounded-none mt-2 sm:mt-4 animate-pulse'>
+                <button onClick={() => navigate('./home')} className='bg-black border-2 border-amber-400 text-amber-400 px-3 sm:px-4 py-1 sm:py-2 rounded-none mt-2 sm:mt-4 animate-pulse'>
                     Get Started
                 </button>
             </div>
