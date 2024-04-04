@@ -2,13 +2,12 @@ import React, { useState , useRef, useEffect } from "react";
 import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faListOl } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
 
     const [elementHover, setElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
-    var [cName, changeClass] = useState('');
 
     function mouseOver(){
         setElementHover(true); 
@@ -18,18 +17,6 @@ const editPage = () => {
         setElementHover(false); 
         setStyleHover(true)
     }
-    const elementRef = useRef(null);
-
-    const handleDrop = (event) => {
-        event.preventDefault();
-        console.log('Item dropped!');
-    };
-
-    const logOuterHTML = () => {
-      if (elementRef.current) {
-        console.log(elementRef.current.outerHTML);
-      }
-    };
 
     return(
         <>
@@ -46,39 +33,59 @@ const editPage = () => {
                         <ul>
                             <li className="mainList">
                                 <p>Text</p>
-                                <li draggable='true' className="paragraph">
-                                    <FontAwesomeIcon icon={faParagraph} />
-                                    <p>Paragraph</p>
-                                </li>
-                                <li draggable='true'>
-                                    <FontAwesomeIcon icon={faParagraph} />
-                                    <p>Paragraph</p>
-                                </li>
-                                <li draggable='true'>
-                                    <FontAwesomeIcon icon={faParagraph} />
-                                    <p>Paragraph</p>
-                                </li>
-                                <li draggable='true'>
-                                    <FontAwesomeIcon icon={faParagraph} />
-                                    <p>Paragraph</p>
-                                </li>
+                                <ul>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading1");}}>
+                                        <FontAwesomeIcon icon={faHeading} />
+                                        <p>Heading 1</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading2");}}>
+                                        <FontAwesomeIcon icon={faHeading} />
+                                        <p>Heading 2</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading3");}}>
+                                        <FontAwesomeIcon icon={faHeading} />
+                                        <p>Heading 3</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading4");}}>
+                                        <FontAwesomeIcon icon={faHeading} />
+                                        <p>Heading 4</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading5");}}>
+                                        <FontAwesomeIcon icon={faHeading} />
+                                        <p>Heading 5</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading6");}}>
+                                        <FontAwesomeIcon icon={faHeading} />
+                                        <p>Heading 6</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "paragraph");}}>
+                                        <FontAwesomeIcon icon={faParagraph} />
+                                        <p>paragraph</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "oList");}}>
+                                        <FontAwesomeIcon icon={faListOl} />
+                                        <p>Ordered<br /> List</p>
+                                    </li>
+                                </ul>
                             </li>
                             <li className="mainList">
                                 <p>Text</p>
-                                <li draggable='true'>
-                                    <FontAwesomeIcon icon={faParagraph} />
-                                    <p>Paragraph</p>
-                                </li>
-                                <li draggable='true'>
-                                    <FontAwesomeIcon icon={faParagraph} />
-                                    <p>Paragraph</p>
-                                </li>
+                                <ul>
+                                    <li draggable='true'>
+                                        <FontAwesomeIcon icon={faParagraph} />
+                                        <p>Paragraph</p>
+                                    </li>
+                                    <li draggable='true'>
+                                        <FontAwesomeIcon icon={faParagraph} />
+                                        <p>Paragraph</p>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <UserPage className="edit" c={cName} onDrop={handleDrop}/>
+            <UserPage className="edit"/>
             <div className={`style ${styleHover ? '' : 'styleHovered'}`}></div>
         </div>
         </>
