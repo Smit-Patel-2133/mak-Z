@@ -2,8 +2,10 @@ html
 {
   scroll-behavior: smooth;
 }
+
 *
 {
+  
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -35,6 +37,7 @@ p
   font-weight: bold;
   line-height: 1.1;
   word-spacing: 4px;
+  color: white;
 }
 i
 {
@@ -64,6 +67,7 @@ i
   z-index: -1;
   background: linear-gradient(to right, #1e5799 0%, #3ccdbb 0%, #16c9f6 100%);
 }
+
 .navbar::before
 {
   content: "";
