@@ -54,77 +54,65 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className='pt-20'></div>
-<div className="Serviceffers bg-black text-white" id="servicediv">
-    <div className="container headings text-center">
-        <h1 className="text-center font-weight-bold">WHAT DO WE OFFER</h1>
-        <p className="text-center text-yellow-100">At Mak-Z, we offer a range of cutting-edge services to propel your business forward. Check out our offerings below:</p>
-    </div>
-    <div className="container">
-        <div className="row">
-            <div className="col-lg-6 col-md-12 col-10 offset-1 offset-lg-0">
-                <div className="names my-3 ">
-                    <h1 className='text-white'>Template Download</h1>
-                    <div className="progress w-75">
-                        <div className="progress-bar progress-bar-striped progress-bar-animated" style={{ width: '100%' }}>100%</div>
-                    </div>
+            <div className="Serviceffers bg-black text-white" id="servicediv">
+                <div className="container headings text-center">
+                    <h1 className="text-center font-weight-bold">WHAT DO WE OFFER</h1>
+                    <p className="text-center text-yellow-100">At Mak-Z, we offer a range of cutting-edge services to propel your business forward. Check out our offerings below:</p>
                 </div>
-                <div className="names my-3">
-                    <h1 className='text-white'>Active Agents</h1>
-                    <div className="progress w-75">
-                        <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" style={{ width: '90%' }}>90%</div>
-                    </div>
-                </div>
-                <div className="names my-3">
-                    <h1 className='text-white'>Plan Rejected by Customer</h1>
-                    <div className="progress w-75">
-                        <div className="progress-bar progress-bar-striped progress-bar-animated bg-warning" style={{ width: '85%' }}>60% to 80%</div>
-                    </div>
-                </div>
-                <div className="names my-3">
-                    <h1 className='text-white'>REACTJS</h1>
-                    <div className="progress w-75">
-                        <div className="progress-bar progress-bar-striped progress-bar-animated" style={{ width: '75%' }}>75%</div>
-                    </div>
-                </div>
-                <div className="names my-3">
-                    <h1 className='text-white'>NODEJS</h1>
-                    <div className="progress w-75">
-                        <div className="progress-bar progress-bar-striped progress-bar-animated bg-danger" style={{ width: '80%' }}>80%</div>
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-6 col-md-12 col-12 servicediv">
-                <div className="row">
-                    <div className="col-lg-2 col-2 service-icons">
-                        <i className="fa-3x fa fa-desktop" aria-hidden="true"></i>
-                    </div>
-                    <div className="col-lg-10 col-10">
-                        <h2>Website Development</h2>
-                        <p className='text-yellow-100'>Let Mak-Z handle your website development needs. From simple landing pages to complex e-commerce platforms, we've got you covered.</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-lg-2 col-2 service-icons">
-                        <i className="fa-3x fa fa-wifi" aria-hidden="true"></i>
-                    </div>
-                    <div className="col-lg-10 col-10">
-                        <h2>Digital Marketing</h2>
-                        <p className='text-yellow-100'>Boost your online presence with our digital marketing services. From SEO to social media management, we'll help you reach your target audience.</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-lg-2 col-2 service-icons">
-                        <i className="fa-3x fa fa-phone" aria-hidden="true"></i>
-                    </div>
-                    <div className="col-lg-10 col-10">
-                        <h2>Support 24/7</h2>
-                        <p className='text-yellow-100'> Experience unparalleled support with our 24/7 customer service team. We're here to assist you every step of the way.</p>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-6 col-md-12 col-10 offset-1 offset-lg-0">
+                            <div >
+                                <div>
+                                    <h1 class="count">10,000</h1>
+                                    <p>Templates</p>
+                                </div>
+                                <div>
+                                    <h1 class="count">2500</h1>
+                                    <p>Templates downloads</p>
+                                </div>
+                                <div>
+                                    <h1 class="count">1,05,015</h1>
+                                    <p>Total </p>
+                                </div>
+                                <div>
+                                    <h1 class="count">60</h1>
+                                    <p>Agent's are Working</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-6 col-md-12 col-12 servicediv">
+                            <div className="row">
+                                <div className="col-lg-2 col-2 service-icons">
+                                    <i className="fa-3x fa fa-desktop" aria-hidden="true"></i>
+                                </div>
+                                <div className="col-lg-10 col-10">
+                                    <h2>Website Development</h2>
+                                    <p className='text-yellow-100'>Let Mak-Z handle your website development needs. From simple landing pages to complex e-commerce platforms, we've got you covered.</p>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-lg-2 col-2 service-icons">
+                                    <i className="fa-3x fa fa-wifi" aria-hidden="true"></i>
+                                </div>
+                                <div className="col-lg-10 col-10">
+                                    <h2>Digital Marketing</h2>
+                                    <p className='text-yellow-100'>Boost your online presence with our digital marketing services. From SEO to social media management, we'll help you reach your target audience.</p>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-lg-2 col-2 service-icons">
+                                    <i className="fa-3x fa fa-phone" aria-hidden="true"></i>
+                                </div>
+                                <div className="col-lg-10 col-10">
+                                    <h2>Support 24/7</h2>
+                                    <p className='text-yellow-100'> Experience unparalleled support with our 24/7 customer service team. We're here to assist you every step of the way.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
         </>
     );
