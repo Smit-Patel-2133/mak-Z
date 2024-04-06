@@ -2,12 +2,13 @@ import React, { useState , useRef, useEffect } from "react";
 import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph, faHeading, faListOl } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faListOl, faDownload } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
 
     const [elementHover, setElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
+    const userPage = useRef(null);
 
     function mouseOver(){
         setElementHover(true); 
@@ -18,6 +19,11 @@ const editPage = () => {
         setStyleHover(true)
     }
 
+    function download(){
+        if (userPage.current) {
+            userPage.current.logOuterHTML();
+        }
+    }
     return(
         <>
         <div className="main">
@@ -25,6 +31,7 @@ const editPage = () => {
                 <div className="toolBar">
                     <ul>
                         <li className="add" onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>+</li>
+                        <li className="download" onClick={download}><FontAwesomeIcon icon={faDownload} /></li>
                     </ul>
                 </div>
                 <div className={`elements ${elementHover ? 'elementHovered' : ''}`}  onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>
@@ -85,7 +92,7 @@ const editPage = () => {
                     </div>
                 </div>
             </div>
-            <UserPage className="edit"/>
+            <UserPage bodyPageRef={userPage} className="edit"/>
             <div className={`style ${styleHover ? '' : 'styleHovered'}`}></div>
         </div>
         </>

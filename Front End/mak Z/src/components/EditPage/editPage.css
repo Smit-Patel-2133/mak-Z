@@ -39,7 +39,7 @@
     transition: 1.5s ease-in-out;
     white-space: nowrap;
 }
-.add:hover{
+.add:hover,.download:hover{
     cursor: pointer;
 }
 .elementHovered{
@@ -106,4 +106,7 @@
 }
 .styleHovered{
     width: 0px;
+}
+.mainList p{
+    color: white !important;
 }

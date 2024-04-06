@@ -1,9 +1,43 @@
 import React, { useEffect, useRef } from 'react'
 import './userPage.css';
+import axios from "axios";
 
-const UserPage = (props) => {
+const UserPage = ({props , bodyPageRef}) => {
 
-    const bodyPageRef = useRef(null);
+    // const bodyPageRef = useRef(null);
+
+    const logOuterHTML = () => {
+        const code = bodyPageRef.current.outerHTML;
+        try {
+            axios.post('http://localhost:5000/download', { code }, { responseType: 'blob' })
+                .then(response => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'Mak-Z.html');
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+                    axios.delete('http://localhost:5000/delete/Mak-Z.html')
+                    .then(() => {
+                        console.log('File deleted successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error deleting file:', error);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error downloading file:', error);
+                });
+        } catch (error) {
+            console.error('Code passed from client side generate error ', error);
+        }
+    };
+    
+
+    if (bodyPageRef.current) {
+        bodyPageRef.current.logOuterHTML = logOuterHTML;
+    }
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -31,7 +65,6 @@ const UserPage = (props) => {
             const paragraphElement = document.createElement('p');
             paragraphElement.textContent = 'Here is your Paragraph';
             paragraphElement.setAttribute('contenteditable', 'true');
-            // paragraphElement.style.color = 'red';
             bodyPage.appendChild(paragraphElement);
         }
 
@@ -93,13 +126,6 @@ const UserPage = (props) => {
             oListElement.appendChild(listItemElement);
             bodyPage.appendChild(oListElement);
         }
-
-        const logOuterHTML = () => {
-            if (bodyPageRef.current) {
-            console.log(bodyPageRef.current.outerHTML);
-            }
-        };
-        logOuterHTML()
 
     };
 
