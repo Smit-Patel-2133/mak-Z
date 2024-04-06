@@ -1,0 +1,33 @@
+.splitL {
+    height: 100%;
+    width: 60%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+
+
+}
+.splitR {
+    height: 100%;
+    width: 40%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+/* Control the left side */
+.left {
+    left: 0;
+    align-items: center;
+    justify-content: center;
+
+}
+
+/* Control the right side */
+.right {
+    right: 0;
+
+}

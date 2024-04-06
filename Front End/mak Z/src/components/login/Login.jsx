@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
-import login_girl from '../../assets/Auth Pictures/draw2.svg'
-
+import login_girl from '../../assets/Auth Pictures/log.svg'
+import './Login.css'
 const LoginForm = () => {
     const navigate = useNavigate(); // Initialize useNavigate hook
     const [email, setEmail] = useState("");
@@ -85,10 +85,11 @@ const LoginForm = () => {
 
 const Login = () => {
     return (
+        <>
         <section className="h-screen">
             <div className="container px-6 py-12 h-full">
                 <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
-                    <div className="md:w-8/12 lg:w-6/12 mb-12 md:mb-0">
+                    <div className="md:w-8/12 lg:w-6/12 mb-12 md:mb-0 ">
                         <img
                             src={login_girl}
                             className="w-full"
@@ -102,6 +103,7 @@ const Login = () => {
                 </div>
             </div>
         </section>
+            </>
     );
 };
 

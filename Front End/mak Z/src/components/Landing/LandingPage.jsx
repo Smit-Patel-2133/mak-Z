@@ -62,17 +62,17 @@ const LandingPage = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 col-md-12 col-10 offset-1 offset-lg-0">
-                            <div >
+                            <div className='justify-center' >
                                 <div>
-                                    <h1 class="count">10,000</h1>
+                                    <h1 className="count">10,000</h1>
                                     <p>Templates</p>
                                 </div>
                                 <div>
-                                    <h1 class="count">2500</h1>
+                                    <h1 className="count">2500</h1>
                                     <p>Templates downloads</p>
                                 </div>
                                 <div>
-                                    <h1 class="count">1,05,015</h1>
+                                    <h1 className="count">1,05,015</h1>
                                     <p>Total </p>
                                 </div>
                                 <div>
