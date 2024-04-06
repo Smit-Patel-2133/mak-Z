@@ -1,7 +1,9 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const sql = require('./db');
+const nodemailer = require('nodemailer');
+const sql = require('./db'); // Import the sql function from db.js
 
 const app = express();
 
@@ -13,6 +15,101 @@ app.use((req, res, next) => {
     next();
 });
 
+// Nodemailer transporter setup with SMTP
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+        user: 'mak.z.official07@gmail.com', // Replace with your Gmail email
+        pass: 'kanfzuupxeepxsih' // Replace with your Gmail password
+    }
+});
+
+// Temporary storage for OTPs (in a production environment, consider using a database)
+let otpStorage = {};
+
+// Endpoint to send OTP to the user's email
+app.post('/api/send-otp', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        // Check if the email exists in the database
+        const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
+        if (existingUser.length === 0) {
+            // If user does not exist, send a message that the user doesn't exist
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+
+        // Generate OTP (For simplicity, you can use a random 6-digit number)
+        const generatedOTP = Math.floor(100000 + Math.random() * 900000);
+
+        // Store the OTP in memory (for verification later)
+        otpStorage[email] = generatedOTP;
+
+        // Send OTP to the user's email
+        await sendEmail(email, generatedOTP);
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+        res.status(500).json({ success: false, error: 'Failed to send OTP. Please try again later.' });
+    }
+});
+
+// Function to send email using SMTP
+const sendEmail = async (email, otp) => {
+    try {
+        const mailOptions = {
+            from: 'mak.z.official07@gmail.com', // Your Gmail address
+            to: email,
+            subject: 'OTP for Password Reset',
+            text: `Your OTP for password reset is: ${otp}`
+        };
+
+        await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully');
+    } catch (error) {
+        throw new Error('Error sending email: ' + error.message);
+    }
+};
+
+// Endpoint to verify the entered OTP
+app.post('/api/verify-otp', async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        const storedOTP = otpStorage[email];
+
+        if (!storedOTP || storedOTP !== otp) {
+            return res.json({ success: false, message: 'Invalid OTP' });
+        }
+
+        // OTP verification successful, remove OTP from storage
+        delete otpStorage[email];
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        res.status(500).json({ success: false, error: 'Failed to verify OTP. Please try again later.' });
+    }
+});
+
+// Endpoint to update the password
+app.post('/api/update-password', async (req, res) => {
+    const { email, newPassword } = req.body;
+
+    try {
+        // Update the password in the database for the user with the specified email
+        await sql`UPDATE users SET password = ${newPassword} WHERE email = ${email}`;
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error updating password:', error);
+        res.status(500).json({ success: false, error: 'Failed to update password. Please try again later.' });
+    }
+});
+
 // Endpoint to handle user sign-up
 app.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
@@ -20,6 +117,7 @@ app.post('/signup', async (req, res) => {
     try {
         const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
         if (existingUser.length > 0) {
+
             return res.status(400).json({ error: 'User already registered', details: 'Email is already in use' });
         }
 
