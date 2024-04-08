@@ -65,60 +65,67 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
             console.log(`Function '${element}' not found`);
         }
 
-        function setCommonAttributes(contentVariable,bodyPage){
+        function setCommonAttributes(contentVariable,bodyPage,targetElement){
             contentVariable.setAttribute('contenteditable', 'true');
             contentVariable.setAttribute('class', 'editable');
             contentVariable.addEventListener('click', handleActive);
-            bodyPage.appendChild(contentVariable);
+            bodyPage.insertBefore(contentVariable, targetElement);
         }
 
         function paragraph(){
             const bodyPage = bodyPageRef.current;
             const paragraphElement = document.createElement('p');
             paragraphElement.textContent = 'Here is your Paragraph';
-            setCommonAttributes(),bodyPage
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(paragraphElement,bodyPage,targetElement)
         }
 
         function heading1(){
             const bodyPage = bodyPageRef.current;
             const heading1Element = document.createElement('h1');
             heading1Element.textContent = 'Here is your Heading 1';
-            setCommonAttributes(heading1Element,bodyPage)
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(heading1Element,bodyPage,targetElement)
         }
 
         function heading2(){
             const bodyPage = bodyPageRef.current;
             const heading2Element = document.createElement('h2');
             heading2Element.textContent = 'Here is your Heading 2';
-            setCommonAttributes(heading2Element,bodyPage)
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(heading2Element,bodyPage,targetElement)
         }
 
         function heading3(){
             const bodyPage = bodyPageRef.current;
             const heading3Element = document.createElement('h3');
             heading3Element.textContent = 'Here is your Heading 3';
-            setCommonAttributes(heading3Element,bodyPage)
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(heading3Element,bodyPage,targetElement)
         }
 
         function heading4(){
             const bodyPage = bodyPageRef.current;
             const heading4Element = document.createElement('h4');
             heading4Element.textContent = 'Here is your Heading 4';
-            setCommonAttributes(heading4Element,bodyPage)
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(heading4Element,bodyPage,targetElement)
         }
 
         function heading5(){
             const bodyPage = bodyPageRef.current;
             const heading5Element = document.createElement('h5');
             heading5Element.textContent = 'Here is your Heading 5';
-            setCommonAttributes(heading5Element,bodyPage)
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(heading5Element,bodyPage,targetElement)
         }
 
         function heading6(){
             const bodyPage = bodyPageRef.current;
             const heading6Element = document.createElement('h6');
             heading6Element.textContent = 'Here is your Heading 6';
-            setCommonAttributes(heading6Element,bodyPage)
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(heading6Element,bodyPage,targetElement)
         }
 
         function oList(){
@@ -131,7 +138,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
             listItemElement.addEventListener('click', handleActive);
             listItemElement.style.listStyleType = 'number';
             oListElement.appendChild(listItemElement);
-            bodyPage.appendChild(oListElement);
+            const targetElement = findTargetElement(e);
+            bodyPage.insertBefore(oListElement,targetElement);
         }
 
     }
@@ -140,6 +148,10 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
         event.preventDefault();
     };
 
+    function insertAfter(newNode, referenceNode) {
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+    
     const handleKeyDown = (event) => {
         if (event && event.key === 'Enter') {
             event.preventDefault(); 
@@ -150,7 +162,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
                 if (grandParentElement) {
                   const clonedNode = parentElement.cloneNode(true);
                   clonedNode.addEventListener('click', handleActive);
-                  grandParentElement.appendChild(clonedNode);
+                  insertAfter(clonedNode, parentElement);
                   const range = document.createRange();
                   range.selectNodeContents(clonedNode); // Select the contents of the cloned node
                   range.collapse(false); // Collapse the range to the end
@@ -171,6 +183,16 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
             }
         }
     };
+
+    function findTargetElement(e) {
+        const target = e.target;
+        const tagName = target.tagName.toLowerCase();
+        if (tagName.startsWith('h') || tagName === 'p' || tagName === 'ol') {
+            return target; // If dropping on a valid target element, insert before it
+        } else {
+            return null; // Otherwise, append at the end
+        }
+    }
 
   return (
     <div className='pageBody' onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver}>
