@@ -1,4 +1,4 @@
-.toolBar{
+.toolBar {
     background-color: black;
     color: white;
     width: 35px;
@@ -7,17 +7,21 @@
     min-height: 100vh;
     float: left;
 }
-.toolBar ul, .list ul {
+
+.toolBar ul,
+.list ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
-.toolBar li{
+
+.toolBar li {
     font-size: x-large;
     text-align: center;
     position: relative;
 }
-.toolBar li::after{
+
+.toolBar li::after {
     position: absolute;
     content: '';
     width: 29px;
@@ -26,7 +30,8 @@
     bottom: -3px;
     left: 3px;
 }
-.elements{
+
+.elements {
     background-color: rgb(41, 41, 41);
     left: 35px;
     color: white;
@@ -36,33 +41,30 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    transition: 1.5s ease-in-out;
+    transition: 1s ease-in-out;
     white-space: nowrap;
 }
-.add:hover,.download:hover{
+
+.add:hover,
+.download:hover {
     cursor: pointer;
 }
-.elementHovered{
+
+.elementHovered {
     width: 200px;
 }
-.style{
-    width: 250px;
-    float: right;
-    background-color: rgb(41, 41, 41);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    transition: 1.5s ease-in-out;
-}
-.main{
+
+.main {
     position: relative;
 }
-.elements h5{
+
+.elements h5 {
     margin-top: 10px;
     margin-left: 32px;
     position: relative;
 }
-.elements h5::after{
+
+.elements h5::after {
     content: '';
     position: absolute;
     height: 2px;
@@ -71,7 +73,8 @@
     bottom: -7px;
     left: 17px;
 }
-.mainList{
+
+.mainList {
     width: 100% !important;
     margin-left: 0px !important;
     border: 0px !important;
@@ -80,7 +83,8 @@
     white-space: nowrap;
     overflow: hidden;
 }
-.mainList::after{
+
+.mainList::after {
     content: '';
     position: absolute;
     background-color: rgb(136, 134, 134);
@@ -89,9 +93,17 @@
     bottom: 0px;
     left: 20px;
 }
-.list li{
-    margin: 5px 10px;
-    width: 80px;
+
+.list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.list li {
+    margin: 5px 1%;
+    width: 45%;
     height: 90px;
     border: 1px solid white;
     border-radius: 5px;
@@ -100,13 +112,27 @@
     overflow: hidden;
     float: left;
     cursor: grab;
+    box-sizing: border-box;
 }
-.list svg{
+
+.list li:nth-child(2n+1) {
+    margin-right: 2%;
+}
+
+.list li:nth-child(2n+1)::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.list svg {
     font-size: x-large;
 }
-.styleHovered{
+
+.styleHovered {
     width: 0px;
 }
-.mainList p{
+
+.mainList p {
     color: white !important;
 }

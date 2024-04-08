@@ -22,14 +22,18 @@ const SliderImages = () => {
         <img className="d-block w-100" src={themeImage} alt="Second slide" />
         <div className='content'>
           <h3>Simplify coding with auto generator</h3><br />
-          <button>Explore Now &gt;&gt;</button>
+          <Link to="/editPage">
+            <button>Explore Now &gt;&gt;</button>
+          </Link>
         </div>
       </Carousel.Item>
       <Carousel.Item className='main'>
         <img className="d-block w-100" src={themeImage} alt="Third slide" />
         <div className='content'>
           <h3>Speed up coding with auto-generation.</h3><br />
-          <button>Explore Now &gt;&gt;</button>
+          <Link to="/editPage">
+            <button>Explore Now &gt;&gt;</button>
+          </Link>
         </div>
       </Carousel.Item>
     </Carousel>

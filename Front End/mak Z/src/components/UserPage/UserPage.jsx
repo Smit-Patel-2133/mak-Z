@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import './userPage.css';
 import axios from "axios";
 
-const UserPage = ({props , bodyPageRef}) => {
-
+const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
     // const bodyPageRef = useRef(null);
 
     const logOuterHTML = () => {
@@ -25,6 +24,8 @@ const UserPage = ({props , bodyPageRef}) => {
                     .catch(error => {
                         console.error('Error deleting file:', error);
                     });
+
+
                 })
                 .catch(error => {
                     console.error('Error downloading file:', error);
@@ -37,6 +38,10 @@ const UserPage = ({props , bodyPageRef}) => {
 
     if (bodyPageRef.current) {
         bodyPageRef.current.logOuterHTML = logOuterHTML;
+    }
+    
+    function handleActive(e){
+        sendDataToUserCss(e.target);
     }
 
     const handleDrop = (e) => {
@@ -60,60 +65,60 @@ const UserPage = ({props , bodyPageRef}) => {
             console.log(`Function '${element}' not found`);
         }
 
+        function setCommonAttributes(contentVariable,bodyPage){
+            contentVariable.setAttribute('contenteditable', 'true');
+            contentVariable.setAttribute('class', 'editable');
+            contentVariable.addEventListener('click', handleActive);
+            bodyPage.appendChild(contentVariable);
+        }
+
         function paragraph(){
             const bodyPage = bodyPageRef.current;
             const paragraphElement = document.createElement('p');
             paragraphElement.textContent = 'Here is your Paragraph';
-            paragraphElement.setAttribute('contenteditable', 'true');
-            bodyPage.appendChild(paragraphElement);
+            setCommonAttributes(),bodyPage
         }
 
         function heading1(){
             const bodyPage = bodyPageRef.current;
             const heading1Element = document.createElement('h1');
             heading1Element.textContent = 'Here is your Heading 1';
-            heading1Element.setAttribute('contenteditable', 'true');
-            bodyPage.appendChild(heading1Element);
+            setCommonAttributes(heading1Element,bodyPage)
         }
 
         function heading2(){
             const bodyPage = bodyPageRef.current;
             const heading2Element = document.createElement('h2');
             heading2Element.textContent = 'Here is your Heading 2';
-            heading2Element.setAttribute('contenteditable', 'true');
-            bodyPage.appendChild(heading2Element);
+            setCommonAttributes(heading2Element,bodyPage)
         }
 
         function heading3(){
             const bodyPage = bodyPageRef.current;
             const heading3Element = document.createElement('h3');
             heading3Element.textContent = 'Here is your Heading 3';
-            heading3Element.setAttribute('contenteditable', 'true');
-            bodyPage.appendChild(heading3Element);
+            setCommonAttributes(heading3Element,bodyPage)
         }
 
         function heading4(){
             const bodyPage = bodyPageRef.current;
             const heading4Element = document.createElement('h4');
             heading4Element.textContent = 'Here is your Heading 4';
-            heading4Element.setAttribute('contenteditable', 'true');
-            bodyPage.appendChild(heading4Element);
+            setCommonAttributes(heading4Element,bodyPage)
         }
 
         function heading5(){
             const bodyPage = bodyPageRef.current;
             const heading5Element = document.createElement('h5');
             heading5Element.textContent = 'Here is your Heading 5';
-            heading5Element.setAttribute('contenteditable', 'true');
-            bodyPage.appendChild(heading5Element);
+            setCommonAttributes(heading5Element,bodyPage)
         }
 
         function heading6(){
             const bodyPage = bodyPageRef.current;
             const heading6Element = document.createElement('h6');
             heading6Element.textContent = 'Here is your Heading 6';
-            heading6Element.setAttribute('contenteditable', 'true');
-            bodyPage.appendChild(heading6Element);
+            setCommonAttributes(heading6Element,bodyPage)
         }
 
         function oList(){
@@ -122,12 +127,14 @@ const UserPage = ({props , bodyPageRef}) => {
             const listItemElement = document.createElement('li');
             listItemElement.textContent = 'Here is your list';
             listItemElement.setAttribute('contenteditable', 'true');
+            listItemElement.setAttribute('class', 'editable');
+            listItemElement.addEventListener('click', handleActive);
             listItemElement.style.listStyleType = 'number';
             oListElement.appendChild(listItemElement);
             bodyPage.appendChild(oListElement);
         }
 
-    };
+    }
 
     const handleDragOver = (event) => {
         event.preventDefault();
@@ -142,13 +149,24 @@ const UserPage = ({props , bodyPageRef}) => {
                 const grandParentElement = parentElement.parentElement;
                 if (grandParentElement) {
                   const clonedNode = parentElement.cloneNode(true);
+                  clonedNode.addEventListener('click', handleActive);
                   grandParentElement.appendChild(clonedNode);
-                  const range = document.createRange(); // Create a new range
+                  const range = document.createRange();
                   range.selectNodeContents(clonedNode); // Select the contents of the cloned node
                   range.collapse(false); // Collapse the range to the end
                   const selection = window.getSelection(); // Get the selection object
                   selection.removeAllRanges(); // Remove any existing ranges from the selection
                   selection.addRange(range); // Add the new range to the selection
+                }
+            }
+        }else if(event && event.key === 'Delete'){
+            const selection = window.getSelection();
+            const selectedNode = selection.focusNode;
+            
+            if (selectedNode) {
+                const parentElement = selectedNode.parentElement; 
+                if (parentElement) {
+                    parentElement.remove();
                 }
             }
         }

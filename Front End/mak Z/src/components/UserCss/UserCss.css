@@ -1,0 +1,24 @@
+.style {
+    width: 250px;
+    float: right;
+    background-color: rgb(41, 41, 41);
+    min-height: 100vh;
+    transition: 1s ease-in-out;
+}
+.styleHovered {
+    width: 0px;
+}
+.style label{
+    color: white;
+    margin: 10px 10px;
+}
+.fontSize{
+    width: 60px;
+    color: white;
+    height: 30px;
+    margin: 10px 10px;
+    background-color: rgb(41, 41, 41);
+    border: 1px solid white;
+    border-radius: 10px;
+    text-align: center;
+}

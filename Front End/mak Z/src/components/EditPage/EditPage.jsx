@@ -1,6 +1,7 @@
 import React, { useState , useRef, useEffect } from "react";
 import './editPage.css';
 import UserPage from '../UserPage/UserPage';
+import UserCss from '../UserCss/UserCss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faParagraph, faHeading, faListOl, faDownload } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,6 +9,7 @@ const editPage = () => {
 
     const [elementHover, setElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
+    const [dataFromUserPage, setDataFromUserPage] = useState('');
     const userPage = useRef(null);
 
     function mouseOver(){
@@ -24,6 +26,11 @@ const editPage = () => {
             userPage.current.logOuterHTML();
         }
     }
+
+    function sendDataToUserCss(data) {
+        setDataFromUserPage(data);
+    }
+
     return(
         <>
         <div className="main">
@@ -92,8 +99,8 @@ const editPage = () => {
                     </div>
                 </div>
             </div>
-            <UserPage bodyPageRef={userPage} className="edit"/>
-            <div className={`style ${styleHover ? '' : 'styleHovered'}`}></div>
+            <UserPage bodyPageRef={userPage} className="edit" sendDataToUserCss={sendDataToUserCss}/>
+            <UserCss styleHover={styleHover} receivedData={dataFromUserPage} />
         </div>
         </>
     )
