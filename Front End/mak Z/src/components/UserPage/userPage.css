@@ -10,5 +10,6 @@
 } 
 .editable {
     border: 1px solid #ccc;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }

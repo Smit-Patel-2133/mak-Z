@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const beautify = require('js-beautify').html;
 const sql = require('./db'); // Import the sql function from db.js
 
 const app = express();
@@ -161,7 +162,20 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/download', async (req, res) => {
-    const codeData = req.body.code;
+    let codeData =`<!DOCTYPE html>
+                    <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Mak-Z</title>
+                            <!-- Bootstrap CSS -->
+                            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+                        </head>
+                    <body>`;
+    codeData += req.body.code.toString().replace('contenteditable="true"','');
+    codeData += `   </body>
+                </html>`;
+    codeData = beautify(codeData, { indent_size: 4 });  
     const filePath = path.join(__dirname, '../../mak-Z.html');
 
     fs.appendFile(filePath, codeData, { encoding: 'utf8', flag: 'a+' }, (err) => {

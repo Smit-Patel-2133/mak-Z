@@ -1,5 +1,6 @@
 import React from 'react';
 import './AboutSite.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import htmlImage from '../../assets/picture/htmlPhoto.jpeg';
 import cssImage from '../../assets/picture/cssPhoto.jpeg';
 import demoVideo from '../../assets/Video/demo.mp4';

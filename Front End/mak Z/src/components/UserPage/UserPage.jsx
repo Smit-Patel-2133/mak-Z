@@ -1,9 +1,13 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './userPage.css';
 import axios from "axios";
 
 const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
     // const bodyPageRef = useRef(null);
+    let [activeElement,setActiveElement] = useState(null);
+    useEffect(() => {
+        if(activeElement) activeElement.classList.add('active');
+    }, [activeElement]);
 
     const logOuterHTML = () => {
         const code = bodyPageRef.current.outerHTML;
@@ -41,6 +45,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
     }
     
     function handleActive(e){
+        if(activeElement) activeElement.classList.remove('active');
+        setActiveElement(e.target);
         sendDataToUserCss(e.target);
     }
 
@@ -131,6 +137,9 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
         function oList(){
             const bodyPage = bodyPageRef.current;
             const oListElement = document.createElement('ol');
+            // oListElement.setAttribute('contenteditable', 'true');
+            oListElement.setAttribute('class', 'editable');
+            oListElement.addEventListener('click', handleActive);
             const listItemElement = document.createElement('li');
             listItemElement.textContent = 'Here is your list';
             listItemElement.setAttribute('contenteditable', 'true');
