@@ -4,10 +4,6 @@ import axios from "axios";
 
 const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
     // const bodyPageRef = useRef(null);
-    let [activeElement,setActiveElement] = useState(null);
-    useEffect(() => {
-        if(activeElement) activeElement.classList.add('active');
-    }, [activeElement]);
 
     const logOuterHTML = () => {
         const code = bodyPageRef.current.outerHTML;
@@ -45,8 +41,6 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
     }
     
     function handleActive(e){
-        if(activeElement) activeElement.classList.remove('active');
-        setActiveElement(e.target);
         sendDataToUserCss(e.target);
     }
 
@@ -171,6 +165,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
                 if (grandParentElement) {
                   const clonedNode = parentElement.cloneNode(true);
                   clonedNode.addEventListener('click', handleActive);
+                  clonedNode.click();
                   insertAfter(clonedNode, parentElement);
                   const range = document.createRange();
                   range.selectNodeContents(clonedNode); // Select the contents of the cloned node

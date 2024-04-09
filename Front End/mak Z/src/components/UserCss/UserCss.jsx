@@ -7,6 +7,10 @@ const UserCss = ({ styleHover, receivedData  }) => {
   const [fontSizeValue, fontSizeFun] = useState(true);
   const color=useRef(null)
   const [colorValue, colorFun] = useState(true);
+  var [activeElement,setActiveElement] = useState(null);
+  useEffect(() => {
+      if(activeElement) activeElement.classList.add('active');
+  }, [activeElement]);
 
   function rgbToHex(rgb) {
     const [r, g, b] = rgb.match(/\d+/g);
@@ -23,6 +27,8 @@ const UserCss = ({ styleHover, receivedData  }) => {
       const targetcolor = rgbToHex(computedStyle.getPropertyValue('color'));
       color.current.value = targetcolor;
       colorFun(receivedData)
+      if(activeElement) activeElement.classList.remove('active')
+      setActiveElement(receivedData)
     }
   }, [receivedData]);
 
