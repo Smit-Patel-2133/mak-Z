@@ -75,7 +75,7 @@ const LoginForm = () => {
             <div className="flex items-center mb-6 pt-4">
                 <p className="text-gray-600 ml-4">Don't have an account? </p>
                 <a
-                    className="text-blue-500 ml-2 hover:underline"
+                    className="text-blue-500 ml-2 mb-3 hover:underline"
                     onClick={() => navigate('/signup')}
                 >Sign up</a>
             </div>
