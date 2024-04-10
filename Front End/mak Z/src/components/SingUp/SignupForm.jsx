@@ -56,49 +56,53 @@ const SignupForm = () => {
                             <div className="text-3xl font-extrabold text-gray-800 mb-8 self-center text-2xl leading-8 text-center whitespace-nowrap text-neutral-900">
                                 Sign up to Mak-Z
                             </div>
-                            <div className="mt-5">
-                                <label htmlFor="name" className="text-gray-700">Name</label>
+                            <div className="mt-4">
+                            
                                 <input
                                     type="text"
                                     id="name"
                                     name="name"
                                     value={formData.name}
                                     autoComplete="off"
+                                    placeholder="Name"
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 mt-1 text-base text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-300"
                                     required
                                 />
                             </div>
-                            <div className="mt-5">
-                                <label htmlFor="email" className="text-gray-700">Email</label>
+                            <div className="mt-4">
+                                
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
+                                    placeholder="Email"
                                     value={formData.email}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 mt-1 text-base text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-300"
                                     required
                                 />
                             </div>
-                            <div className="mt-5">
-                                <label htmlFor="password" className="text-gray-700">Password</label>
+                            <div className="mt-4">
+                       
                                 <input
                                     type="password"
                                     id="password"
                                     name="password"
+                                    placeholder="Password"
                                     value={formData.password}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 mt-1 text-base text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-300"
                                     required
                                 />
                             </div>
-                            <div className="mt-5">
-                                <label htmlFor="confirmPassword" className="text-gray-700">Confirm Password</label>
+                            <div className="mt-4">
+                            
                                 <input
                                     type="password"
                                     id="confirmPassword"
                                     name="confirmPassword"
+                                    placeholder="Confirm Password"
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 mt-1 text-base text-gray-800 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-300"
@@ -108,7 +112,7 @@ const SignupForm = () => {
                             {message && <p className='text-red-600'>{message}</p>}
                             <button
                                 type="submit"
-                                className="px-4 py-2 mt-3 text-base font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+                                className="px-4 py-2 mt-4 text-base font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
                             >
                                 Sign Up
                             </button>
