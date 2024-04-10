@@ -47,7 +47,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
     const handleDrop = (e) => {
         e.preventDefault();
         const element = e.dataTransfer.getData("element");
-
+        
         const functionMap = {
             'paragraph': paragraph,
             'heading1': heading1,

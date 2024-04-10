@@ -1,8 +1,11 @@
 .style {
+    position: sticky;
+    top: 0;
     width: 250px;
     float: right;
     background-color: rgb(41, 41, 41);
-    min-height: 100vh;
+    height: 100vh;
+    overflow-y: scroll;
     transition: 1s ease-in-out;
 }
 .styleHovered {
@@ -12,15 +15,19 @@
     color: white;
     margin: 10px 10px;
 }
-.fontSize{
+td input,td select{
     width: 60px;
     color: white;
     height: 30px;
     margin: 10px 10px;
+    padding: 2px;
     background-color: rgb(41, 41, 41);
     border: 1px solid white;
     border-radius: 10px;
     text-align: center;
+}
+select{
+    width: 100px !important;
 }
 .activeElementClass{
     border: 2px solid orangered;
