@@ -27,15 +27,20 @@ const SignupForm = () => {
             return; // Stop form submission if passwords don't match
         } else {
             try {
-                const response = await axios.post('http://localhost:5000/SignUp', formData);
+                const response = await axios.post('http://localhost:5000/api/signup', formData); // Corrected endpoint URL
 
-                setMessage(response.data);
-                navigate('/home');
+                if (response.data.error) {
+                    setMessage(response.data.error);
+                } else {
+                    setMessage(response.data.message);
+                    navigate('/home');
+                }
             } catch (error) {
-                setMessage(error.response.data);
+                setMessage('An unexpected error occurred. Please try again later.');
             }
         }
     };
+
 
     return (
         <section className="h-screen">

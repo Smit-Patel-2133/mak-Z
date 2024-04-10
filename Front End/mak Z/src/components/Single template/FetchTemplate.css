@@ -1,0 +1,76 @@
+.image-list {
+    align-items: center; /* Align items vertically */
+    display: grid;
+    grid-auto-flow: column;
+    overflow-x: auto;
+    overscroll-behavior-x:contain ;
+
+}
+.temp{
+    margin-top: 10px;
+    margin-left: 45px;
+    font-family: "Fira Code Light", serif;
+
+
+}
+.inner {
+    margin-bottom: 20px;
+    padding: 20px; /* Remove padding to prevent extra spacing */
+    width: 300px;
+    height: 400px;
+    overflow: auto;
+    border-radius: 20px;
+    position: relative; /* Make the position of the image container relative */
+}
+
+.inner img {
+    width: 100%; /* Make the image fill the entire container */
+    height: 60%; /* Make the image fill the entire container */
+    object-fit: cover; /* Ensure the image covers the entire container */
+    border-radius: 10px;
+}
+
+.inner:hover {
+    padding: 0px;
+    background-color: #c9c9c9;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    left: 50%; /* Position the button in the middle horizontally */
+    transform: translateX(-50%); /* Move the button to the center */
+}
+
+.button-container button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+.scrollable::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    max-height: 80vh;
+    scroll-snap-align: start;
+}
+.heart {
+    position: relative;
+    width: 100px;
+    height: 90px;
+    margin-top: 10px; /* Leave some space above */
+    background-color: red; /* Set the color to red for the heart shape */
+    clip-path: polygon(50% 0%, 100% 35%, 75% 100%, 50% 70%, 25% 100%, 0% 35%);
+}

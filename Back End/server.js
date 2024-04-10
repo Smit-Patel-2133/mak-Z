@@ -124,17 +124,18 @@ app.post('/api/update-password', async (req, res) => {
 });
 
 // Endpoint to handle user sign-up
-app.post('/signup', async (req, res) => {
+app.post('/api/signup', async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
+        // Check if the email is already registered
         const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
         if (existingUser.length > 0) {
-
             return res.status(400).json({ error: 'User already registered', details: 'Email is already in use' });
         }
 
-        await sql`INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password})`;
+        // Insert the new user into the database
+        await sql`INSERT INTO users (username, email, password) VALUES (${name}, ${email}, ${password})`;
 
         console.log('User added successfully');
         res.json({ message: 'User added successfully' });
