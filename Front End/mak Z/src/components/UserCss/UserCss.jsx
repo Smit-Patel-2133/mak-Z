@@ -9,7 +9,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
   const [colorValue, colorFun] = useState(true);
   var [activeElement,setActiveElement] = useState(null);
   useEffect(() => {
-      if(activeElement) activeElement.classList.add('active');
+      if(activeElement) activeElement.classList.add('activeElementClass');
   }, [activeElement]);
 
   function rgbToHex(rgb) {
@@ -27,7 +27,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
       const targetcolor = rgbToHex(computedStyle.getPropertyValue('color'));
       color.current.value = targetcolor;
       colorFun(receivedData)
-      if(activeElement) activeElement.classList.remove('active')
+      if(activeElement) activeElement.classList.remove('activeElementClass')
       setActiveElement(receivedData)
     }
   }, [receivedData]);
