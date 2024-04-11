@@ -1,25 +1,36 @@
-.image-list {
-    align-items: center; /* Align items vertically */
-    display: grid;
-    grid-auto-flow: column;
+.fetch-template-container {
+
+    overflow: hidden; /* Hide any overflow */
+}
+
+.scrollable {
+    display: flex;
+    /* Ensure there's enough width for scrolling */
+    width: 100%;
     overflow-x: auto;
-    overscroll-behavior-x:contain ;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 16px;
 
+    -ms-overflow-style: none; /* IE and Edge */
 }
-.temp{
-    margin-top: 10px;
-    margin-left: 45px;
-    font-family: "Fira Code Light", serif;
 
 
+.image-list {
+    display: flex;
+    gap: 16px;
+    list-style: none; /* Remove default list styles */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
 }
+
 .inner {
-    margin-bottom: 20px;
-    padding: 20px; /* Remove padding to prevent extra spacing */
-    width: 300px;
-    height: 400px;
-    overflow: auto;
-    border-radius: 20px;
+    width: 300px; /* Width of each image container */
+    height: 400px; /* Height of each image container */
+    border-radius: 20px; /* Border radius */
+    flex-shrink: 0; /* Prevent images from shrinking */
+    background-color: #fff; /* Set background color */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box shadow */
+    scroll-snap-align: start; /* Snap each image to the start of the container */
     position: relative; /* Make the position of the image container relative */
 }
 
@@ -27,19 +38,24 @@
     width: 100%; /* Make the image fill the entire container */
     height: 60%; /* Make the image fill the entire container */
     object-fit: cover; /* Ensure the image covers the entire container */
-    border-radius: 10px;
+    border-radius: 20px 20px 0 0; /* Border radius for image */
 }
 
 .inner:hover {
-    padding: 0px;
-    background-color: #c9c9c9;
+    background-color: #f0f0f0; /* Background color on hover */
+}
+
+.text-gray {
+    color: #888; /* Text color */
+    font-size: 14px; /* Font size */
+    margin: 10px; /* Margin */
 }
 
 .button-container {
     position: absolute;
-    bottom: 10px; /* Adjust as needed */
-    left: 50%; /* Position the button in the middle horizontally */
-    transform: translateX(-50%); /* Move the button to the center */
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .button-container button {
@@ -55,22 +71,7 @@
     background-color: #0056b3;
 }
 
+/* Hide the scrollbar for WebKit browsers */
 .scrollable::-webkit-scrollbar {
-    height: 0;
-    width: 0;
-}
-
-.scrollable {
-    overflow-y: scroll;
-    overflow-x: scroll;
-    max-height: 80vh;
-    scroll-snap-align: start;
-}
-.heart {
-    position: relative;
-    width: 100px;
-    height: 90px;
-    margin-top: 10px; /* Leave some space above */
-    background-color: red; /* Set the color to red for the heart shape */
-    clip-path: polygon(50% 0%, 100% 35%, 75% 100%, 50% 70%, 25% 100%, 0% 35%);
+    display: none;
 }

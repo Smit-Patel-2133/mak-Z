@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Login_girl from '../../assets/Auth Pictures/draw2.svg';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import profile from '../../assets/Profile picture/1.png'
 const SignupForm = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
@@ -10,7 +10,8 @@ const SignupForm = () => {
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        profile_picture:profile
     });
 
     const handleChange = (e) => {
@@ -24,7 +25,7 @@ const SignupForm = () => {
             setMessage("*The password and confirm password do not match");
             formData.password = ''
             formData.confirmPassword = ''
-            return; // Stop form submission if passwords don't match
+
         } else {
             try {
                 const response = await axios.post('http://localhost:5000/api/signup', formData); // Corrected endpoint URL

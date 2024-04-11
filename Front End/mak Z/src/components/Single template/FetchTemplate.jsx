@@ -1,18 +1,62 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './FetchTemplate.css';
 
 const FetchTemplate = (props) => {
-    const { images, templateHeading } = props; // Destructuring props to get images array and templateHeading
+    const { images, templateHeading } = props;
+    const sliderRef = useRef(null);
 
     const handleButtonClick = (url) => {
-        window.open(url, '_blank'); // Open the URL in a new tab
+        window.open(url, '_blank');
     };
 
+    const handleMouseDown = (e) => {
+        e.preventDefault();
+        isDown.current = true;
+        sliderRef.current.classList.add('active');
+        startX.current = e.pageX - sliderRef.current.offsetLeft;
+        scrollLeft.current = sliderRef.current.scrollLeft;
+    };
+
+    const handleMouseLeave = () => {
+        isDown.current = false;
+        sliderRef.current.classList.remove('active');
+    };
+
+    const handleMouseUp = () => {
+        isDown.current = false;
+        sliderRef.current.classList.remove('active');
+    };
+
+    const handleMouseMove = (e) => {
+        e.preventDefault();
+        if (!isDown.current) return;
+        const x = e.pageX - sliderRef.current.offsetLeft;
+        const walk = (x - startX.current) * 2; // Adjust the multiplier to control scrolling speed
+        sliderRef.current.scrollLeft = scrollLeft.current - walk;
+    };
+
+    const handleMouseUpScroll = () => {
+        if (isDown.current) {
+            handleMouseMove(event);
+            requestAnimationFrame(handleMouseUpScroll);
+        }
+    };
+
+    const isDown = useRef(false);
+    const startX = useRef(null);
+    const scrollLeft = useRef(null);
+
     return (
-        <div>
-            {/* Render the template heading HTML received from props */}
+        <div className="fetch-template-container">
             <h1 className='ml-14 mt-3'>{templateHeading}</h1>
-            <div className='scrollable'>
+            <div
+                className='scrollable'
+                ref={sliderRef}
+                onMouseDown={handleMouseDown}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
+            >
                 <ul className='image-list'>
                     {images.map(image => (
                         <li key={image.id}>

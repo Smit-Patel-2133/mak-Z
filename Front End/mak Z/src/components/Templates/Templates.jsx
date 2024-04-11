@@ -1,5 +1,6 @@
 import React from 'react';
-import FetchTemplate from '../Single template/FetchTemplate'; // Importing FetchTemplate component
+import FetchTemplate from '../Single template/FetchTemplate';
+import Header from "../Header/Header.jsx"; // Importing FetchTemplate component
 
 const Templates = () => {
     // Array of image objects
@@ -64,7 +65,8 @@ const Templates = () => {
 
     return (
         <div>
-            <FetchTemplate images={images} /> {/* Pass images array as prop */}
+            <Header/>
+            <FetchTemplate images={images} templateHeading={'example'} /> {/* Pass images array as prop */}
         </div>
     );
 };

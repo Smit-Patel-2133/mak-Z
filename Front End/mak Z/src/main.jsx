@@ -11,6 +11,7 @@ import Home from "./components/Home/Home.jsx";
 import ForgotPassword from './components/login/ForgotPassword.jsx';
 import EditPage from './components/EditPage/EditPage.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Templates from "./components/Templates/Templates.jsx";
 
 const router=createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<App/>}>
@@ -20,6 +21,7 @@ const router=createBrowserRouter(createRoutesFromElements(
         <Route path='/home' element={<Home/>}/>
         <Route path='/forgot-password' element={<ForgotPassword/>}/>
         <Route path='/editPage' element={<EditPage/>}/>
+            <Route path='/templates' element={<Templates/>}/>
     </Route>
 
 ))
