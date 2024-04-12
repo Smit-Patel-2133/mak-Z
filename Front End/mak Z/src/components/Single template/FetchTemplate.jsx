@@ -48,7 +48,7 @@ const FetchTemplate = (props) => {
 
     return (
         <div className="fetch-template-container">
-            <h1 className='ml-14 mt-3'>{templateHeading}</h1>
+            <h1 className='mt-3 italic'>{templateHeading}</h1>
             <div
                 className='scrollable'
                 ref={sliderRef}
@@ -61,7 +61,7 @@ const FetchTemplate = (props) => {
                     {images.map(image => (
                         <li key={image.id}>
                             <div className='inner'>
-                                <img src={image.url} alt={image.alt} className='img'/>
+                                <div className='hand'><div className='htmltag' dangerouslySetInnerHTML={{__html: image.html}}></div></div>
                                 <div className='text-gray-500 ml-3'><label>
                                     {image.text}
                                 </label></div>

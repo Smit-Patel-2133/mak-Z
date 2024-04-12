@@ -3,64 +3,131 @@ import FetchTemplate from '../Single template/FetchTemplate';
 import Header from "../Header/Header.jsx"; // Importing FetchTemplate component
 
 const Templates = () => {
-    // Array of image objects
+    // Array of image objects with HTML code
     const images = [
         {
             id: 1,
-            url: 'https://th.bing.com/th/id/OIP.Us3vornr4pB02KFIC55WZwHaFF?w=2685&h=1846&rs=1&pid=ImgDetMain',
+            html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive HTML with CSS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 600px) {
+            header, nav ul, nav ul li, nav ul li a, main, section, footer {
+                padding: 5px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="home">
+            <h2>Home Section</h2>
+            <p>This is the home section of the website.</p>
+        </section>
+        <section id="about">
+            <h2>About Section</h2>
+            <p>This is the about section of the website.</p>
+        </section>
+        <section id="services">
+            <h2>Services Section</h2>
+            <ul>
+                <li>Service 1</li>
+                <li>Service 2</li>
+                <li>Service 3</li>
+            </ul>
+        </section>
+        <section id="contact">
+            <h2>Contact Section</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br>
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="4" required></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 My Website. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+`,
             alt: 'Image 1',
             click: "https://www.youtube.com",
             text: "this is image about lake"
         },
-        {
-            id: 2,
-            url: 'https://www.pixelstalk.net/wp-content/uploads/2016/08/Best-Nature-Full-HD-Images-For-Desktop.jpg',
-            alt: 'Image 2',
-            click: "https://sites.google.com/ganpatuniversity.ac.in/oddsem2023/5sem",
-            text: "this is image about waterfall"
-        },
-        {
-            id: 3,
-            url: 'https://th.bing.com/th/id/R.ae87891b3dde7b28712b75d14342f1a5?rik=2ZT%2baXLkZYcxWg&riu=http%3a%2f%2fthewowstyle.com%2fwp-content%2fuploads%2f2015%2f01%2fnature-wallpaper-27.jpg&ehk=jIVFSOxLN%2fQKs4hEfZHNWAeXoeXkeEXooP%2fTy9Vwkek%3d&risl=&pid=ImgRaw&r=0',
-            alt: 'Image 3',
-            click: "https://fast.com/",
-            text: "this is image about garden"
-        },
-        {
-            id: 4,
-            url: 'https://th.bing.com/th/id/R.ae87891b3dde7b28712b75d14342f1a5?rik=2ZT%2baXLkZYcxWg&riu=http%3a%2f%2fthewowstyle.com%2fwp-content%2fuploads%2f2015%2f01%2fnature-wallpaper-27.jpg&ehk=jIVFSOxLN%2fQKs4hEfZHNWAeXoeXkeEXooP%2fTy9Vwkek%3d&risl=&pid=ImgRaw&r=0',
-            alt: 'Image 4',
-            click: "https://fast.com/",
-            text: "this is image about garden"
-        },
-        {
-            id: 5,
-            url: 'https://th.bing.com/th/id/OIP.Us3vornr4pB02KFIC55WZwHaFF?w=2685&h=1846&rs=1&pid=ImgDetMain',
-            alt: 'Image 5',
-            click: "https://www.youtube.com",
-            text: "this is image about lake"
-        },
-        {
-            id: 6,
-            url: 'https://www.pixelstalk.net/wp-content/uploads/2016/08/Best-Nature-Full-HD-Images-For-Desktop.jpg',
-            alt: 'Image 6',
-            click: "https://sites.google.com/ganpatuniversity.ac.in/oddsem2023/5sem",
-            text: "this is image about waterfall"
-        },
-        {
-            id: 7,
-            url: 'https://th.bing.com/th/id/R.ae87891b3dde7b28712b75d14342f1a5?rik=2ZT%2baXLkZYcxWg&riu=http%3a%2f%2fthewowstyle.com%2fwp-content%2fuploads%2f2015%2f01%2fnature-wallpaper-27.jpg&ehk=jIVFSOxLN%2fQKs4hEfZHNWAeXoeXkeEXooP%2fTy9Vwkek%3d&risl=&pid=ImgRaw&r=0',
-            alt: 'Image 7',
-            click: "https://fast.com/",
-            text: "this is image about garden"
-        },
-        {
-            id: 8,
-            url: 'https://th.bing.com/th/id/R.ae87891b3dde7b28712b75d14342f1a5?rik=2ZT%2baXLkZYcxWg&riu=http%3a%2f%2fthewowstyle.com%2fwp-content%2fuploads%2f2015%2f01%2fnature-wallpaper-27.jpg&ehk=jIVFSOxLN%2fQKs4hEfZHNWAeXoeXkeEXooP%2fTy9Vwkek%3d&risl=&pid=ImgRaw&r=0',
-            alt: 'Image 8',
-            click: "https://fast.com/",
-            text: "this is image about garden"
-        },
+
+        // Add more image objects as needed with HTML code
     ];
 
     return (

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import './header.css'
-import logo from '../../assets/picture/new White NO BG.png';
+import logo from '../../assets/picture/new black noBG.png';
 import toogle_dark from '../../assets/picture/day.png'
 
 
