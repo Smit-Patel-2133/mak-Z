@@ -1,5 +1,7 @@
 import React,{useRef, useEffect, useState} from 'react'
 import './UserCss.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown} from '@fortawesome/free-solid-svg-icons';
 
 
 const UserCss = ({ styleHover, receivedData  }) => {
@@ -150,7 +152,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
 
   return (
     <div className={`style ${styleHover ? '' : 'styleHovered'}`}>
-      <p onClick={textTableStyle}>Text Styles</p>
+      <p onClick={textTableStyle}><FontAwesomeIcon icon={faAngleDown} /> Text Styles <FontAwesomeIcon icon={faAngleDown} /></p>
       <div className={`textTable ${expandTextTable ? 'expandTextTable' : ''}`}>
         <table>
           <tr>
@@ -256,7 +258,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
           </tr>
         </table>
       </div>
-      <p onClick={boxStyle}>Box Style</p>
+      <p onClick={boxStyle}><FontAwesomeIcon icon={faAngleDown} /> Box Style <FontAwesomeIcon icon={faAngleDown} /></p>
       <div className={`boxStyle ${expandBoxStyle ? 'expandBoxStyle' : ''}`}>
         <table>
           <tr>

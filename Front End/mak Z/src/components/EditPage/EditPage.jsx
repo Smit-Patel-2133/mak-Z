@@ -3,7 +3,7 @@ import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import UserCss from '../UserCss/UserCss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph, faHeading, faListOl, faDownload } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faListOl, faListUl, faE, faS, faSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
 
@@ -80,14 +80,26 @@ const editPage = () => {
                                         <FontAwesomeIcon icon={faListOl} />
                                         <p>Ordered<br /> List</p>
                                     </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "uList");}}>
+                                        <FontAwesomeIcon icon={faListUl} />
+                                        <p>Unordered<br /> List</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "em");}}>
+                                        <FontAwesomeIcon icon={faE} />
+                                        <p>Emphasis</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "strong");}}>
+                                        <FontAwesomeIcon icon={faS} />
+                                        <p>Strong</p>
+                                    </li>
                                 </ul>
                             </li>
                             <li className="mainList">
                                 <p>Text</p>
                                 <ul>
-                                    <li draggable='true'>
-                                        <FontAwesomeIcon icon={faParagraph} />
-                                        <p>Paragraph</p>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "div");}}>
+                                        <FontAwesomeIcon icon={faSquare} />
+                                        <p>Divition</p>
                                     </li>
                                     <li draggable='true'>
                                         <FontAwesomeIcon icon={faParagraph} />
