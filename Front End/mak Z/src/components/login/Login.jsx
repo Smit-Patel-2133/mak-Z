@@ -3,8 +3,11 @@ import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 import login_girl from '../../assets/Auth Pictures/log.svg'
 import './Login.css'
+import { useDispatch } from 'react-redux';
+import { currentUser } from '../../features/authentication/auth.js';
 const LoginForm = () => {
     const navigate = useNavigate(); // Initialize useNavigate hook
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -23,7 +26,22 @@ const LoginForm = () => {
         try {
             const response = await axios.post('http://localhost:5000/login', {email, password});
             if (response.data.message === "Login successful") {
-                navigate('/home'); // Redirect to home upon successful login
+                try {
+                    const response2 = await axios.get(`http://localhost:5000/user/details?userName=${Name}`);
+
+                    const {name, email} = response2.data;
+
+                    dispatch(currentUser({name, email}));
+
+                    navigate('/home');// Redirect to home upon successful login
+                }
+                catch (e) {
+                    console.log(e)
+                }
+
+
+
+
             } else {
                 setMessage(response.data.message);
             }

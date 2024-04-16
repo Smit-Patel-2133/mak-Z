@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -7,6 +6,7 @@ const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const beautify = require('js-beautify').html;
 const sql = require('./db'); // Import the sql function from db.js
+const multer = require('multer'); // Import multer for handling file uploads
 
 const app = express();
 app.use(cors());
@@ -41,6 +41,19 @@ const transporter = nodemailer.createTransport({
 
 // Temporary storage for OTPs (in a production environment, consider using a database)
 let otpStorage = {};
+
+// Multer storage configuration
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/') // Destination folder for storing uploaded files
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname) // Use the original file name
+    }
+});
+
+// Create multer instance with storage configuration
+const upload = multer({ storage: storage });
 
 // Endpoint to send OTP to the user's email
 app.post('/api/send-otp', async (req, res) => {
@@ -123,18 +136,20 @@ app.post('/api/update-password', async (req, res) => {
     }
 });
 
-// Endpoint to handle user sign-up
-app.post('/signup', async (req, res) => {
+// Endpoint to handle user sign-up with file upload
+app.post('/api/signup', upload.single('profilePicture'), async (req, res) => {
     const { name, email, password } = req.body;
+    const profilePicture = req.file ? req.file.buffer : null; // Get profile picture buffer
 
     try {
+        // Check if the email is already registered
         const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
         if (existingUser.length > 0) {
-
             return res.status(400).json({ error: 'User already registered', details: 'Email is already in use' });
         }
 
-        await sql`INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password})`;
+        // Insert the new user into the database along with profile picture
+        await sql`INSERT INTO users (username, email, password, profile_picture) VALUES (${name}, ${email}, ${password}, ${profilePicture})`;
 
         console.log('User added successfully');
         res.json({ message: 'User added successfully' });
