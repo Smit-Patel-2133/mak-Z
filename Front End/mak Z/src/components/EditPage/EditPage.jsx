@@ -99,7 +99,7 @@ const editPage = () => {
                     </div>
                 </div>
             </div>
-            <UserPage bodyPageRef={userPage} className="edit" sendDataToUserCss={sendDataToUserCss}/>
+            <UserPage bodyPageRef={userPage} styleHover={styleHover} className="edit" sendDataToUserCss={sendDataToUserCss}/>
             <UserCss styleHover={styleHover} receivedData={dataFromUserPage} />
         </div>
         </>

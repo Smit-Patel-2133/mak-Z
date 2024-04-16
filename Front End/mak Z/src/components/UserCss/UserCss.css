@@ -1,12 +1,13 @@
 .style {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    right: 0;
     width: 250px;
-    float: right;
     background-color: rgb(41, 41, 41);
     height: 100vh;
+    margin-top: 45px;
     overflow-y: scroll;
     transition: 1s ease-in-out;
+    padding-bottom: 40px;
 }
 .styleHovered {
     width: 0px;
@@ -31,4 +32,35 @@ select{
 }
 .activeElementClass{
     border: 2px solid orangered;
+}
+.style p{
+    color: white;
+    text-align: center;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.textTable, .boxStyle{
+    max-height: 0px;
+    overflow: hidden !important;
+}
+.style p::after{
+    content: '';
+    display: inline-block; /* Display the pseudo-element inline */
+    background-color: white;
+    width: 70px;
+    height: 2px;
+    margin-bottom: 3px;
+    margin-left: 5px;
+}
+.style p::before{
+    display: inline-block;
+    content: '';
+    background-color: white;
+    width: 70px;
+    height: 2px;
+    margin-bottom: 3px;
+    margin-right: 5px;
+}
+.expandTextTable, .expandBoxStyle{
+    max-height:fit-content;
 }

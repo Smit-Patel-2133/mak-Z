@@ -1,48 +1,54 @@
 .toolBar {
     background-color: black;
     color: white;
-    width: 35px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    float: left;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 5;
+    box-sizing: border-box; 
 }
 
 .toolBar ul,
 .list ul {
     list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 0; 
 }
-
 .toolBar li {
     font-size: x-large;
     text-align: center;
     position: relative;
+    display: inline-block;
+    cursor: grab;
+    margin: 5px;
+    padding: 0px 5px;
+    justify-content: center;
 }
 
 .toolBar li::after {
     position: absolute;
     content: '';
-    width: 29px;
+    width: 1.5px;
     background-color: rgb(90, 89, 89);
-    height: 1.5px;
-    bottom: -3px;
-    left: 3px;
+    height: 35px;
+    bottom: 0px;
+    right: -3px;
 }
 
 .elements {
     background-color: rgb(41, 41, 41);
-    left: 35px;
     color: white;
     float: left;
-    overflow: hidden;
     width: 0px;
+    height: 100vh;
+    position: fixed;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     transition: 1s ease-in-out;
     white-space: nowrap;
+    margin-top: 45px;
+    overflow-y: scroll;
+    padding-bottom: 50px;
 }
 
 .add:hover,
@@ -53,11 +59,6 @@
 .elementHovered {
     width: 200px;
 }
-
-.main {
-    position: relative;
-}
-
 .elements h5 {
     margin-top: 10px;
     margin-left: 32px;
@@ -81,7 +82,6 @@
     height: auto !important;
     position: relative;
     white-space: nowrap;
-    overflow: hidden;
 }
 
 .mainList::after {
@@ -98,7 +98,6 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-    overflow: hidden;
 }
 
 .list li {

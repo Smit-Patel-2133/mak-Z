@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './userPage.css';
 import axios from "axios";
 
-const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
+const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
     // const bodyPageRef = useRef(null);
 
     const logOuterHTML = () => {
@@ -193,13 +193,15 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss}) => {
         const tagName = target.tagName.toLowerCase();
         if (tagName.startsWith('h') || tagName === 'p' || tagName === 'ol') {
             return target; // If dropping on a valid target element, insert before it
-        } else {
+        }else if(tagName === 'li'){
+            return target.parentNode;
+        }else {
             return null; // Otherwise, append at the end
         }
     }
 
   return (
-    <div className='pageBody' onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver}>
+    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver}>
     </div>
   )
 }

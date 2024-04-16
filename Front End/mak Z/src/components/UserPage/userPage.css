@@ -1,12 +1,14 @@
 .pageBody{
     width: calc(100% - 305px);
     border: 1px solid rgb(105, 104, 104);
-    margin: 30px 10px;
+    margin: 60px 10px;
     float: left;
     height: auto;
     border-radius: 10px;
     min-height: 700px !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: 1s ease-in-out;
+    padding-bottom: 100px;
 } 
 .editable {
     border: 1px solid #ccc;
@@ -15,4 +17,7 @@
 }
 [contenteditable="true"]:focus {
     outline: none;
+}
+.styleHoveredPageBody{
+    margin-left: 230px;
 }
