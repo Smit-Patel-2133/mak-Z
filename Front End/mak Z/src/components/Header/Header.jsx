@@ -1,24 +1,31 @@
-import React, {useState} from 'react'
-import './header.css'
+// Header.js
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom'; // Import NavLink
 import logo from '../../assets/picture/new black noBG.png';
-import toogle_dark from '../../assets/picture/day.png'
-
+import './header.css';
 
 const Header = () => {
-    const {isLogin,useIsLogin}=useState('false')
-  return (
-    <div className='navbar'>
-        <img src={logo} xlt="" className='logo' />
-        <ul>
-            <li><img src={toogle_dark} alt="Profile" /></li>
-            {isLogin || <li><a href="/login">Login</a></li>}
-            <li><a href="/home">Contact Us</a></li>
-            <li><a href="/home">About Us</a></li>
-            <li><a href="/home">Template</a></li>
-            <li><a href="/home">Home</a></li>
-        </ul>
-    </div>
-  )
+    const user = useSelector(state => state.auth);
+
+    return (
+        <div className='bg-blue-700'>
+        <div className='navbar '>
+            <img src={logo} alt="" className='logo' />
+            <ul>
+                {user.isLogedin ? (
+                    <li><img src={user.profilePicture} alt="Profile"/></li>
+                ) : (
+                    <li><NavLink to="/login">Login</NavLink></li>
+                    )}
+                <li><NavLink to="/">Contact Us</NavLink></li> {/* Example NavLink */}
+                <li><NavLink to="/">About Us</NavLink></li> {/* Example NavLink */}
+                <li><NavLink to="/templates">Template</NavLink></li> {/* Example NavLink */}
+                <li><NavLink to="/home">Home</NavLink></li> {/* Example NavLink */}
+            </ul>
+        </div>
+        </div>
+    );
 }
 
-export default Header
+export default Header;
