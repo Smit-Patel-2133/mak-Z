@@ -82,7 +82,6 @@ app.post('/api/send-otp', async (req, res) => {
         res.status(500).json({ success: false, error: 'Failed to send OTP. Please try again later.' });
     }
 });
-
 // Function to send email using SMTP
 const sendEmail = async (email, otp) => {
     try {
@@ -99,7 +98,6 @@ const sendEmail = async (email, otp) => {
         throw new Error('Error sending email: ' + error.message);
     }
 };
-
 // Endpoint to verify the entered OTP
 app.post('/api/verify-otp', async (req, res) => {
     const { email, otp } = req.body;
@@ -120,7 +118,6 @@ app.post('/api/verify-otp', async (req, res) => {
         res.status(500).json({ success: false, error: 'Failed to verify OTP. Please try again later.' });
     }
 });
-
 // Endpoint to update the password
 app.post('/api/update-password', async (req, res) => {
     const { email, newPassword } = req.body;
@@ -135,7 +132,6 @@ app.post('/api/update-password', async (req, res) => {
         res.status(500).json({ success: false, error: 'Failed to update password. Please try again later.' });
     }
 });
-
 // Endpoint to handle user sign-up with file upload
 app.post('/api/signup', upload.single('profilePicture'), async (req, res) => {
     const { name, email, password } = req.body;
@@ -158,7 +154,6 @@ app.post('/api/signup', upload.single('profilePicture'), async (req, res) => {
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
-
 // Endpoint to handle user login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -176,6 +171,24 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// Endpoint to get user details
+app.get('/user/details', async (req, res) => {
+    const { email } = req.query;
+    let emailid=email
+    console.log("comming email:",emailid)
+    try {
+        const user = await sql`SELECT * FROM users WHERE email=${emailid}`;
+        if (user.length === 0) {
+            return res.status(404).json({ error: 'Not found', message: 'User not found' });
+        }
+        const { username, email, profile_pic } = user[0];
+        console.log("username:-",username,"email:-",email,"pro pic:",profile_pic)
+        res.json({ username, email, profile_pic });
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+});
 app.post('/download', async (req, res) => {
     let codeData =`<!DOCTYPE html>
                     <html lang="en">
@@ -217,7 +230,6 @@ app.post('/download', async (req, res) => {
         });
     });
 });
-
 app.delete('/delete/:filename', (req, res) => {
     const filename = req.params.filename;
     const filePath = path.join(__dirname, '../../mak-Z.html');
@@ -231,7 +243,5 @@ app.delete('/delete/:filename', (req, res) => {
         }
     });
 });
-
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
