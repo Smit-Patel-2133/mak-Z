@@ -178,3 +178,14 @@
 .mainList p {
     color: white !important;
 }
+.headings{
+    position: absolute;
+    width: 0px;
+    top: 140px;
+    background-color: #646464;
+    overflow: hidden;
+    transition: 1s ease-in-out;
+}
+.subElementHover{
+    width: 200px;
+}

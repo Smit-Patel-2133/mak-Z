@@ -60,7 +60,14 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             'uList': uList,
             'em': em,
             'strong': strong,
-            'div': div
+            'sub': sub,
+            'sup': sup,
+            'del': del,
+            'ins': ins,
+            'div': div,
+            'section': section,
+            'header': header,
+            'footer': footer,
         };
 
         if (functionMap[element]) {
@@ -73,8 +80,13 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             contentVariable.setAttribute('contenteditable', 'true');
             contentVariable.setAttribute('class', 'editable');
             contentVariable.addEventListener('click', handleActive);
-            if(targetElement && targetElement.tagName.toLowerCase()=='div'){
-                targetElement.appendChild(contentVariable)
+            if(targetElement){
+                const tagName=targetElement.tagName.toLowerCase()
+                if(tagName=='div' || tagName=='section' || tagName=='header' || tagName=='footer'){
+                    targetElement.appendChild(contentVariable)
+                }else{
+                    bodyPage.insertBefore(contentVariable, targetElement);
+                }
             }else{
                 bodyPage.insertBefore(contentVariable, targetElement);
             }
@@ -184,6 +196,62 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             setCommonAttributes(strongElement,bodyPage,targetElement)
         }
         
+        function sub(){
+            const bodyPage = bodyPageRef.current;
+            const subElement = document.createElement('sub');
+            subElement.textContent = 'Here is your Subscript';
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(subElement,bodyPage,targetElement)
+        }
+        
+        function sup(){
+            const bodyPage = bodyPageRef.current;
+            const supElement = document.createElement('sup');
+            supElement.textContent = 'Here is your Superscript';
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(supElement,bodyPage,targetElement)
+        }
+        
+        function del(){
+            const bodyPage = bodyPageRef.current;
+            const delElement = document.createElement('del');
+            delElement.textContent = 'Here is your Deleted Text';
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(delElement,bodyPage,targetElement)
+        }
+        
+        function ins(){
+            const bodyPage = bodyPageRef.current;
+            const insElement = document.createElement('ins');
+            insElement.textContent = 'Here is your Inserted Text';
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(insElement,bodyPage,targetElement)
+        }
+        
+        function section(){
+            const bodyPage = bodyPageRef.current;
+            const sectionElement = document.createElement('section');
+            sectionElement.textContent = 'Here is your Section Area';
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(sectionElement,bodyPage,targetElement)
+        }
+        
+        function header(){
+            const bodyPage = bodyPageRef.current;
+            const headerElement = document.createElement('header');
+            headerElement.textContent = 'Here is your Header Area';
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(headerElement,bodyPage,targetElement)
+        }
+        
+        function footer(){
+            const bodyPage = bodyPageRef.current;
+            const footerElement = document.createElement('footer');
+            footerElement.textContent = 'Here is your Footer Area';
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(footerElement,bodyPage,targetElement)
+        }
+        
         function div(){
             const bodyPage = bodyPageRef.current;
             const divElement = document.createElement('div');
@@ -238,12 +306,10 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
     function findTargetElement(e) {
         const target = e.target;
         const tagName = target.tagName.toLowerCase();
-        if (tagName.startsWith('h') || tagName === 'p' || tagName === 'ol' || tagName === 'em' || tagName === 'strong') {
-            return target; // If dropping on a valid target element, insert before it
-        }else if(tagName === 'li'){
+        if(tagName === 'li'){
             return target.parentNode;
         }else {
-            if(!target.className.includes('pageBody') && tagName==='div'){
+            if(!target.className.includes('pageBody')){
                 return target
             }
             return null; // Otherwise, append at the end
