@@ -3,9 +3,24 @@ import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import UserCss from '../UserCss/UserCss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph, faHeading, faListOl, faListUl, faE, faS, faD, faI, faF, faSubscript, faSection, faSuperscript, faSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faListOl, faListUl, faE, faS, faD, faI, faF, faImage, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+          const confirmationMessage = "Changes you made may not be saved.";
+          event.returnValue = confirmationMessage;
+          return confirmationMessage;
+        };
+    
+        window.addEventListener("beforeunload", handleBeforeUnload);
+    
+        return () => {
+          window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
+    
 
     const [elementHover, setElementHover] = useState(false);
     const [subElementHover, setSubElementHover] = useState(false);
@@ -59,7 +74,7 @@ const editPage = () => {
                                         <FontAwesomeIcon icon={faHeading} />
                                         <p>Headings</p>
                                     </li>
-                                    <div className={`headings ${subElementHover ? 'subElementHover' : ''}`} onMouseEnter={() => mouseOverOnSubElement()} onMouseLeave={() => mouseLeaveOnSubElement()}>
+                                    <div className={`heading ${subElementHover ? 'subElementHover' : ''}`} onMouseEnter={() => mouseOverOnSubElement()} onMouseLeave={() => mouseLeaveOnSubElement()}>
                                         <ul>
                                             <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading1");}}>
                                                 <FontAwesomeIcon icon={faHeading} />
@@ -143,6 +158,19 @@ const editPage = () => {
                                     <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "footer");}}>
                                         <FontAwesomeIcon icon={faF} />
                                         <p>Footer</p>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="mainList">
+                                <p>Media</p>
+                                <ul>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "img");}}>
+                                        <FontAwesomeIcon icon={faImage} />
+                                        <p>Pictures</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "video");}}>
+                                        <FontAwesomeIcon icon={faVideo} />
+                                        <p>Video</p>
                                     </li>
                                 </ul>
                             </li>

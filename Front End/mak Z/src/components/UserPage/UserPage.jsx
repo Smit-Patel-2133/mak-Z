@@ -39,6 +39,15 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
     if (bodyPageRef.current) {
         bodyPageRef.current.logOuterHTML = logOuterHTML;
     }
+        
+    function selectElement(e){
+        const range = document.createRange();
+        range.selectNodeContents(e.target);
+        range.collapse(false);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
     
     function handleActive(e){
         sendDataToUserCss(e.target);
@@ -68,6 +77,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             'section': section,
             'header': header,
             'footer': footer,
+            'img': img,
+            'video': video
         };
 
         if (functionMap[element]) {
@@ -81,11 +92,12 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             contentVariable.setAttribute('class', 'editable');
             contentVariable.addEventListener('click', handleActive);
             if(targetElement){
-                const tagName=targetElement.tagName.toLowerCase()
-                if(tagName=='div' || tagName=='section' || tagName=='header' || tagName=='footer'){
+                const TargetTagName=targetElement.tagName.toLowerCase();
+                const cotentTagName=contentVariable.tagName.toLowerCase();
+                if(TargetTagName=='div' || TargetTagName=='section' || TargetTagName=='header' || TargetTagName=='footer' || cotentTagName=='strong' || cotentTagName=='del' || cotentTagName=='ins' || cotentTagName=='sup' || cotentTagName=='sub' || cotentTagName=='em'){
                     targetElement.appendChild(contentVariable)
                 }else{
-                    bodyPage.insertBefore(contentVariable, targetElement);
+                    targetElement.parentElement.insertBefore(contentVariable, targetElement);
                 }
             }else{
                 bodyPage.insertBefore(contentVariable, targetElement);
@@ -260,6 +272,60 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             setCommonAttributes(divElement,bodyPage,targetElement)
         }
 
+        function img() {
+            const bodyPage = bodyPageRef.current;
+            const targetElement = findTargetElement(e);
+            const inputElement = document.createElement('input');
+            inputElement.type = 'file';
+            inputElement.accept = 'image/*';
+            
+            function handleFileChange(e) {
+                const files = e.target.files;
+                if (files && files.length > 0) {
+                    const file = files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imgElement = document.createElement('img');
+                        imgElement.setAttribute('src', event.target.result);
+                        imgElement.addEventListener('click',selectElement)
+                        setCommonAttributes(imgElement,bodyPage,targetElement)
+                        inputElement.remove();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            inputElement.addEventListener('change', handleFileChange);
+            inputElement.click();
+        }
+
+        function video() {
+            const bodyPage = bodyPageRef.current;
+            const targetElement = findTargetElement(e);
+            const inputElement = document.createElement('input');
+            inputElement.type = 'file';
+            inputElement.accept = 'video/*'; // Accept only video files
+            
+            function handleFileChange(e) {
+                const files = e.target.files;
+                if (files && files.length > 0) {
+                    const file = files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const videoElement = document.createElement('video');
+                        videoElement.setAttribute('src', event.target.result);
+                        videoElement.setAttribute('controls', ''); // Add controls for playback
+                        videoElement.addEventListener('click', selectElement);
+                        setCommonAttributes(videoElement, bodyPage, targetElement);
+                        inputElement.remove();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            inputElement.addEventListener('change', handleFileChange);
+            inputElement.click();
+        }
+        
     }
 
     const handleDragOver = (event) => {
@@ -295,10 +361,14 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             const selectedNode = selection.focusNode;
             
             if (selectedNode) {
-                const parentElement = selectedNode.parentElement; 
-                if (parentElement) {
-                    parentElement.remove();
-                }
+                if(selectedNode.tagName === 'IMG' || selectedNode.tagName === 'VIDEO'){
+                    selectedNode.remove()
+                }else{
+                    const parentElement = selectedNode.parentElement; 
+                    if (parentElement) {
+                        parentElement.remove();
+                    }
+                }    
             }
         }
     };
@@ -312,7 +382,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
             if(!target.className.includes('pageBody')){
                 return target
             }
-            return null; // Otherwise, append at the end
+            return null;
         }
     }
 
