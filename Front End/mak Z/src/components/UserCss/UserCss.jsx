@@ -45,6 +45,16 @@ const UserCss = ({ styleHover, receivedData  }) => {
   const [shadowVerticalOffsetValue, shadowVerticalOffsetFun] = useState(null);
   const shadowHorizontalOffset = useRef(null);
   const [shadowHorizontalOffsetValue, shadowHorizontalOffsetFun] = useState(null);
+  const shadowBlurRadius = useRef(null);
+  const [shadowBlurRadiusValue, shadowBlurRadiusFun] = useState(null);
+  const shadowSpreadRadius = useRef(null);
+  const [shadowSpreadRadiusValue, shadowSpreadRadiusFun] = useState(null);
+  const shadowColor = useRef(null);
+  const [shadowColorValue, shadowColorFun] = useState(null);
+  const overflowX = useRef(null);
+  const [overflowXValue, overflowXFun] = useState(null);
+  const overflowY = useRef(null);
+  const [overflowYValue, overflowYFun] = useState(null);
 
   const [activeElement,setActiveElement] = useState(null);
   const [expandTextTable,setExpandTextTable] = useState(false);
@@ -55,9 +65,11 @@ const UserCss = ({ styleHover, receivedData  }) => {
   }, [activeElement]);
 
   function rgbToHex(rgb) {
-    const [r, g, b] = rgb.match(/\d+/g);
-    const hex = ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1);
-    return `#${hex}`;
+    if(rgb){
+      const [r, g, b] = rgb.match(/\d+/g);
+      const hex = ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1);
+      return `#${hex}`;
+    }
   }
 
   useEffect(() => {
@@ -117,12 +129,27 @@ const UserCss = ({ styleHover, receivedData  }) => {
       const targetBorderRadius = computedStyle.getPropertyValue('border-radius');
       borderRadius.current.value = parseInt(targetBorderRadius);
       borderRadiusFun(receivedData);
-      const targetShadowVerticalOffset = computedStyle.getPropertyValue('box-shadow-offset-x');
+      const targetShadowVerticalOffset = computedStyle.getPropertyValue('--box-shadow-offset-x');
       shadowVerticalOffset.current.value = parseInt(targetShadowVerticalOffset);
       shadowVerticalOffsetFun(receivedData);
-      const targetShadowHorizontalOffset = computedStyle.getPropertyValue('box-shadow-offset-y');
+      const targetShadowHorizontalOffset = computedStyle.getPropertyValue('--box-shadow-offset-y');
       shadowHorizontalOffset.current.value = parseInt(targetShadowHorizontalOffset);
       shadowHorizontalOffsetFun(receivedData);
+      const targetShadowBlurRadius = computedStyle.getPropertyValue('--box-shadow-blur-radius');
+      shadowBlurRadius.current.value = parseInt(targetShadowBlurRadius);
+      shadowBlurRadiusFun(receivedData);
+      const targetShadowSpreadRadius = computedStyle.getPropertyValue('--box-shadow-spread-radius');
+      shadowSpreadRadius.current.value = parseInt(targetShadowSpreadRadius);
+      shadowSpreadRadiusFun(receivedData);
+      const targetShadowColor = rgbToHex(computedStyle.getPropertyValue('--box-shadow-color'));
+      shadowColor.current.value = targetShadowColor;
+      shadowColorFun(receivedData);
+      const targetOverflowX = computedStyle.getPropertyValue('overflow-x');
+      overflowX.current.value = targetOverflowX;
+      overflowXFun(receivedData);
+      const targetOverflowY = computedStyle.getPropertyValue('overflow-y');
+      overflowY.current.value = targetOverflowY;
+      overflowYFun(receivedData);
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
       setActiveElement(receivedData)
@@ -183,11 +210,26 @@ const UserCss = ({ styleHover, receivedData  }) => {
   function borderRadiusOnChange(){
     borderRadiusValue.style.borderRadius=`${borderRadius.current.value}px`
   }
-  function shadowHorizontalOffsetOnChange(){
-    shadowHorizontalOffsetValue.style.boxShadowOffsetX=`${shadowHorizontalOffset.current.value}px`
+  function shadowHorizontalOffsetOnChange() {
+    shadowHorizontalOffsetValue.style.boxShadow = `${shadowHorizontalOffset.current.value}px ${shadowVerticalOffset.current.value}px ${shadowBlurRadius.current.value}px ${shadowSpreadRadius.current.value}px ${shadowColor.current.value}`;
   }
-  function shadowVerticalOffsetOnChange(){
-    shadowVerticalOffsetValue.style.boxShadowOffsetY=`${shadowVerticalOffset.current.value}px`
+  function shadowVerticalOffsetOnChange() {
+    shadowVerticalOffsetValue.style.boxShadow = `${shadowHorizontalOffset.current.value}px ${shadowVerticalOffset.current.value}px ${shadowBlurRadius.current.value}px ${shadowSpreadRadius.current.value}px ${shadowColor.current.value}`;
+  }
+  function shadowBlurRadiusOnChange() {
+    shadowBlurRadiusValue.style.boxShadow = `${shadowHorizontalOffset.current.value}px ${shadowVerticalOffset.current.value}px ${shadowBlurRadius.current.value}px ${shadowSpreadRadius.current.value}px ${shadowColor.current.value}`;
+  }
+  function shadowSpreadRadiusOnChange() {
+    shadowSpreadRadiusValue.style.boxShadow = `${shadowHorizontalOffset.current.value}px ${shadowVerticalOffset.current.value}px ${shadowBlurRadius.current.value}px ${shadowSpreadRadius.current.value}px ${shadowColor.current.value}`;
+  }
+  function shadowColorOnChange() {
+    shadowColorValue.style.boxShadow = `${shadowHorizontalOffset.current.value}px ${shadowVerticalOffset.current.value}px ${shadowBlurRadius.current.value}px ${shadowSpreadRadius.current.value}px ${shadowColor.current.value}`;
+  }  
+  function overflowXOnChange() {
+    overflowXValue.style.overflowX = overflowX.current.value;
+  }
+  function overflowYOnChange() {
+    overflowYValue.style.overflowY = overflowY.current.value;
   }
   
   function textTableStyle(){
@@ -353,6 +395,40 @@ const UserCss = ({ styleHover, receivedData  }) => {
             <tr>
               <td><label htmlFor="shadowVerticalOffset">Box Shadow <br /> Vertical Offset:</label></td>
               <td><input type="number" ref={shadowVerticalOffset} name='shadowVerticalOffset' className='shadowVerticalOffset' onChange={shadowVerticalOffsetOnChange} /><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="shadowBlurRadius">Box Shadow <br /> Blur Radius:</label></td>
+              <td><input type="number" ref={shadowBlurRadius} name='shadowBlurRadius' className='shadowBlurRadius' onChange={shadowBlurRadiusOnChange} /><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="shadowSpreadRadius">Box Shadow <br /> Spread Radius:</label></td>
+              <td><input type="number" ref={shadowSpreadRadius} name='shadowSpreadRadius' className='shadowSpreadRadius' onChange={shadowSpreadRadiusOnChange} /><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="shadowColor">Box Shadow <br /> Color: </label></td>
+              <td><input type="color" ref={shadowColor} name='shadowColor' className='shadowColor' onChange={shadowColorOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="overflowX">Horizontal <br /> Overflow: </label></td>
+              <td> 
+                <select ref={overflowX} name='overflowX' className='overflowX' onChange={overflowXOnChange}>
+                  <option value="visible">Visible</option>
+                  <option value="hidden">Hidden</option>
+                  <option value="scroll">Scroll</option>
+                  <option value="auto">Auto</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="overflowY">Vertical <br /> Overflow: </label></td>
+              <td>
+                <select ref={overflowY} name='overflowY' className='overflowY' onChange={overflowYOnChange}>
+                  <option value="visible">Visible</option>
+                  <option value="hidden">Hidden</option>
+                  <option value="scroll">Scroll</option>
+                  <option value="auto">Auto</option>
+                </select>
+              </td>
             </tr>
           </table>
         </div>
