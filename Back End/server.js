@@ -194,7 +194,7 @@ app.post('/download', async (req, res) => {
     codeData = beautify(codeData, { indent_size: 4 });  
     const filePath = path.join(__dirname, '../../mak-Z.html');
 
-    fs.appendFile(filePath, codeData, { encoding: 'utf8', flag: 'a+' }, (err) => {
+    fs.appendFile(filePath, codeData, { encoding: 'utf8', flag: 'a+' }, async (err) => {
         if (err) {
             console.error('Error appending data to file:', err);
             return res.status(500).send('Internal Server Error');
@@ -209,7 +209,14 @@ app.post('/download', async (req, res) => {
         };
 
         res.set('Content-Type', 'text/html');
-
+        try{
+            const fileData = fs.readFileSync(filePath);
+            await sql`INSERT INTO templates (email, templates, template_image) VALUES ('abhayhingrajiya18@gmail.com',${fileData},${req.body.imageOfTemplate})`;
+            console.log('File Saved')
+        }catch(error){
+            console.log(error)
+        }
+        
         res.sendFile(filePath, options, (err) => {
             if (err) {
                 console.error('Error downloading file:', err);
@@ -222,11 +229,24 @@ app.post('/download', async (req, res) => {
 app.delete('/delete/:filename', (req, res) => {
     const filename = req.params.filename;
     const filePath = path.join(__dirname, '../../mak-Z.html');
-    fs.unlink(filePath, (err) => {
+    fs.unlink(filePath, async(err) => {
         if (err) {
             console.error('Error deleting file:', err);
             res.status(500).send('Error deleting file');
         } else {
+            // const filePath = path.join(__dirname, '../../mak-ZOutput.html'); // Path where you want to save the file
+            // try {
+            //     const result = await sql`SELECT templates FROM templates WHERE email = 'abhayhingrajiya18@gmail.com'`;
+            //     if (result && result.length > 0) {
+            //         const fileData = result[0].templates; // Get the binary data from the result
+            //         fs.writeFileSync(filePath, fileData); // Write the binary data to a file
+            //         console.log('File written successfully');
+            //     } else {
+            //         console.log('No file found for the specified email');
+            //     }
+            // } catch (error) {
+            //     console.error(error);
+            // }
             console.log('File deleted successfully:', filename);
             res.status(200).send('File deleted successfully');
         }

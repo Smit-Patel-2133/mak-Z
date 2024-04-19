@@ -55,6 +55,30 @@ const UserCss = ({ styleHover, receivedData  }) => {
   const [overflowXValue, overflowXFun] = useState(null);
   const overflowY = useRef(null);
   const [overflowYValue, overflowYFun] = useState(null);
+  const overflow = useRef(null);
+  const [overflowValue, overflowFun] = useState(null);
+  const padding = useRef(null);
+  const [paddingValue, paddingFun] = useState(null);
+  const paddingTop = useRef(null);
+  const [paddingTopValue, paddingTopFun] = useState(null);
+  const paddingRight = useRef(null);
+  const [paddingRightValue, paddingRightFun] = useState(null);
+  const paddingBottom = useRef(null);
+  const [paddingBottomValue, paddingBottomFun] = useState(null);
+  const paddingLeft = useRef(null);
+  const [paddingLeftValue, paddingLeftFun] = useState(null);
+  const margin = useRef(null);
+  const [marginValue, marginFun] = useState(null);
+  const marginTop = useRef(null);
+  const [marginTopValue, marginTopFun] = useState(null);
+  const marginRight = useRef(null);
+  const [marginRightValue, marginRightFun] = useState(null);
+  const marginBottom = useRef(null);
+  const [marginBottomValue, marginBottomFun] = useState(null);
+  const marginLeft = useRef(null);
+  const [marginLeftValue, marginLeftFun] = useState(null);
+  const boxSizing = useRef(null);
+  const [boxSizingValue, boxSizingFun] = useState(null);
 
   const [activeElement,setActiveElement] = useState(null);
   const [expandTextTable,setExpandTextTable] = useState(false);
@@ -150,6 +174,42 @@ const UserCss = ({ styleHover, receivedData  }) => {
       const targetOverflowY = computedStyle.getPropertyValue('overflow-y');
       overflowY.current.value = targetOverflowY;
       overflowYFun(receivedData);
+      const targetOverflow = computedStyle.getPropertyValue('overflow');
+      overflow.current.value = targetOverflow;
+      overflowFun(receivedData);
+      const targetPadding = computedStyle.getPropertyValue('padding');
+      padding.current.value = parseInt(targetPadding);
+      paddingFun(receivedData);
+      const targetPaddingTop = computedStyle.getPropertyValue('padding-top');
+      paddingTop.current.value = parseInt(targetPaddingTop);
+      paddingTopFun(receivedData);
+      const targetPaddingRight = computedStyle.getPropertyValue('padding-right');
+      paddingRight.current.value = parseInt(targetPaddingRight);
+      paddingRightFun(receivedData);
+      const targetPaddingBottom = computedStyle.getPropertyValue('padding-bottom');
+      paddingBottom.current.value = parseInt(targetPaddingBottom);
+      paddingBottomFun(receivedData);
+      const targetPaddingLeft = computedStyle.getPropertyValue('padding-left');
+      paddingLeft.current.value = parseInt(targetPaddingLeft);
+      paddingLeftFun(receivedData);
+      const targetMargin = computedStyle.getPropertyValue('margin');
+      margin.current.value = parseInt(targetMargin);
+      marginFun(receivedData);
+      const targetMarginTop = computedStyle.getPropertyValue('margin-top');
+      marginTop.current.value = parseInt(targetMarginTop);
+      marginTopFun(receivedData);
+      const targetMarginRight = computedStyle.getPropertyValue('margin-right');
+      marginRight.current.value = parseInt(targetMarginRight);
+      marginRightFun(receivedData);
+      const targetMarginBottom = computedStyle.getPropertyValue('margin-bottom');
+      marginBottom.current.value = parseInt(targetMarginBottom);
+      marginBottomFun(receivedData);
+      const targetMarginLeft = computedStyle.getPropertyValue('margin-left');
+      marginLeft.current.value = parseInt(targetMarginLeft);
+      marginLeftFun(receivedData);
+      const targetBoxSizing = computedStyle.getPropertyValue('box-sizing');
+      boxSizing.current.value = targetBoxSizing;
+      boxSizingFun(receivedData);
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
       setActiveElement(receivedData)
@@ -231,6 +291,42 @@ const UserCss = ({ styleHover, receivedData  }) => {
   function overflowYOnChange() {
     overflowYValue.style.overflowY = overflowY.current.value;
   }
+  function overflowOnChange() {
+    overflowValue.style.overflow = overflow.current.value;
+  }
+  function paddingOnChange(){
+    paddingValue.style.padding=`${padding.current.value}px`
+  }
+  function paddingTopOnChange(){
+    paddingTopValue.style.paddingTop=`${paddingTop.current.value}px`
+  }
+  function paddingRightOnChange(){
+    paddingRightValue.style.paddingRight=`${paddingRight.current.value}px`
+  }
+  function paddingBottomOnChange(){
+    paddingBottomValue.style.paddingBottom=`${paddingBottom.current.value}px`
+  }
+  function paddingLeftOnChange(){
+    paddingLeftValue.style.paddingLeft=`${paddingLeft.current.value}px`
+  }
+  function marginOnChange(){
+    marginValue.style.margin=`${margin.current.value}px`
+  }
+  function marginTopOnChange(){
+    marginTopValue.style.marginTop=`${marginTop.current.value}px`
+  }
+  function marginRightOnChange(){
+    marginRightValue.style.marginRight=`${marginRight.current.value}px`
+  }
+  function marginBottomOnChange(){
+    marginBottomValue.style.marginBottom=`${marginBottom.current.value}px`
+  }
+  function marginLeftOnChange(){
+    marginLeftValue.style.marginLeft=`${marginLeft.current.value}px`;
+  }
+  function boxSizingOnChange(){
+    boxSizingValue.style.boxSizing=boxSizing.current.value;
+  }
   
   function textTableStyle(){
     setExpandTextTable(!expandTextTable)
@@ -243,7 +339,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
     <div className={`style ${styleHover ? '' : 'styleHovered'}`}>
       <div className="styleBlocks">
         <p onClick={textTableStyle}><FontAwesomeIcon icon={faAngleDown} /> Text Styles <FontAwesomeIcon icon={faAngleDown} /></p>
-        <div className={`textTable ${expandTextTable ? 'expandTextTable' : ''}`}>
+        <div className={`styleTable ${expandTextTable ? 'expandTextTable' : ''}`}>
           <table>
             <tr>
               <td><label htmlFor="fontFamily">Font Family: </label></td>
@@ -351,7 +447,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
       </div>
       <div className="styleBlocks">
         <p onClick={boxStyle}><FontAwesomeIcon icon={faAngleDown} /> Box Style <FontAwesomeIcon icon={faAngleDown} /></p>
-        <div className={`boxStyle ${expandBoxStyle ? 'expandBoxStyle' : ''}`}>
+        <div className={`styleTable ${expandBoxStyle ? 'expandBoxStyle' : ''}`}>
           <table>
             <tr>
               <td><label htmlFor="width">Width: </label></td>
@@ -360,6 +456,46 @@ const UserCss = ({ styleHover, receivedData  }) => {
             <tr>
               <td><label htmlFor="height">Height: </label></td>
               <td><input type="number" ref={height} name='height' className='height' onChange={heightOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="padding">Padding: </label></td>
+              <td><input type="number" ref={padding} name='padding' className='padding' onChange={paddingOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="paddingTop">Padding Top: </label></td>
+              <td><input type="number" ref={paddingTop} name='paddingTop' className='paddingTop' onChange={paddingTopOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="paddingRight">Padding Right: </label></td>
+              <td><input type="number" ref={paddingRight} name='paddingRight' className='paddingRight' onChange={paddingRightOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="paddingBottom">Padding Bottom: </label></td>
+              <td><input type="number" ref={paddingBottom} name='paddingBottom' className='paddingBottom' onChange={paddingBottomOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="paddingLeft">Padding Left: </label></td>
+              <td><input type="number" ref={paddingLeft} name='paddingLeft' className='paddingLeft' onChange={paddingLeftOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="margin">Margin: </label></td>
+              <td><input type="number" ref={margin} name='margin' className='margin' onChange={marginOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="marginTop">Margin Top: </label></td>
+              <td><input type="number" ref={marginTop} name='marginTop' className='marginTop' onChange={marginTopOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="marginRight">Margin Right: </label></td>
+              <td><input type="number" ref={marginRight} name='marginRight' className='marginRight' onChange={marginRightOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="marginBottom">Margin Bottom: </label></td>
+              <td><input type="number" ref={marginBottom} name='marginBottom' className='marginBottom' onChange={marginBottomOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="marginLeft">Margin Left: </label></td>
+              <td><input type="number" ref={marginLeft} name='marginLeft' className='marginLeft' onChange={marginLeftOnChange}/><br /></td>
             </tr>
             <tr>
               <td><label htmlFor="borderWidth">Border Width: </label></td>
@@ -409,6 +545,17 @@ const UserCss = ({ styleHover, receivedData  }) => {
               <td><input type="color" ref={shadowColor} name='shadowColor' className='shadowColor' onChange={shadowColorOnChange}/><br /></td>
             </tr>
             <tr>
+              <td><label htmlFor="overflow">Overflow: </label></td>
+              <td> 
+                <select ref={overflow} name='overflow' className='overflow' onChange={overflowOnChange}>
+                  <option value="visible">Visible</option>
+                  <option value="hidden">Hidden</option>
+                  <option value="scroll">Scroll</option>
+                  <option value="auto">Auto</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
               <td><label htmlFor="overflowX">Horizontal <br /> Overflow: </label></td>
               <td> 
                 <select ref={overflowX} name='overflowX' className='overflowX' onChange={overflowXOnChange}>
@@ -427,6 +574,15 @@ const UserCss = ({ styleHover, receivedData  }) => {
                   <option value="hidden">Hidden</option>
                   <option value="scroll">Scroll</option>
                   <option value="auto">Auto</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="boxSizing">Box Sizing: </label></td>
+              <td>
+                <select ref={boxSizing} name='boxSizing' className='boxSizing' onChange={boxSizingOnChange}>
+                  <option value="content-box">Content Box</option>
+                  <option value="border-box">Border Box</option>
                 </select>
               </td>
             </tr>

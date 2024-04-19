@@ -80,7 +80,7 @@ td input,td select{
     margin-top: 5px;
     cursor: pointer;
 }
-.textTable, .boxStyle{
+.styleTable{
     max-height: 0;
     overflow: hidden !important;
     transition: 1s ease-in-out;
@@ -104,7 +104,7 @@ td input,td select{
     margin-right: 5px;
 }
 .expandTextTable, .expandBoxStyle{
-    max-height: 1000px;
+    max-height: 2000px;
 }
 .style svg{
     font-size: 15px;
@@ -113,4 +113,7 @@ td input,td select{
     margin: 2px;
     border-radius: 10px;
     border: 1px solid white;
+}
+.styleTable tr{
+    border-bottom: 1px solid rgb(109, 109, 109);
 }

@@ -1,38 +1,42 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './userPage.css';
 import axios from "axios";
+import html2canvas from 'html2canvas';
 
 const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
     // const bodyPageRef = useRef(null);
 
     const logOuterHTML = () => {
         const code = bodyPageRef.current.outerHTML;
-        try {
-            axios.post('http://localhost:5000/download', { code }, { responseType: 'blob' })
-                .then(response => {
-                    const url = window.URL.createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', 'Mak-Z.html');
-                    document.body.appendChild(link);
-                    link.click();
-                    link.parentNode.removeChild(link);
-                    axios.delete('http://localhost:5000/delete/Mak-Z.html')
-                    .then(() => {
-                        console.log('File deleted successfully');
+        html2canvas(bodyPageRef.current).then(canvas => {
+            const imageOfTemplate=canvas.toDataURL();
+            try {
+                axios.post('http://localhost:5000/download', { code, imageOfTemplate}, { responseType: 'blob' })
+                    .then(response => {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'Mak-Z.html');
+                        document.body.appendChild(link);
+                        link.click();
+                        link.parentNode.removeChild(link);
+                        axios.delete('http://localhost:5000/delete/Mak-Z.html')
+                        .then(() => {
+                            console.log('File deleted successfully');
+                        })
+                        .catch(error => {
+                            console.error('Error deleting file:', error);
+                        });
+
+
                     })
                     .catch(error => {
-                        console.error('Error deleting file:', error);
+                        console.error('Error downloading file:', error);
                     });
-
-
-                })
-                .catch(error => {
-                    console.error('Error downloading file:', error);
-                });
-        } catch (error) {
-            console.error('Code passed from client side generate error ', error);
-        }
+            } catch (error) {
+                console.error('Code passed from client side generate error ', error);
+            }
+        });
     };
     
 
