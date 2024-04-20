@@ -21,3 +21,12 @@
 .styleHoveredPageBody{
     margin-left: 230px;
 }
+.eyeClicked{
+    background-color: white;
+    border-radius: 0px;
+    position: absolute;
+    z-index: 10;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}

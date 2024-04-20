@@ -150,7 +150,7 @@ app.post('/api/signup', upload.single('profilePicture'), async (req, res) => {
         }
 
         // Insert the new user into the database along with profile picture
-        await sql`INSERT INTO users (username, email, password, profile_picture) VALUES (${name}, ${email}, ${password}, ${profilePicture})`;
+        await sql`INSERT INTO users (username, email, password, profile_picture) VALUES (${name}, ${email}, ${password}, 1)`;
 
         console.log('User added successfully');
         res.json({ message: 'User added successfully' });
