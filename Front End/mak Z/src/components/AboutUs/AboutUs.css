@@ -1,0 +1,93 @@
+.aboutus {
+    margin: 0 auto;
+    max-width: 900px;
+    margin-top: 20px;
+    padding: 10px;
+}
+.aboutus h1{
+    text-align: center;
+    font-size: 20px;
+    
+}
+.conten{
+    margin: 0 auto;
+    max-width: 800px;
+}
+.conten-p{
+    text-align: center;
+    font-size: 40px;
+    color: black;
+    font-style: italic;
+}
+.informetoin-p{
+    text-align: center;
+    font-size: 15px;
+
+}
+.part2{
+    min-height: 1000px;
+    width: 100%;
+    background-color: #06558e;
+    padding-left:100px ;
+}
+.part2-1{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 500;
+    padding-top: 50px;
+    width: 50%;
+}
+.part2-2{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 500;
+    width: 50%;
+}
+
+.part2-3{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 90px;
+    width: 50%;
+}
+.part2-4{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 500;
+    width: 50%;
+}
+.part2-5{
+    background-color: transparent;
+    padding-top: 80px;
+    padding-right: 100px;
+    width: 300px;
+    float: right;
+    transform:  scale(3);
+}
+.part2-6{
+    background-color: transparent;
+    width:3cm;
+    margin-top: 59px;
+    margin-left: 60px;
+    float: left;
+    transform:  scale(2);
+    border:1px solid black;
+    border-radius: 5px;
+}
+.part2-7{
+    background-color: transparent;
+    padding-top: 210px;
+    padding-right: 100px;
+    width: 300px;
+    float: right;
+    transform:  scale(2);
+}
+.part2-8{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 500;
+    width: 50%;
+    float: left;
+
+}

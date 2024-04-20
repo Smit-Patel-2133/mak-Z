@@ -3,13 +3,29 @@ import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import UserCss from '../UserCss/UserCss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph, faHeading, faListOl, faListUl, faE, faS, faD, faI, faF, faSubscript, faSection, faSuperscript, faSquare, faDownload } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faListOl, faListUl, faE, faS, faD, faI, faF, faImage, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+          const confirmationMessage = "Changes you made may not be saved.";
+          event.returnValue = confirmationMessage;
+          return confirmationMessage;
+        };
+    
+        window.addEventListener("beforeunload", handleBeforeUnload);
+    
+        return () => {
+          window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
+    
 
     const [elementHover, setElementHover] = useState(false);
     const [subElementHover, setSubElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
+    const [eyeClick, setEyeClick] = useState(false);
     const [dataFromUserPage, setDataFromUserPage] = useState('');
     const userPage = useRef(null);
 
@@ -34,19 +50,24 @@ const editPage = () => {
         }
     }
 
+    function eyeclicked(){
+        setEyeClick(!eyeClick)
+    }
+
     function sendDataToUserCss(data) {
         setDataFromUserPage(data);
     }
 
     return(
         <>
-        <div className="main">
+        <div className="mainEditPage">
             <div className="tags">
                 <div className="toolBar">
                     <ul>
                         <li className="add" onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>+</li>
                         <li className="download" onClick={download}><FontAwesomeIcon icon={faDownload} /></li>
-                    </ul>
+                        <li className='eye' onClick={eyeclicked}><FontAwesomeIcon icon={faEye} /></li>
+                     </ul>
                 </div>
                 <div className={`elements ${elementHover ? 'elementHovered' : ''}`}  onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>
                     <h5>Drag Elements</h5>
@@ -59,7 +80,7 @@ const editPage = () => {
                                         <FontAwesomeIcon icon={faHeading} />
                                         <p>Headings</p>
                                     </li>
-                                    <div className={`headings ${subElementHover ? 'subElementHover' : ''}`} onMouseEnter={() => mouseOverOnSubElement()} onMouseLeave={() => mouseLeaveOnSubElement()}>
+                                    <div className={`heading ${subElementHover ? 'subElementHover' : ''}`} onMouseEnter={() => mouseOverOnSubElement()} onMouseLeave={() => mouseLeaveOnSubElement()}>
                                         <ul>
                                             <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "heading1");}}>
                                                 <FontAwesomeIcon icon={faHeading} />
@@ -146,11 +167,27 @@ const editPage = () => {
                                     </li>
                                 </ul>
                             </li>
+                            <li className="mainList">
+                                <p>Media</p>
+                                <ul>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "img");}}>
+                                        <FontAwesomeIcon icon={faImage} />
+                                        <p>Pictures</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "video");}}>
+                                        <FontAwesomeIcon icon={faVideo} />
+                                        <p>Video</p>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <UserPage bodyPageRef={userPage} styleHover={styleHover} className="edit" sendDataToUserCss={sendDataToUserCss}/>
+            <div className={`eyeBack ${eyeClick ? 'eyeClick' : ''}`} onClick={eyeclicked}>
+                <p><FontAwesomeIcon icon={faEye} /></p>
+            </div>
+            <UserPage bodyPageRef={userPage} styleHover={styleHover} eyeClick={eyeClick} className='edit' sendDataToUserCss={sendDataToUserCss}/>
             <UserCss styleHover={styleHover} receivedData={dataFromUserPage} />
         </div>
         </>

@@ -21,7 +21,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 app.use((req, res, next) => {
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -193,7 +194,7 @@ app.post('/download', async (req, res) => {
     codeData = beautify(codeData, { indent_size: 4 });  
     const filePath = path.join(__dirname, '../../mak-Z.html');
 
-    fs.appendFile(filePath, codeData, { encoding: 'utf8', flag: 'a+' }, (err) => {
+    fs.appendFile(filePath, codeData, { encoding: 'utf8', flag: 'a+' }, async (err) => {
         if (err) {
             console.error('Error appending data to file:', err);
             return res.status(500).send('Internal Server Error');
@@ -208,6 +209,13 @@ app.post('/download', async (req, res) => {
         };
 
         res.set('Content-Type', 'text/html');
+        try{
+            const fileData = fs.readFileSync(filePath);
+            await sql`INSERT INTO templates (email, templates, template_image) VALUES ('abhayhingrajiya18@gmail.com',${fileData},${req.body.imageOfTemplate})`;
+            console.log('File Saved')
+        }catch(error){
+            console.log(error)
+        }
 
         res.sendFile(filePath, options, (err) => {
             if (err) {
@@ -221,7 +229,7 @@ app.post('/download', async (req, res) => {
 app.delete('/delete/:filename', (req, res) => {
     const filename = req.params.filename;
     const filePath = path.join(__dirname, '../../mak-Z.html');
-    fs.unlink(filePath, (err) => {
+    fs.unlink(filePath, async(err) => {
         if (err) {
             console.error('Error deleting file:', err);
             res.status(500).send('Error deleting file');
@@ -242,7 +250,7 @@ app.get('/user/details', async (req, res) => {
             return res.status(404).json({ error: 'Not found', message: 'User not found' });
         }
         const { username, email, profile_pic } = user[0];
-
+        console.log("username:-",username,"email:-",email,"pro pic:",profile_pic)
         res.json({ username, email, profile_pic });
     } catch (error) {
         console.error('Error fetching user details:', error);

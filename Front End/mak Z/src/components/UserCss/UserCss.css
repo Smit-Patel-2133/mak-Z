@@ -1,7 +1,7 @@
 .style {
     position: fixed;
     right: 0;
-    width: 250px;
+    width: 260px;
     background-color: rgb(41, 41, 41);
     height: 100vh;
     margin-top: 45px;
@@ -61,7 +61,7 @@
     margin: 10px 10px;
 }
 td input,td select{
-    width: 60px;
+    width: 80px;
     color: white;
     height: 30px;
     margin: 10px 10px;
@@ -70,9 +70,6 @@ td input,td select{
     border: 1px solid white;
     border-radius: 10px;
     text-align: center;
-}
-select{
-    width: 100px !important;
 }
 .activeElementClass{
     border: 2px solid orangered;
@@ -83,9 +80,10 @@ select{
     margin-top: 5px;
     cursor: pointer;
 }
-.textTable, .boxStyle{
-    max-height: 0px;
+.styleTable{
+    max-height: 0;
     overflow: hidden !important;
+    transition: 1s ease-in-out;
 }
 .style p::after{
     content: '';
@@ -105,9 +103,17 @@ select{
     margin-bottom: 3px;
     margin-right: 5px;
 }
-.expandTextTable, .expandBoxStyle{
-    max-height:fit-content;
+.expandTextTable, .expandBoxStyle, .expandPositioning, .expandfexboxAndGridStyles{
+    max-height: 2000px;
 }
 .style svg{
     font-size: 15px;
 } 
+.styleBlocks{
+    margin: 2px;
+    border-radius: 10px;
+    border: 1px solid white;
+}
+.styleTable tr{
+    border-bottom: 1px solid rgb(109, 109, 109);
+}
