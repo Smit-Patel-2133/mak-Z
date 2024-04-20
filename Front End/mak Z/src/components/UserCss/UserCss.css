@@ -103,7 +103,7 @@ td input,td select{
     margin-bottom: 3px;
     margin-right: 5px;
 }
-.expandTextTable, .expandBoxStyle{
+.expandTextTable, .expandBoxStyle, .expandPositioning, .expandfexboxAndGridStyles{
     max-height: 2000px;
 }
 .style svg{

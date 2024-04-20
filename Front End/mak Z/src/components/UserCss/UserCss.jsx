@@ -79,10 +79,47 @@ const UserCss = ({ styleHover, receivedData  }) => {
   const [marginLeftValue, marginLeftFun] = useState(null);
   const boxSizing = useRef(null);
   const [boxSizingValue, boxSizingFun] = useState(null);
+  const position = useRef(null);
+  const [positionValue, positionFun] = useState(null);
+  const top = useRef(null);
+  const [topValue, topFun] = useState(null);
+  const bottom = useRef(null);
+  const [bottomValue, bottomFun] = useState(null);
+  const right = useRef(null);
+  const [rightValue, rightFun] = useState(null);
+  const left = useRef(null);
+  const [leftValue, leftFun] = useState(null);
+  const zIndex = useRef(null);
+  const [zIndexValue, zIndexFun] = useState(null);
+  const displayStyle = useRef(null);
+  const [displayStyleValue, displayStyleFun] = useState(null);
+  const flexDirection = useRef(null);
+  const [flexDirectionValue, flexDirectionFun] = useState(null);
+  const flexWrap = useRef(null);
+  const [flexWrapValue, flexWrapFun] = useState(null);
+  const justifyContent = useRef(null);
+  const [justifyContentValue, justifyContentFun] = useState(null);
+  const alignItems = useRef(null);
+  const [alignItemsValue, alignItemsFun] = useState(null);
+  const alignSelf = useRef(null);
+  const [alignSelfValue, alignSelfFun] = useState(null);
+  const cursor = useRef(null);
+  const [cursorValue, cursorFun] = useState(null);
+  const outlineStyle = useRef(null);
+  const [outlineStyleValue, outlineStyleFun] = useState(null);
+  const outlineColor = useRef(null);
+  const [outlineColorValue, outlineColorFun] = useState(null);
+  const outlineWidth = useRef(null);
+  const [outlineWidthValue, outlineWidthFun] = useState(null);
+  const opacity = useRef(null);
+  const [opacityValue, opacityFun] = useState(null);
+
 
   const [activeElement,setActiveElement] = useState(null);
   const [expandTextTable,setExpandTextTable] = useState(false);
   const [expandBoxStyle,setExpandBoxStyle] = useState(false);
+  const [expandPositioning,setExpandPositioning] = useState(false);
+  const [expandfexboxAndGridStyles,setExpandfexboxAndGridStyles] = useState(false);
 
   useEffect(() => {
       if(activeElement) activeElement.classList.add('activeElementClass');
@@ -210,6 +247,57 @@ const UserCss = ({ styleHover, receivedData  }) => {
       const targetBoxSizing = computedStyle.getPropertyValue('box-sizing');
       boxSizing.current.value = targetBoxSizing;
       boxSizingFun(receivedData);
+      const targetPosition = computedStyle.getPropertyValue('position');
+      position.current.value = targetPosition;
+      positionFun(receivedData) 
+      const targettop = computedStyle.getPropertyValue('top');
+      top.current.value = parseInt(targettop);
+      topFun(receivedData);
+      const targetbottom = computedStyle.getPropertyValue('bottom');
+      bottom.current.value = parseInt(targetbottom);
+      bottomFun(receivedData);
+      const targetright = computedStyle.getPropertyValue('right');
+      right.current.value = parseInt(targetright);
+      rightFun(receivedData);
+      const targetleft = computedStyle.getPropertyValue('left');
+      left.current.value = parseInt(targetleft);
+      leftFun(receivedData);
+      const targetzIndex = computedStyle.getPropertyValue('z-index');
+      zIndex.current.value =targetzIndex;
+      zIndexFun(receivedData);
+      const targetdisplayStyle = computedStyle.getPropertyValue('display');
+      displayStyle.current.value = targetdisplayStyle;
+      displayStyleFun(receivedData)
+      const targetflexDirection = computedStyle.getPropertyValue('flex-direction');
+      flexDirection.current.value = targetflexDirection;
+      flexDirectionFun(receivedData)
+      const targetflexWrap = computedStyle.getPropertyValue('flex-wrap');
+      flexWrap.current.value = targetflexWrap;
+      flexWrapFun(receivedData)
+      const targetjustifyContent = computedStyle.getPropertyValue('justify-content');
+      justifyContent.current.value = targetjustifyContent;
+      justifyContentFun(receivedData)
+      const targetalignItems = computedStyle.getPropertyValue('align-items');
+      alignItems.current.value = targetalignItems;
+      alignItemsFun(receivedData)
+      const targetalignSelf = computedStyle.getPropertyValue('align-self');
+      alignSelf.current.value = targetalignSelf;
+      alignSelfFun(receivedData)
+      const targetcursor = computedStyle.getPropertyValue('cursor');
+      cursor.current.value = targetcursor;
+      cursorFun(receivedData)
+      const targetoutlineStyle = computedStyle.getPropertyValue('outline-style');
+      outlineStyle.current.value = targetoutlineStyle;
+      outlineStyleFun(receivedData)
+      const targetoutlineColor = computedStyle.getPropertyValue('outline-color');
+      outlineColor.current.value = targetoutlineColor;
+      outlineColorFun(receivedData)
+      const targetoutlineWidth = computedStyle.getPropertyValue('outline-width');
+      outlineWidth.current.value = targetoutlineWidth;
+      outlineWidthFun(receivedData)
+      const targetopacity = computedStyle.getPropertyValue('opacity');
+      opacity.current.value = parseInt(targetopacity);
+      opacityFun(receivedData);
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
       setActiveElement(receivedData)
@@ -327,12 +415,70 @@ const UserCss = ({ styleHover, receivedData  }) => {
   function boxSizingOnChange(){
     boxSizingValue.style.boxSizing=boxSizing.current.value;
   }
+  function positionOnChange(){
+    positionValue.style.position=position.current.value;
+  }
+  function topOnChange(){
+    topValue.style.top=`${top.current.value}px`
+  }
+  function bottomOnChange(){
+    bottomValue.style.bottom=`${bottom.current.value}px`
+  }
+  function rightOnChange(){
+    rightValue.style.right=`${right.current.value}px`
+  }
+  function leftOnChange(){
+    leftValue.style.left=`${left.current.value}px`
+  }
+  function zIndexOnChange(){
+    zIndexValue.style.zIndex=zIndex.current.value
+  }
+  function displayStyleOnChange(){
+    displayStyleValue.style.display=displayStyle.current.value;
+  }
+  function flexDirectionOnChange(){
+    flexDirectionValue.style.flexDirection=flexDirection.current.value;
+  }
+  function flexWrapOnChange(){
+    flexWrapValue.style.flexWrap=flexWrap.current.value;
+  }
+  function justifyContentOnChange(){
+    justifyContentValue.style.justifyContent=justifyContent.current.value;
+  }
+  function alignItemsOnChange(){
+    alignItemsValue.style.alignItems=alignItems.current.value;
+  }
+  function alignSelfOnChange(){
+    alignSelfValue.style.alignSelf=alignSelf.current.value;
+  }
+  function cursorOnChange(){
+    cursorValue.style.cursor=cursor.current.value;
+  }
+  function outlineStyleOnChange(){
+    outlineStyleValue.style.outlineStyle=outlineStyle.current.value;
+  }
+  function outlineColorOnChange(){
+    outlineColorValue.style.outlineColor=outlineColor.current.value;
+  }
+  function outlineWidthOnChange(){
+    outlineWidthValue.style.outlineWidth=outlineWidth.current.value;
+  }
+  function opacityOnChange(){
+    opacityValue.style.opacity=`${opacity.current.value}px`
+  }
+  
   
   function textTableStyle(){
     setExpandTextTable(!expandTextTable)
   }
   function boxStyle(){
     setExpandBoxStyle(!expandBoxStyle)
+  }
+  function positioning(){
+    setExpandPositioning(!expandPositioning)
+  }
+  function flexboxAndGridStyles(){
+    setExpandfexboxAndGridStyles(!expandfexboxAndGridStyles)
   }
 
   return (
@@ -586,6 +732,180 @@ const UserCss = ({ styleHover, receivedData  }) => {
                 </select>
               </td>
             </tr>
+          </table>
+        </div>
+      </div>
+      <div className="styleBlocks">
+        <p onClick={positioning}><FontAwesomeIcon icon={faAngleDown} /> Positioning <FontAwesomeIcon icon={faAngleDown} /></p>
+        <div className={`styleTable ${expandPositioning ? 'expandPositioning' : ''}`}>
+          <table>
+            <tr>
+              <td><label htmlFor="position">Position: </label></td>
+              <td>
+                <select ref={position} name='position' className='position' onChange={positionOnChange}>
+                  <option value="static">Static</option>
+                  <option value="relative" style={{ position: 'relative' }}>Relative</option>
+                  <option value="absolute" style={{ position: 'absolute' }}>Absolute</option>
+                  <option value="fixed" style={{ position: 'fixed' }}>Fixed</option>
+                  <option value="sticky" style={{ position: 'sticky' }}>Sticky</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="top">Top: </label></td>
+              <td><input type="number" ref={top} name='top' className='top' onChange={topOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="bottom">Bottom: </label></td>
+              <td><input type="number" ref={bottom} name='bottom' className='bottom' onChange={bottomOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="right">Right: </label></td>
+              <td><input type="number" ref={right} name='right' className='right' onChange={rightOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="left">Left: </label></td>
+              <td><input type="number" ref={left} name='left' className='left' onChange={leftOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="zIndex">Z-index: </label></td>
+              <td><input type="number" ref={zIndex} name='zIndex' className='zIndex' onChange={zIndexOnChange}/><br /></td>
+            </tr>
+  
+          </table>
+        </div>
+      </div>
+      <div className="styleBlocks">
+        <p onClick={flexboxAndGridStyles}><FontAwesomeIcon icon={faAngleDown} /> Flexbox and Grid Styles <FontAwesomeIcon icon={faAngleDown} /></p>
+        <div className={`styleTable ${expandfexboxAndGridStyles ? 'expandfexboxAndGridStyles' : ''}`}>
+          <table>
+            <tr>
+              <td><label htmlFor="displayStyle">Display Style: </label></td>
+              <td>
+                <select ref={displayStyle} name='displayStyle' className='displayStyle' onChange={displayStyleOnChange}>
+                  <option value="block" style={{ display: 'block' }}>Block</option>
+                  <option value="inline" style={{ display: 'inline' }}>Inline</option>
+                  <option value="inline-block" style={{ display: 'inline-block' }}>Inline-Block</option>
+                  <option value="flex" style={{ display: 'flex' }}>Flex</option>
+                  <option value="grid" style={{ display: 'grid' }}>Grid</option>
+                  <option value="none" style={{ display: 'none' }}>None</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="flexDirection">Flex Direction: </label></td>
+              <td>
+                <select ref={flexDirection} name='flexDirection' className='flexDirection' onChange={flexDirectionOnChange}>
+                  <option value="row">Row</option>
+                  <option value="row-reverse">Row Reverse</option>
+                  <option value="column">Column</option>
+                  <option value="column-reverse">Column Reverse</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="flexWrap">Flex Wrap: </label></td>
+              <td>
+                <select ref={flexWrap} name='flexWrap' className='flexWrap' onChange={flexWrapOnChange}>
+                  <option value="nowrap">No Wrap</option>
+                  <option value="wrap">Wrap</option>
+                  <option value="wrap-reverse">Wrap Reverse</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="justifyContent">Justify Content: </label></td>
+              <td>
+                <select ref={justifyContent} name='justifyContent' className='justifyContent' onChange={justifyContentOnChange}>
+                  <option value="flex-start">Flex Start</option>
+                  <option value="flex-end">Flex End</option>
+                  <option value="center">Center</option>
+                  <option value="space-between">Space Between</option>
+                  <option value="space-around">Space Around</option>
+                  <option value="space-evenly">Space Evenly</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="alignItems">Align Items: </label></td>
+              <td>
+                <select ref={alignItems} name='alignItems' className='alignItems' onChange={alignItemsOnChange}>
+                  <option value="flex-start">Flex Start</option>
+                  <option value="flex-end">Flex End</option>
+                  <option value="center">Center</option>
+                  <option value="baseline">Baseline</option>
+                  <option value="stretch">Stretch</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="alignSelf">Align Self: </label></td>
+              <td>
+                <select ref={alignSelf} name='alignSelf' className='alignSelf' onChange={alignSelfOnChange}>
+                  <option value="auto">Auto</option>
+                  <option value="flex-start">Flex Start</option>
+                  <option value="flex-end">Flex End</option>
+                  <option value="center">Center</option>
+                  <option value="baseline">Baseline</option>
+                  <option value="stretch">Stretch</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="cursor">Cursor: </label></td>
+              <td>
+                <select ref={cursor} name='cursor' className='cursor' onChange={cursorOnChange}>
+                  <option value="auto">Auto</option>
+                  <option value="default" style={{ cursor: 'default' }}>Default</option>
+                  <option value="pointer" style={{ cursor: 'pointer' }}>Pointer</option>
+                  <option value="move" style={{ cursor: 'move' }}>Move</option>
+                  <option value="text" style={{ cursor: 'text' }}>Text</option>
+                  <option value="wait" style={{ cursor: 'wait' }}>Wait</option>
+                  <option value="crosshair" style={{ cursor: 'crosshair' }}>Crosshair</option>
+                  <option value="not-allowed" style={{ cursor: 'not-allowed' }}>Not Allowed</option>
+                  <option value="help" style={{ cursor: 'help' }}>Help</option>
+                  <option value="progress" style={{ cursor: 'progress' }}>Progress</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="outlineStyle">Outline Style </label></td>
+              <td>
+                <select ref={outlineStyle} name='outlineStyle' className='outlineStyle' onChange={outlineStyleOnChange}>
+                  <option value="none">None</option>
+                  <option value="dotted">Dotted</option>
+                  <option value="dashed">Dashed</option>
+                  <option value="solid">Solid</option>
+                  <option value="double">Double</option>
+                  <option value="groove">Groove</option>
+                  <option value="ridge">Ridge</option>
+                  <option value="inset">Inset</option>
+                  <option value="outset">Outset</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="outlineColor">Outline Color </label></td>
+              <td>
+                <input ref={outlineColor} type='color' name='outlineColor' className='outlineColor' onChange={outlineColorOnChange} />
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="outlineWidth">Outline Width </label></td>
+              <td>
+                <input ref={outlineWidth} type='number' name='outlineWidth' className='outlineWidth' onChange={outlineWidthOnChange} />
+              </td>
+            </tr>
+            <tr>
+                <td><label htmlFor="opacity">Opacity: </label></td>
+                <td><input type="number" ref={opacity} name='opacity' className='opacity' onChange={opacityOnChange}/><br /></td>
+              </tr>
+              
+
+
+
+
+
           </table>
         </div>
       </div>
