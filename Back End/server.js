@@ -137,9 +137,9 @@ app.post('/api/update-password', async (req, res) => {
 });
 
 // Endpoint to handle user sign-up with file upload
-app.post('/api/signup', upload.single('profilePicture'), async (req, res) => {
+app.post('/api/signup', async (req, res) => {
     const { name, email, password } = req.body;
-    const profilePicture = req.file ? req.file.buffer : null; // Get profile picture buffer
+    const defaultProfilePicture = 1; // Default profile picture ID or reference
 
     try {
         // Check if the email is already registered
@@ -148,8 +148,8 @@ app.post('/api/signup', upload.single('profilePicture'), async (req, res) => {
             return res.status(400).json({ error: 'User already registered', details: 'Email is already in use' });
         }
 
-        // Insert the new user into the database along with profile picture
-        await sql`INSERT INTO users (username, email, password, profile_picture) VALUES (${name}, ${email}, ${password}, ${profilePicture})`;
+        // Insert the new user with the default profile picture
+        await sql`INSERT INTO users (username, email, password, profile_pic) VALUES (${name}, ${email}, ${password}, ${defaultProfilePicture})`;
 
         console.log('User added successfully');
         res.json({ message: 'User added successfully' });
@@ -242,7 +242,7 @@ app.get('/user/details', async (req, res) => {
             return res.status(404).json({ error: 'Not found', message: 'User not found' });
         }
         const { username, email, profile_pic } = user[0];
-        console.log("username:-",username,"email:-",email,"pro pic:",profile_pic)
+
         res.json({ username, email, profile_pic });
     } catch (error) {
         console.error('Error fetching user details:', error);

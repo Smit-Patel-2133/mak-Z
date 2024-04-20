@@ -11,7 +11,6 @@ const SignupForm = () => {
         email: '',
         password: '',
         confirmPassword: '',
-        profile_picture:profile
     });
 
     const handleChange = (e) => {
@@ -20,28 +19,31 @@ const SignupForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Check if the password and confirm password fields match
+
         if (formData.password !== formData.confirmPassword) {
             setMessage("*The password and confirm password do not match");
-            formData.password = ''
-            formData.confirmPassword = ''
+            return;
+        }
 
-        } else {
-            try {
-                const response = await axios.post('http://localhost:5000/api/signup', formData); // Corrected endpoint URL
+        const data = {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+        };
 
-                if (response.data.error) {
-                    setMessage(response.data.error);
-                } else {
-                    setMessage(response.data.message);
-                    navigate('/home');
-                }
-            } catch (error) {
-                setMessage('An unexpected error occurred. Please try again later.');
+        try {
+            const response = await axios.post('http://localhost:5000/api/signup', data);
+
+            if (response.data.error) {
+                setMessage(response.data.error);
+            } else {
+                setMessage(response.data.message);
+                navigate('/home');
             }
+        } catch (error) {
+            setMessage('An unexpected error occurred. Please try again later.');
         }
     };
-
 
     return (
         <section className="h-screen">
