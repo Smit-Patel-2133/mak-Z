@@ -95,7 +95,8 @@
 }
 
 .add:hover,
-.download:hover {
+.download:hover,
+.eye:hover {
     cursor: pointer;
 }
 
@@ -188,4 +189,20 @@
 }
 .subElementHover{
     width: 200px;
+}
+.eyeBack{
+    display: none;
+    position: absolute;
+    font-size: x-large;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 11;
+    padding: 3px;
+    height: 45px;
+    opacity: .7;
+    cursor: pointer;
+}
+.eyeClick{
+    display: block;
 }

@@ -3,8 +3,7 @@ import './userPage.css';
 import axios from "axios";
 import html2canvas from 'html2canvas';
 
-const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
-    // const bodyPageRef = useRef(null);
+const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}) => {
 
     const logOuterHTML = () => {
         const code = bodyPageRef.current.outerHTML;
@@ -341,7 +340,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
     }
     
     const handleKeyDown = (event) => {
-        if (event && event.key === 'Enter') {
+        if (event && event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault(); 
             const selection = window.getSelection();
             if (selection && selection.focusNode) {
@@ -391,7 +390,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover}) => {
     }
 
   return (
-    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver}>
+    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver}>
     </div>
   )
 }
