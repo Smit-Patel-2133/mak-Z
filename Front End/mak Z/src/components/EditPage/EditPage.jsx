@@ -28,6 +28,9 @@ const editPage = () => {
     const [eyeClick, setEyeClick] = useState(false);
     const [dataFromUserPage, setDataFromUserPage] = useState('');
     const userPage = useRef(null);
+    const templateType = useRef(null);
+    const templateName = useRef(null);
+    const templateLabel = useRef(null);
 
     function mouseOver(){
         setElementHover(true); 
@@ -46,7 +49,7 @@ const editPage = () => {
     
     function download(){
         if (userPage.current) {
-            userPage.current.logOuterHTML();
+            userPage.current.logOuterHTML(templateName.current,templateLabel.current,templateType.current);
         }
     }
 
@@ -63,11 +66,22 @@ const editPage = () => {
         <div className="mainEditPage">
             <div className="tags">
                 <div className="toolBar">
-                    <ul>
+                    <ul style={{float:'left'}}>
                         <li className="add" onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>+</li>
                         <li className="download" onClick={download}><FontAwesomeIcon icon={faDownload} /></li>
                         <li className='eye' onClick={eyeclicked}><FontAwesomeIcon icon={faEye} /></li>
                      </ul>
+                     <div className="templateInfo">
+                        <input type="text" placeholder="Template Name" ref={templateName}/>/
+                        <input type="text" placeholder="Template Label" ref={templateLabel}/>
+                     </div>
+                     <div className="templateTypeBlock">
+                        <label htmlFor="templateType">Template Type: </label>
+                        <select name="templateType" ref={templateType}>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                     </div>
                 </div>
                 <div className={`elements ${elementHover ? 'elementHovered' : ''}`}  onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>
                     <h5>Drag Elements</h5>

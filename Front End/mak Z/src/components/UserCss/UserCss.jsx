@@ -289,14 +289,14 @@ const UserCss = ({ styleHover, receivedData  }) => {
       const targetoutlineStyle = computedStyle.getPropertyValue('outline-style');
       outlineStyle.current.value = targetoutlineStyle;
       outlineStyleFun(receivedData)
-      const targetoutlineColor = computedStyle.getPropertyValue('outline-color');
+      const targetoutlineColor = rgbToHex(computedStyle.getPropertyValue('outline-color'));
       outlineColor.current.value = targetoutlineColor;
       outlineColorFun(receivedData)
       const targetoutlineWidth = computedStyle.getPropertyValue('outline-width');
-      outlineWidth.current.value = targetoutlineWidth;
+      outlineWidth.current.value = parseInt(targetoutlineWidth);
       outlineWidthFun(receivedData)
       const targetopacity = computedStyle.getPropertyValue('opacity');
-      opacity.current.value = parseInt(targetopacity);
+      opacity.current.value = parseFloat(targetopacity);
       opacityFun(receivedData);
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
@@ -461,10 +461,10 @@ const UserCss = ({ styleHover, receivedData  }) => {
     outlineColorValue.style.outlineColor=outlineColor.current.value;
   }
   function outlineWidthOnChange(){
-    outlineWidthValue.style.outlineWidth=outlineWidth.current.value;
+    outlineWidthValue.style.outlineWidth=`${outlineWidth.current.value}px`;
   }
   function opacityOnChange(){
-    opacityValue.style.opacity=`${opacity.current.value}px`
+    opacityValue.style.opacity=opacity.current.value
   }
   
   
@@ -776,7 +776,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
         </div>
       </div>
       <div className="styleBlocks">
-        <p onClick={flexboxAndGridStyles}><FontAwesomeIcon icon={faAngleDown} /> Flexbox and Grid Styles <FontAwesomeIcon icon={faAngleDown} /></p>
+        <p onClick={flexboxAndGridStyles}><FontAwesomeIcon icon={faAngleDown} />Flex and Grid<FontAwesomeIcon icon={faAngleDown} /></p>
         <div className={`styleTable ${expandfexboxAndGridStyles ? 'expandfexboxAndGridStyles' : ''}`}>
           <table>
             <tr>
@@ -897,15 +897,9 @@ const UserCss = ({ styleHover, receivedData  }) => {
               </td>
             </tr>
             <tr>
-                <td><label htmlFor="opacity">Opacity: </label></td>
-                <td><input type="number" ref={opacity} name='opacity' className='opacity' onChange={opacityOnChange}/><br /></td>
-              </tr>
-              
-
-
-
-
-
+              <td><label htmlFor="opacity">Opacity: </label></td>
+              <td><input type="number" ref={opacity} name='opacity' className='opacity' onChange={opacityOnChange}/><br /></td>
+            </tr>
           </table>
         </div>
       </div>

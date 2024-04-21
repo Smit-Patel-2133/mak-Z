@@ -9,6 +9,7 @@
     transition: 1s ease-in-out;
     padding-bottom: 40px;
     white-space: nowrap;
+    z-index: -6;
 }
 .style::-webkit-scrollbar {
     width: 12px;

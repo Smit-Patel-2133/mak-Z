@@ -55,18 +55,18 @@ const storage = multer.diskStorage({
 });
 
 // Create multer instance with storage configuration
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 // Endpoint to send OTP to the user's email
 app.post('/api/send-otp', async (req, res) => {
-    const {email} = req.body;
+    const { email } = req.body;
 
     try {
         // Check if the email exists in the database
         const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
         if (existingUser.length === 0) {
             // If user does not exist, send a message that the user doesn't exist
-            return res.status(404).json({success: false, error: 'User not found'});
+            return res.status(404).json({ success: false, error: 'User not found' });
         }
 
         // Generate OTP (For simplicity, you can use a random 6-digit number)
@@ -78,10 +78,10 @@ app.post('/api/send-otp', async (req, res) => {
         // Send OTP to the user's email
         await sendEmail(email, generatedOTP);
 
-        res.json({success: true});
+        res.json({ success: true });
     } catch (error) {
         console.error('Error sending OTP:', error);
-        res.status(500).json({success: false, error: 'Failed to send OTP. Please try again later.'});
+        res.status(500).json({ success: false, error: 'Failed to send OTP. Please try again later.' });
     }
 });
 
@@ -104,82 +104,82 @@ const sendEmail = async (email, otp) => {
 
 // Endpoint to verify the entered OTP
 app.post('/api/verify-otp', async (req, res) => {
-    const {email, otp} = req.body;
+    const { email, otp } = req.body;
 
     try {
         const storedOTP = otpStorage[email];
 
         if (!storedOTP || storedOTP !== otp) {
-            return res.json({success: false, message: 'Invalid OTP'});
+            return res.json({ success: false, message: 'Invalid OTP' });
         }
 
         // OTP verification successful, remove OTP from storage
         delete otpStorage[email];
 
-        res.json({success: true});
+        res.json({ success: true });
     } catch (error) {
         console.error('Error verifying OTP:', error);
-        res.status(500).json({success: false, error: 'Failed to verify OTP. Please try again later.'});
+        res.status(500).json({ success: false, error: 'Failed to verify OTP. Please try again later.' });
     }
 });
 
 // Endpoint to update the password
 app.post('/api/update-password', async (req, res) => {
-    const {email, newPassword} = req.body;
+    const { email, newPassword } = req.body;
 
     try {
         // Update the password in the database for the user with the specified email
         await sql`UPDATE users SET password = ${newPassword} WHERE email = ${email}`;
 
-        res.json({success: true});
+        res.json({ success: true });
     } catch (error) {
         console.error('Error updating password:', error);
-        res.status(500).json({success: false, error: 'Failed to update password. Please try again later.'});
+        res.status(500).json({ success: false, error: 'Failed to update password. Please try again later.' });
     }
 });
 
 // Endpoint to handle user sign-up with file upload
 app.post('/api/signup', async (req, res) => {
-    const {name, email, password} = req.body;
+    const { name, email, password } = req.body;
     const defaultProfilePicture = 1; // Default profile picture ID or reference
 
     try {
         // Check if the email is already registered
         const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
         if (existingUser.length > 0) {
-            return res.status(400).json({error: 'User already registered', details: 'Email is already in use'});
+            return res.status(400).json({ error: 'User already registered', details: 'Email is already in use' });
         }
 
         // Insert the new user with the default profile picture
         await sql`INSERT INTO users (username, email, password, profile_pic) VALUES (${name}, ${email}, ${password}, ${defaultProfilePicture})`;
 
         console.log('User added successfully');
-        res.json({message: 'User added successfully'});
+        res.json({ message: 'User added successfully' });
     } catch (error) {
         console.error('Error adding user:', error);
-        res.status(500).json({error: 'Internal server error', details: error.message});
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
 // Endpoint to handle user login
 app.post('/login', async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     try {
         const user = await sql`SELECT * FROM users WHERE email = ${email} AND password = ${password}`;
         if (user.length === 0) {
-            return res.status(401).json({error: 'Unauthorized', message: 'Incorrect email or password'});
+            return res.status(401).json({ error: 'Unauthorized', message: 'Incorrect email or password' });
         }
 
-        res.json({message: 'Login successful'});
+        res.json({ message: 'Login successful' });
     } catch (error) {
         console.error('Error checking email and password:', error);
-        res.status(500).json({error: 'Internal server error', details: error.message});
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
 app.post('/download', async (req, res) => {
-    let codeData = `<!DOCTYPE html>
+    let codeData =`<!DOCTYPE html>
                     <html lang="en">
                         <head>
                             <meta charset="UTF-8">
@@ -189,13 +189,13 @@ app.post('/download', async (req, res) => {
                             <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
                         </head>
                     <body>`;
-    codeData += req.body.code.toString().replaceAll('contenteditable="true"', '').replaceAll('class="editable" ', '').replaceAll('class="editable active" ', '');
+    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('class="editable" ','').replaceAll('class="editable active" ','');
     codeData += `   </body>
                 </html>`;
-    codeData = beautify(codeData, {indent_size: 4});
+    codeData = beautify(codeData, { indent_size: 4 });  
     const filePath = path.join(__dirname, '../../mak-Z.html');
 
-    fs.appendFile(filePath, codeData, {encoding: 'utf8', flag: 'a+'}, async (err) => {
+    fs.appendFile(filePath, codeData, { encoding: 'utf8', flag: 'a+' }, async (err) => {
         if (err) {
             console.error('Error appending data to file:', err);
             return res.status(500).send('Internal Server Error');
@@ -212,10 +212,18 @@ app.post('/download', async (req, res) => {
         res.set('Content-Type', 'text/html');
         try {
             const fileData = fs.readFileSync(filePath);
-            await sql`INSERT INTO templates (email, templates, template_image) VALUES ('abhayhingrajiya18@gmail.com',${fileData},${req.body.imageOfTemplate})`;
+            const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
+            const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
+            const templat_visibility=(req.body.templateType=='public') ? true : false
+            const timestamp = Date.now();
+            let templateId=templat_name.substring(0,2)
+            templateId+=templat_label.substring(0,2)
+            templateId+=(templat_visibility) ? 't' : 'f'
+            templateId+='_'+timestamp.toString().substring(2,8)
+            await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${templateId},${templat_name},${templat_label},${templat_visibility})`;
             console.log('File Saved')
-        } catch (error) {
-            console.log(error)
+        }catch(error){
+            console.log('Error at catch block: '+error)
         }
 
         res.sendFile(filePath, options, (err) => {
@@ -297,7 +305,6 @@ app.get('/user/details', async (req, res) => {
         res.status(500).json({error: 'Internal server error', details: error.message});
     }
 });
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
