@@ -211,10 +211,18 @@ app.post('/download', async (req, res) => {
         res.set('Content-Type', 'text/html');
         try{
             const fileData = fs.readFileSync(filePath);
-            await sql`INSERT INTO templates (email, templates, template_image) VALUES ('abhayhingrajiya18@gmail.com',${fileData},${req.body.imageOfTemplate})`;
+            const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
+            const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
+            const templat_visibility=(req.body.templateType=='public') ? true : false
+            const timestamp = Date.now();
+            let templateId=templat_name.substring(0,2)
+            templateId+=templat_label.substring(0,2)
+            templateId+=(templat_visibility) ? 't' : 'f'
+            templateId+='_'+timestamp.toString().substring(2,8)
+            await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${templateId},${templat_name},${templat_label},${templat_visibility})`;
             console.log('File Saved')
         }catch(error){
-            console.log(error)
+            console.log('Error at catch block: '+error)
         }
 
         res.sendFile(filePath, options, (err) => {

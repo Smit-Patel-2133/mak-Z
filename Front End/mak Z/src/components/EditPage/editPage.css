@@ -4,8 +4,8 @@
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 5;
     box-sizing: border-box; 
+    display: inline;
 }
 
 .toolBar ul,
@@ -14,6 +14,7 @@
     padding: 0;
     margin: 0; 
 }
+
 .toolBar li {
     font-size: x-large;
     text-align: center;
@@ -205,4 +206,25 @@
 }
 .eyeClick{
     display: block;
+}
+.templateInfo{
+    margin-top: 10px;
+    margin-left: 30%;
+    float: left;
+}
+.templateInfo input{
+    background-color: black;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 120px;
+    max-width: fit-content;
+}
+.templateTypeBlock{
+    display: flex;
+    justify-content: right;
+    margin: 10px;
+}
+.templateTypeBlock select{
+    background-color: black;
+    margin-left: 10px;
 }

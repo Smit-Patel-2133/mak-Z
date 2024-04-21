@@ -1,16 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './userPage.css';
 import axios from "axios";
+import { useSelector } from 'react-redux';
 import html2canvas from 'html2canvas';
 
 const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}) => {
 
-    const logOuterHTML = () => {
+    const user = useSelector(state => state.auth);
+    
+    const logOuterHTML = (name,label,type) => {
         const code = bodyPageRef.current.outerHTML;
+        const templateName=name.value
+        const templateLabel=label.value
+        const templateType=type.value
+        const userEmail=user.email
+
         html2canvas(bodyPageRef.current).then(canvas => {
             const imageOfTemplate=canvas.toDataURL();
             try {
-                axios.post('http://localhost:5000/download', { code, imageOfTemplate}, { responseType: 'blob' })
+                axios.post('http://localhost:5000/download', { code, userEmail, imageOfTemplate, templateName, templateLabel, templateType}, { responseType: 'blob' })
                     .then(response => {
                         const url = window.URL.createObjectURL(new Blob([response.data]));
                         const link = document.createElement('a');
