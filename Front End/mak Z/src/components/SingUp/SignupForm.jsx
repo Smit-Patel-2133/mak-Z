@@ -3,7 +3,11 @@ import Login_girl from '../../assets/Auth Pictures/draw2.svg';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import profile from '../../assets/Profile picture/1.png'
+import {currentUser} from "../../features/authentication/auth.js";
+import {useDispatch} from "react-redux";
+
 const SignupForm = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
@@ -38,6 +42,9 @@ const SignupForm = () => {
                 setMessage(response.data.error);
             } else {
                 setMessage(response.data.message);
+                const profilePicturePath = await import(`../../assets/Profile picture/1.png`);
+
+                dispatch(currentUser({ name:data.name, email: data.email, profilePicture: profilePicturePath.default }));
                 navigate('/home');
             }
         } catch (error) {

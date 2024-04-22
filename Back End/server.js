@@ -8,6 +8,7 @@ const beautify = require('js-beautify').html;
 const sql = require('./db'); // Import the sql function from db.js
 const multer = require('multer'); // Import multer for handling file uploads
 
+
 const app = express();
 app.use(cors());
 app.use((req, res, next) => {
@@ -21,8 +22,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 app.use((req, res, next) => {
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -209,7 +210,7 @@ app.post('/download', async (req, res) => {
         };
 
         res.set('Content-Type', 'text/html');
-        try{
+        try {
             const fileData = fs.readFileSync(filePath);
             const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
             const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
@@ -237,7 +238,7 @@ app.post('/download', async (req, res) => {
 app.delete('/delete/:filename', (req, res) => {
     const filename = req.params.filename;
     const filePath = path.join(__dirname, '../../mak-Z.html');
-    fs.unlink(filePath, async(err) => {
+    fs.unlink(filePath, async (err) => {
         if (err) {
             console.error('Error deleting file:', err);
             res.status(500).send('Error deleting file');
@@ -247,22 +248,61 @@ app.delete('/delete/:filename', (req, res) => {
         }
     });
 });
+
+// Placing logs to track the request flow
+app.get('/featchThis', async (req, res) => {
+    console.log("Endpoint hit: /featchThis"); // Log to confirm endpoint is hit
+    const templateType = req.query.type; // Access the specific query parameter
+    console.log("Template type:", templateType); // Log to confirm template type
+
+    if (!templateType) {
+        console.log("No template type provided"); // Log to track missing query parameter
+        return res.status(400).json({error: 'Missing template type in query parameter'});
+    }
+
+    try {
+        // Fetching templates from the database
+        const result = await sql`SELECT * FROM template WHERE templatetype = ${templateType}`;
+
+        if (result.length === 0) {
+            console.log("No templates found for type:", templateType); // Log when no templates are found
+            return res.status(404).json({error: 'No templates found for the specified type'});
+        }
+        console.log(result)
+        const templates = result.map(row => ({
+            id: row.templateid,
+            name: row.templatename,
+            likes: row.templatelikes,
+            downloads: row.templatedownloads,
+            visibility: row.templatevisibility,
+            htmlCode: row.templatehtmlfile ? row.templatehtmlfile.toString('utf8') : '',
+        }));
+
+        console.log("Templates retrieved:", templates); // Log templates retrieved
+        res.status(200).json(templates); // Send the response
+    } catch (error) {
+        console.error('Error fetching templates:', error);
+        res.status(500).json({error: 'An error occurred while fetching templates'});
+    }
+});
+
+
 // Endpoint to get user details
 app.get('/user/details', async (req, res) => {
-    const { email } = req.query;
-    let emailid=email
-    console.log("comming email:",emailid)
+    const {email} = req.query;
+    let emailid = email
+    console.log("comming email:", emailid)
     try {
         const user = await sql`SELECT * FROM users WHERE email=${emailid}`;
         if (user.length === 0) {
-            return res.status(404).json({ error: 'Not found', message: 'User not found' });
+            return res.status(404).json({error: 'Not found', message: 'User not found'});
         }
-        const { username, email, profile_pic } = user[0];
-        console.log("username:-",username,"email:-",email,"pro pic:",profile_pic)
-        res.json({ username, email, profile_pic });
+        const {username, email, profile_pic} = user[0];
+        console.log("username:-", username, "email:-", email, "pro pic:", profile_pic)
+        res.json({username, email, profile_pic});
     } catch (error) {
         console.error('Error fetching user details:', error);
-        res.status(500).json({ error: 'Internal server error', details: error.message });
+        res.status(500).json({error: 'Internal server error', details: error.message});
     }
 });
 
