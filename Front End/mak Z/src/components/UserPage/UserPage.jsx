@@ -7,7 +7,8 @@ import html2canvas from 'html2canvas';
 const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}) => {
 
     const user = useSelector(state => state.auth);
-    
+    const [activeElement,setActiveElement]=useState(null)
+
     const logOuterHTML = (name,label,type) => {
         const code = bodyPageRef.current.outerHTML;
         const templateName=name.value
@@ -61,6 +62,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
     }
     
     function handleActive(e){
+        setActiveElement(e.target)
         sendDataToUserCss(e.target);
     }
 
@@ -89,7 +91,10 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             'header': header,
             'footer': footer,
             'img': img,
-            'video': video
+            'video': video,
+            'button': button,
+            'form': form,
+            'navbar': navbar
         };
 
         if (functionMap[element]) {
@@ -100,7 +105,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
 
         function setCommonAttributes(contentVariable,bodyPage,targetElement){
             contentVariable.setAttribute('contenteditable', 'true');
-            contentVariable.setAttribute('class', 'editable');
+            contentVariable.classList.add('editable');
             contentVariable.addEventListener('click', handleActive);
             if(targetElement){
                 const TargetTagName=targetElement.tagName.toLowerCase();
@@ -174,8 +179,6 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function oList(){
             const bodyPage = bodyPageRef.current;
             const oListElement = document.createElement('ol');
-            oListElement.setAttribute('class', 'editable');
-            oListElement.addEventListener('click', handleActive);
             const listItemElement = document.createElement('li');
             listItemElement.textContent = 'Here is your list';
             listItemElement.setAttribute('contenteditable', 'true');
@@ -184,7 +187,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             listItemElement.style.listStyleType = 'number';
             oListElement.appendChild(listItemElement);
             const targetElement = findTargetElement(e);
-            bodyPage.insertBefore(oListElement,targetElement);
+            setCommonAttributes(oListElement,bodyPage,targetElement);
         }
 
         function uList(){
@@ -200,7 +203,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             listItemElement.style.listStyleType = 'disc';
             uListElement.appendChild(listItemElement);
             const targetElement = findTargetElement(e);
-            bodyPage.insertBefore(uListElement,targetElement);
+            setCommonAttributes(uListElement,bodyPage,targetElement);
         }
         
         function em(){
@@ -337,6 +340,107 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             inputElement.click();
         }
         
+        function button(){
+            const bodyPage = bodyPageRef.current;
+            const buttonElement = document.createElement('button');
+            buttonElement.textContent = 'Here is your button';
+            buttonElement.classList.add('btn', 'btn-primary')
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(buttonElement,bodyPage,targetElement)
+        }
+
+        function form() {
+            const bodyPage = bodyPageRef.current;
+            const formElement = document.createElement('form');
+            formElement.classList.add('container');
+            const formGroup = document.createElement('div');
+            formGroup.classList.add('form-group');
+            const labelElement = document.createElement('label');
+            labelElement.textContent = 'Enter your name:';
+            const inputElement = document.createElement('input');
+            inputElement.type = 'text';
+            inputElement.classList.add('form-control');
+            inputElement.id = 'nameInput';
+            setCommonAttributes(labelElement,formGroup,null);
+            setCommonAttributes(inputElement,formGroup,null);
+            const submitButton = document.createElement('button');
+            submitButton.type = 'submit';
+            submitButton.textContent = 'Submit';
+            submitButton.classList.add('btn', 'btn-primary', 'mt-2');
+            setCommonAttributes(formGroup,formElement,null);
+            setCommonAttributes(submitButton,formElement,null);
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(formElement,bodyPage,targetElement);
+        }
+
+        function navbar() {
+            const bodyPage = bodyPageRef.current;
+            const navElement = document.createElement('nav');
+            navElement.style.backgroundColor = 'lightblue';
+            navElement.style.padding = '10px';
+            const containerElement = document.createElement('div');
+            containerElement.style.maxWidth = '900px';
+            containerElement.style.margin = '0 auto';
+            containerElement.style.display = 'flex';
+            containerElement.style.justifyContent = 'space-between';
+            containerElement.style.alignItems = 'center';
+        
+            // Create navbar brand
+            const brandElement = document.createElement('a');
+            brandElement.textContent = 'Navbar';
+            brandElement.href = '#';
+            brandElement.style.color = 'black';
+            brandElement.style.textDecoration = 'none';
+            brandElement.style.fontSize = '24px';
+            brandElement.style.fontWeight = 'bold';
+        
+            // Create unordered list for navbar items
+            const ulElement = document.createElement('ul');
+            ulElement.style.listStyleType = 'none';
+            ulElement.style.margin = '0';
+            ulElement.style.padding = '0';
+            ulElement.style.display = 'flex';
+        
+            // Create list items for each navbar link
+            const homeLink = createNavbarLink('Home', '#');
+            const featuresLink = createNavbarLink('Features', '#');
+            const pricingLink = createNavbarLink('Pricing', '#');
+            const disabledLink = createNavbarLink('Disabled', '#');
+        
+            // Append links to navbar
+            setCommonAttributes(homeLink,ulElement,null);
+            setCommonAttributes(featuresLink,ulElement,null);
+            setCommonAttributes(pricingLink,ulElement,null);
+            setCommonAttributes(disabledLink,ulElement,null);
+        
+            // Append elements to DOM
+            setCommonAttributes(containerElement,navElement,null);
+            setCommonAttributes(brandElement,containerElement,null);
+            setCommonAttributes(ulElement,containerElement,null);
+        
+            // Append nav to body
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(navElement,bodyPage,targetElement);
+        }
+        
+        function createNavbarLink(text, href) {
+            const liElement = document.createElement('li');
+            liElement.style.paddingRight = '20px';
+        
+            const linkElement = document.createElement('a');
+            linkElement.textContent = text;
+            linkElement.href = href;
+            linkElement.style.color = 'black';
+            linkElement.style.textDecoration = 'none';
+            linkElement.style.fontSize = '18px';
+        
+            setCommonAttributes(linkElement,liElement,null);
+        
+            return liElement;
+        }
+        
+        
+
     }
 
     const handleDragOver = (event) => {
@@ -350,22 +454,18 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
     const handleKeyDown = (event) => {
         if (event && event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault(); 
-            const selection = window.getSelection();
-            if (selection && selection.focusNode) {
-                const parentElement = selection.focusNode.parentElement;
-                const grandParentElement = parentElement.parentElement;
-                if (grandParentElement) {
-                  const clonedNode = parentElement.cloneNode(true);
-                  clonedNode.addEventListener('click', handleActive);
-                  clonedNode.click();
-                  insertAfter(clonedNode, parentElement);
-                  const range = document.createRange();
-                  range.selectNodeContents(clonedNode); // Select the contents of the cloned node
-                  range.collapse(false); // Collapse the range to the end
-                  const selection = window.getSelection(); // Get the selection object
-                  selection.removeAllRanges(); // Remove any existing ranges from the selection
-                  selection.addRange(range); // Add the new range to the selection
-                }
+            const selectionElement = activeElement
+            if (selectionElement) {
+                const clonedNode = selectionElement.cloneNode(true);
+                clonedNode.addEventListener('click', handleActive);
+                clonedNode.click();
+                insertAfter(clonedNode, activeElement);
+                const range = document.createRange();
+                range.selectNodeContents(clonedNode); // Select the contents of the cloned node
+                range.collapse(false); // Collapse the range to the end
+                const selection = window.getSelection(); // Get the selection object
+                selection.removeAllRanges(); // Remove any existing ranges from the selection
+                selection.addRange(range); // Add the new range to the selection
             }
         }else if(event && event.key === 'Delete'){
             const selection = window.getSelection();
@@ -397,8 +497,14 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         }
     }
 
+    function abhay(e){
+        if (bodyPageRef.current && e.target === bodyPageRef.current) {
+            activeElement.classList.remove('activeElementClass')
+        }
+    }
+
   return (
-    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver}>
+    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={abhay}>
     </div>
   )
 }
