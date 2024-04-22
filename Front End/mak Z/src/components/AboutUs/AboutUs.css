@@ -30,16 +30,20 @@
     background-color: #06558e;
     padding-left:100px ;
 }
+.part2-0{
+    width: 50%;
+}
 .part2-1{
     color: rgb(255, 255, 255);
-    font-size: 15px;
+    font-size: 30px;
     font-weight: 500;
     padding-top: 50px;
     width: 50%;
+
 }
 .part2-2{
     color: rgb(255, 255, 255);
-    font-size: 15px;
+    font-size: 45px;
     font-weight: 500;
     width: 50%;
 }
@@ -48,7 +52,7 @@
     color: rgb(255, 255, 255);
     font-size: 15px;
     font-weight: 500;
-    margin-top: 90px;
+    margin-top: 70px;
     width: 50%;
 }
 .part2-4{
@@ -59,35 +63,88 @@
 }
 .part2-5{
     background-color: transparent;
-    padding-top: 80px;
-    padding-right: 100px;
-    width: 300px;
+    width: 450px;
     float: right;
-    transform:  scale(3);
+    transform:  scale(2);
+    margin-top: 100px;
+    margin-right: 100px;
 }
 .part2-6{
     background-color: transparent;
-    width:3cm;
+    width:120px;
+    height:90px;
     margin-top: 59px;
     margin-left: 60px;
     float: left;
     transform:  scale(2);
-    border:1px solid black;
-    border-radius: 5px;
+    border: 1cm;
+    border: radius 10px;
 }
 .part2-7{
     background-color: transparent;
-    padding-top: 210px;
-    padding-right: 100px;
-    width: 300px;
+    width: 150px;
     float: right;
     transform:  scale(2);
+    margin-top: 340px;
+    margin-right: 250px;
 }
 .part2-8{
     color: rgb(255, 255, 255);
     font-size: 15px;
     font-weight: 500;
-    width: 50%;
-    float: left;
+    width: 150px;
+    margin-top: 200px;
+    
+}
+.part2-9{
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    font-weight: 50px;
 
+}
+.part2-10{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 500;
+    width:214px;
+    float: right;
+    position: relative;
+    top: 450px;
+    right: -138px;
+}
+.part2-11{
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    font-weight: 50px;
+    float: right;
+    position: relative;
+    top: 440px;
+    right: -223px;
+    width: 298px;
+}
+.part3{
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    padding-top: 100px;
+    padding-left: 100px;
+    padding-bottom: 100px;
+    padding-right: 100px;
+}
+.part3-1{
+    color: rgb(190, 188, 188);
+    font-size: 20px;
+    font-weight: 50px;
+}
+.part3-2{
+    color: rgb(255, 255, 255);
+    font-size: 50px;
+    font-weight: 800px;
+    text-align: left;
+}
+.part3-3{
+    color: rgb(190, 188, 188);
+    font-size: 20px;
+    font-weight: 50px;
+    
 }

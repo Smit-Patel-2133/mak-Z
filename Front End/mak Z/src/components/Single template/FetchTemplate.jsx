@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import './FetchTemplate.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
-import Heart from "react-heart"
+// import Heart from "react-heart"
 const FetchTemplate = ({templateHeading}) => { // Correct prop name and default value
     const sliderRef = useRef(null);
     const isDown = useRef(false);
