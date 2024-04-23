@@ -3,6 +3,7 @@
     display: flex;
     background: transparent;
     padding: 1px 3%;
+    background-color: black;
 }
 .logo{
     width: 150px;

@@ -1,7 +1,7 @@
 .aboutus {
     margin: 0 auto;
     max-width: 900px;
-    margin-top: 20px;
+    margin-top: 30px;
     padding: 10px;
 }
 .aboutus h1{
@@ -15,29 +15,32 @@
 }
 .conten-p{
     text-align: center;
-    font-size: 40px;
+    font-size: 45px;
+    width:auto;
     color: black;
     font-style: italic;
 }
 .informetoin-p{
     text-align: center;
-    font-size: 15px;
-
+    font-size: 20px;
+    width: auto;
+    padding-bottom: 200px;
 }
 .part2{
     min-height: 1000px;
     width: 100%;
-    background-color: #06558e;
+    background-color: #004b81;
     padding-left:100px ;
 }
 .part2-0{
     width: 50%;
+    height: 1000px;
 }
 .part2-1{
     color: rgb(255, 255, 255);
     font-size: 30px;
     font-weight: 500;
-    padding-top: 50px;
+    padding-top: 70px;
     width: 50%;
 
 }
@@ -45,7 +48,7 @@
     color: rgb(255, 255, 255);
     font-size: 45px;
     font-weight: 500;
-    width: 50%;
+    width: 100%;
 }
 
 .part2-3{
@@ -60,68 +63,108 @@
     font-size: 15px;
     font-weight: 500;
     width: 50%;
+    position: relative;
+    top: 5px;
 }
 .part2-5{
     background-color: transparent;
-    width: 450px;
+    width: 365px;
     float: right;
     transform:  scale(2);
-    margin-top: 100px;
-    margin-right: 100px;
+    position: relative;
+    right: 190px;
+    top:140px
 }
 .part2-6{
     background-color: transparent;
     width:120px;
     height:90px;
-    margin-top: 59px;
-    margin-left: 60px;
     float: left;
     transform:  scale(2);
     border: 1cm;
     border: radius 10px;
+    position: relative;
+    top:75px;
+    left:60px
+
 }
 .part2-7{
     background-color: transparent;
-    width: 150px;
-    float: right;
+    width:161px;
+    height:90px;
+    float: left;
     transform:  scale(2);
-    margin-top: 340px;
-    margin-right: 250px;
+    border: 1cm;
+    border: radius 10px;
+    position: relative;
+    top:75px;
+    left:500px
 }
 .part2-8{
     color: rgb(255, 255, 255);
     font-size: 15px;
     font-weight: 500;
     width: 150px;
-    margin-top: 200px;
+    position: relative;
+    top:100px;
+
     
 }
 .part2-9{
     color: rgb(255, 255, 255);
     font-size: 20px;
     font-weight: 50px;
-
+    width: 200px;
+    position: relative;
+    top:110px;
 }
 .part2-10{
     color: rgb(255, 255, 255);
     font-size: 15px;
     font-weight: 500;
-    width:214px;
-    float: right;
     position: relative;
-    top: 450px;
-    right: -138px;
+    left:538px;
+    top:-102px;
 }
 .part2-11{
     color: rgb(255, 255, 255);
     font-size: 20px;
-    font-weight: 50px;
-    float: right;
     position: relative;
-    top: 440px;
-    right: -223px;
-    width: 298px;
+    left: 538px;
+    top:-100px;
+    width: 200px;
 }
+.part2-12{
+    background-color: transparent;
+    width:121px;
+    height:90px;
+    float: left;
+    transform:  scale(2);
+    border: 1cm;
+    border: radius 10px;
+    position: relative;
+    top:75px;
+    left:800px;
+}
+.part2-13{
+    width: 190px;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+    left:1019px;
+    top:-304px;
+}
+.part2-14{
+    color: rgb(255, 255, 255);
+    width: 190px;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+    left:1019px;
+    top:-304px;
+}
+
 .part3{
     width: 100%;
     height: 100%;
@@ -140,11 +183,14 @@
     color: rgb(255, 255, 255);
     font-size: 50px;
     font-weight: 800px;
-    text-align: left;
+    text-align: left ;
+    width: 50%;
+    font-style: italic;
 }
 .part3-3{
     color: rgb(190, 188, 188);
     font-size: 20px;
     font-weight: 50px;
+    width: 50%;
     
 }
