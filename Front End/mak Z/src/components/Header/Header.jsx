@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom'; // Import NavLink
-import logo from '../../assets/picture/new black noBG.png';
+import logo from '../../assets/picture/new white cap noBG.png';
 import './header.css';
 
 const Header = () => {
@@ -19,7 +19,7 @@ const Header = () => {
                     <li><NavLink to="/login">Login</NavLink></li>
                     )}
                 <li><NavLink to="/">Contact Us</NavLink></li> {/* Example NavLink */}
-                <li><NavLink to="/">About Us</NavLink></li> {/* Example NavLink */}
+                <li><NavLink to="/AboutUs">About Us</NavLink></li> {/* Example NavLink */}
                 <li><NavLink to="/templates">Template</NavLink></li> {/* Example NavLink */}
                 <li><NavLink to="/home">Home</NavLink></li> {/* Example NavLink */}
             </ul>
