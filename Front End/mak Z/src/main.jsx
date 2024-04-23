@@ -15,6 +15,7 @@ import EditPage from './components/EditPage/EditPage.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Templates from "./components/Templates/Templates.jsx";
 import AboutUs from "./components/AboutUs/AboutUs.jsx";
+import ContactUs from"./components/ContactUs/contact.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<App/>}>
@@ -26,6 +27,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path='/editPage' element={<EditPage/>} />
         <Route path='/templates' element={<Templates/>} />
         <Route path='/aboutus' element={<AboutUs/>} />
+        <Route path='/ContactUs' element={<ContactUs/>}/>
     </Route>
 ));
 

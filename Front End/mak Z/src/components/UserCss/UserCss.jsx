@@ -113,6 +113,20 @@ const UserCss = ({ styleHover, receivedData  }) => {
   const [outlineWidthValue, outlineWidthFun] = useState(null);
   const opacity = useRef(null);
   const [opacityValue, opacityFun] = useState(null);
+  const visibility = useRef(null);
+  const [visibilityValue, visibilityFun] = useState(null);
+  const bgImage = useRef(null);
+  const [bgImageValue, bgImageFun] = useState(null);
+  const bgPositionX = useRef(null);
+  const [bgPositionXValue, bgPositionXFun] = useState(null);
+  const bgPositionY = useRef(null);
+  const [bgPositionYValue, bgPositionYFun] = useState(null);
+  const bgRepeat = useRef(null);
+  const [bgRepeatValue, bgRepeatFun] = useState(null);
+  const bgSizeX = useRef(null);
+  const [bgSizeXValue, bgSizeXFun] = useState(null);
+  const bgSizeY = useRef(null);
+  const [bgSizeYValue, bgSizeYFun] = useState(null);
 
 
   const [activeElement,setActiveElement] = useState(null);
@@ -120,6 +134,8 @@ const UserCss = ({ styleHover, receivedData  }) => {
   const [expandBoxStyle,setExpandBoxStyle] = useState(false);
   const [expandPositioning,setExpandPositioning] = useState(false);
   const [expandfexboxAndGridStyles,setExpandfexboxAndGridStyles] = useState(false);
+  const [expandMiscellaneous,setExpandMiscellaneous] = useState(false);
+  const [expandBackgroundStyles,setExpandBackgroundStyles] = useState(false);
 
   useEffect(() => {
       if(activeElement) activeElement.classList.add('activeElementClass');
@@ -155,8 +171,8 @@ const UserCss = ({ styleHover, receivedData  }) => {
       fontColor.current.value = targetFontColor;
       fontColorFun(receivedData)
       const targetBgColor = rgbToHex(computedStyle.getPropertyValue('background-color'));
-      // bgColor.current.value = targetBgColor;
-      // bgColorFun(receivedData)
+      bgColor.current.value = targetBgColor;
+      bgColorFun(receivedData)
       const targetwidth = computedStyle.getPropertyValue('width');
       width.current.value = parseInt(targetwidth);
       widthFun(receivedData)
@@ -250,59 +266,79 @@ const UserCss = ({ styleHover, receivedData  }) => {
       const targetPosition = computedStyle.getPropertyValue('position');
       position.current.value = targetPosition;
       positionFun(receivedData) 
-      const targettop = computedStyle.getPropertyValue('top');
-      top.current.value = parseInt(targettop);
+      const targetTop = computedStyle.getPropertyValue('top');
+      top.current.value = parseInt(targetTop);
       topFun(receivedData);
-      const targetbottom = computedStyle.getPropertyValue('bottom');
-      bottom.current.value = parseInt(targetbottom);
+      const targetBottom = computedStyle.getPropertyValue('bottom');
+      bottom.current.value = parseInt(targetBottom);
       bottomFun(receivedData);
-      const targetright = computedStyle.getPropertyValue('right');
-      right.current.value = parseInt(targetright);
+      const targetRight = computedStyle.getPropertyValue('right');
+      right.current.value = parseInt(targetRight);
       rightFun(receivedData);
-      const targetleft = computedStyle.getPropertyValue('left');
-      left.current.value = parseInt(targetleft);
+      const targetLeft = computedStyle.getPropertyValue('left');
+      left.current.value = parseInt(targetLeft);
       leftFun(receivedData);
-      const targetzIndex = computedStyle.getPropertyValue('z-index');
-      zIndex.current.value =targetzIndex;
+      const targetZIndex = computedStyle.getPropertyValue('z-index');
+      zIndex.current.value =targetZIndex;
       zIndexFun(receivedData);
-      const targetdisplayStyle = computedStyle.getPropertyValue('display');
-      displayStyle.current.value = targetdisplayStyle;
+      const targetDisplayStyle = computedStyle.getPropertyValue('display');
+      displayStyle.current.value = targetDisplayStyle;
       displayStyleFun(receivedData)
-      const targetflexDirection = computedStyle.getPropertyValue('flex-direction');
-      flexDirection.current.value = targetflexDirection;
+      const targetFlexDirection = computedStyle.getPropertyValue('flex-direction');
+      flexDirection.current.value = targetFlexDirection;
       flexDirectionFun(receivedData)
-      const targetflexWrap = computedStyle.getPropertyValue('flex-wrap');
-      flexWrap.current.value = targetflexWrap;
+      const targetFlexWrap = computedStyle.getPropertyValue('flex-wrap');
+      flexWrap.current.value = targetFlexWrap;
       flexWrapFun(receivedData)
-      const targetjustifyContent = computedStyle.getPropertyValue('justify-content');
-      justifyContent.current.value = targetjustifyContent;
+      const targetJustifyContent = computedStyle.getPropertyValue('justify-content');
+      justifyContent.current.value = targetJustifyContent;
       justifyContentFun(receivedData)
-      const targetalignItems = computedStyle.getPropertyValue('align-items');
-      alignItems.current.value = targetalignItems;
+      const targetAlignItems = computedStyle.getPropertyValue('align-items');
+      alignItems.current.value = targetAlignItems;
       alignItemsFun(receivedData)
-      const targetalignSelf = computedStyle.getPropertyValue('align-self');
-      alignSelf.current.value = targetalignSelf;
+      const targetAlignSelf = computedStyle.getPropertyValue('align-self');
+      alignSelf.current.value = targetAlignSelf;
       alignSelfFun(receivedData)
-      const targetcursor = computedStyle.getPropertyValue('cursor');
-      cursor.current.value = targetcursor;
+      const targetCursor = computedStyle.getPropertyValue('cursor');
+      cursor.current.value = targetCursor;
       cursorFun(receivedData)
-      const targetoutlineStyle = computedStyle.getPropertyValue('outline-style');
-      outlineStyle.current.value = targetoutlineStyle;
+      const targetOutlineStyle = computedStyle.getPropertyValue('outline-style');
+      outlineStyle.current.value = targetOutlineStyle;
       outlineStyleFun(receivedData)
-      const targetoutlineColor = rgbToHex(computedStyle.getPropertyValue('outline-color'));
-      outlineColor.current.value = targetoutlineColor;
+      const targetOutlineColor = rgbToHex(computedStyle.getPropertyValue('outline-color'));
+      outlineColor.current.value = targetOutlineColor;
       outlineColorFun(receivedData)
-      const targetoutlineWidth = computedStyle.getPropertyValue('outline-width');
-      outlineWidth.current.value = parseInt(targetoutlineWidth);
+      const targetOutlineWidth = computedStyle.getPropertyValue('outline-width');
+      outlineWidth.current.value = parseInt(targetOutlineWidth);
       outlineWidthFun(receivedData)
-      const targetopacity = computedStyle.getPropertyValue('opacity');
-      opacity.current.value = parseFloat(targetopacity);
+      const targetOpacity = computedStyle.getPropertyValue('opacity');
+      opacity.current.value = parseFloat(targetOpacity);
       opacityFun(receivedData);
+      const targetVisibility = computedStyle.getPropertyValue('visibility');
+      visibility.current.value = parseInt(targetVisibility);
+      visibilityFun(receivedData)
+      bgImageFun(receivedData)
+      const targetBgPositionX = computedStyle.getPropertyValue('background-position-x');
+      bgPositionX.current.value = parseInt(targetBgPositionX);
+      bgPositionXFun(receivedData)
+      const targetBgPositionY = computedStyle.getPropertyValue('background-position-y');
+      bgPositionY.current.value = parseInt(targetBgPositionY);
+      bgPositionYFun(receivedData)
+      const targetBgRepeat = computedStyle.getPropertyValue('background-repeat');
+      bgRepeat.current.value = targetBgRepeat;
+      bgRepeatFun(receivedData)
+      const targetBgSizeX = computedStyle.getPropertyValue('background-size').split(' ')[0];
+      bgSizeX.current.value = parseInt(targetBgSizeX);
+      bgSizeXFun(receivedData)
+      const targetBgSizeY = computedStyle.getPropertyValue('background-size').split(' ')[1];
+      bgSizeY.current.value = parseInt(targetBgSizeY);
+      bgSizeYFun(receivedData)
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
       setActiveElement(receivedData)
     }
   }, [receivedData]);
+
 
   function fontSizeOnChange(){
     fontSizeValue.style.fontSize=`${fontSize.current.value}px`
@@ -466,6 +502,36 @@ const UserCss = ({ styleHover, receivedData  }) => {
   function opacityOnChange(){
     opacityValue.style.opacity=opacity.current.value
   }
+  function visibilityOnChange(){
+    visibilityValue.style.visibility=visibility.current.value
+  }
+  function bgImageOnChange(){
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      bgImageValue.style.backgroundImage = `url('${e.target.result}')`;
+    };
+    reader.readAsDataURL(bgImage.current.files[0]);
+  }
+  function bgPositionXOnChange(){
+    bgPositionXValue.style.backgroundPositionX=`${bgPositionX.current.value}px`;
+  }
+  function bgPositionYOnChange(){
+    bgPositionYValue.style.backgroundPositionY=`${bgPositionY.current.value}px`;
+  }
+  function bgRepeatOnChange(){
+    bgRepeatValue.style.backgroundRepeat=bgRepeat.current.value
+  }
+  function bgSizeXOnChange(){
+    const bx=bgSizeX.current.value ? `${bgSizeX.current.value}px` : 'auto';
+    const by=bgSizeY.current.value ? `${bgSizeY.current.value}px` : 'auto';
+    bgSizeXValue.style.backgroundSize=`${bx} ${by}`
+  }
+  function bgSizeYOnChange(){
+    const bx=bgSizeX.current.value ? `${bgSizeX.current.value}px` : 'auto';
+    const by=bgSizeY.current.value ? `${bgSizeY.current.value}px` : 'auto';
+    bgSizeXValue.style.backgroundSize=`${bx} ${by}`
+  }
   
   
   function textTableStyle(){
@@ -480,10 +546,16 @@ const UserCss = ({ styleHover, receivedData  }) => {
   function flexboxAndGridStyles(){
     setExpandfexboxAndGridStyles(!expandfexboxAndGridStyles)
   }
+  function miscellaneous(){
+    setExpandMiscellaneous(!expandMiscellaneous)
+  }
+  function backgroundStyles(){
+    setExpandBackgroundStyles(!expandBackgroundStyles)
+  }
 
   return (
     <div className={`style ${styleHover ? '' : 'styleHovered'}`}>
-      <div className="styleBlocks">
+      <div className="styleBlocks" style={{overflow:'hidden'}}>
         <p onClick={textTableStyle}><FontAwesomeIcon icon={faAngleDown} /> Text Styles <FontAwesomeIcon icon={faAngleDown} /></p>
         <div className={`styleTable ${expandTextTable ? 'expandTextTable' : ''}`}>
           <table>
@@ -561,10 +633,6 @@ const UserCss = ({ styleHover, receivedData  }) => {
               <td><label htmlFor="wordSpacing">Word Spacing: </label></td>
               <td><input type="number" ref={wordSpacing} name='wordSpacing' className='wordSpacing' onChange={wordSpacingOnChange}/><br /></td>
             </tr>
-            {/* <tr>
-              <td><label htmlFor="bgColor"> Background Color: </label></td>
-              <td><input type="color" ref={bgColor} name='bgColor' className='bgColor' onChange={bgColorOnChange}/><br /></td>
-            </tr> */}
             <tr>
               <td><label htmlFor="textDecoration">Text Decoration: </label></td>
               <td>
@@ -591,7 +659,49 @@ const UserCss = ({ styleHover, receivedData  }) => {
           </table>
         </div>
       </div>
-      <div className="styleBlocks">
+      <div className="styleBlocks" style={{overflow:'hidden'}}>
+        <p onClick={backgroundStyles}><FontAwesomeIcon icon={faAngleDown} />Background Styles<FontAwesomeIcon icon={faAngleDown} /></p>
+        <div className={`styleTable ${expandBackgroundStyles ? 'expandBackgroundStyles' : ''}`}>
+          <table>
+            <tr>
+              <td><label htmlFor="bgColor"> Background Color:</label></td>
+              <td><input type="color" ref={bgColor} name='bgColor' className='bgColor' onChange={bgColorOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="bgImage"> Background <br /> Image:</label></td>
+              <td><input type="file" accept="image/*" ref={bgImage} name='bgImage' className='bgImage' onChange={bgImageOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="bgPositionX"> Background <br /> Position-X:</label></td>
+              <td><input type="number" ref={bgPositionX} name='bgPositionX' className='bgPositionX' onChange={bgPositionXOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="bgPositionY"> Background <br /> Position-Y:</label></td>
+              <td><input type="number" ref={bgPositionY} name='bgPositionY' className='bgPositionY' onChange={bgPositionYOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="bgRepeat">Background <br /> Repeat: </label></td>
+              <td>
+                <select ref={bgRepeat} name='bgRepeat' className='bgRepeat' onChange={bgRepeatOnChange}>
+                  <option value="repeat">Repeat</option>
+                  <option value="repeat-x">Repeat Horizontally</option>
+                  <option value="repeat-y">Repeat Vertically</option>
+                  <option value="no-repeat">No Repeat</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="bgSizeX"> Background <br /> Size-X:</label></td>
+              <td><input type="number" ref={bgSizeX} name='bgSizeX' className='bgSizeX' onChange={bgSizeXOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="bgSizeY"> Background <br /> Size-Y:</label></td>
+              <td><input type="number" ref={bgSizeY} name='bgSizeY' className='bgSizeY' onChange={bgSizeYOnChange}/><br /></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div className="styleBlocks" style={{overflow:'hidden'}}>
         <p onClick={boxStyle}><FontAwesomeIcon icon={faAngleDown} /> Box Style <FontAwesomeIcon icon={faAngleDown} /></p>
         <div className={`styleTable ${expandBoxStyle ? 'expandBoxStyle' : ''}`}>
           <table>
@@ -735,7 +845,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
           </table>
         </div>
       </div>
-      <div className="styleBlocks">
+      <div className="styleBlocks" style={{overflow:'hidden'}}>
         <p onClick={positioning}><FontAwesomeIcon icon={faAngleDown} /> Positioning <FontAwesomeIcon icon={faAngleDown} /></p>
         <div className={`styleTable ${expandPositioning ? 'expandPositioning' : ''}`}>
           <table>
@@ -775,7 +885,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
           </table>
         </div>
       </div>
-      <div className="styleBlocks">
+      <div className="styleBlocks" style={{overflow:'hidden'}}>
         <p onClick={flexboxAndGridStyles}><FontAwesomeIcon icon={faAngleDown} />Flex and Grid<FontAwesomeIcon icon={faAngleDown} /></p>
         <div className={`styleTable ${expandfexboxAndGridStyles ? 'expandfexboxAndGridStyles' : ''}`}>
           <table>
@@ -851,6 +961,13 @@ const UserCss = ({ styleHover, receivedData  }) => {
                 </select>
               </td>
             </tr>
+          </table>
+        </div>
+      </div>
+      <div className="styleBlocks" style={{overflow:'hidden'}}>
+        <p onClick={miscellaneous}><FontAwesomeIcon icon={faAngleDown} />Miscellaneous<FontAwesomeIcon icon={faAngleDown} /></p>
+        <div className={`styleTable ${expandMiscellaneous ? 'expandMiscellaneous' : ''}`}>
+          <table>
             <tr>
               <td><label htmlFor="cursor">Cursor: </label></td>
               <td>
@@ -899,6 +1016,15 @@ const UserCss = ({ styleHover, receivedData  }) => {
             <tr>
               <td><label htmlFor="opacity">Opacity: </label></td>
               <td><input type="number" ref={opacity} name='opacity' className='opacity' onChange={opacityOnChange}/><br /></td>
+            </tr>
+            <tr>
+              <td><label htmlFor="visibility">Visibility: </label></td>
+              <td>
+                <select ref={visibility} name='visibility' className='visibility' onChange={visibilityOnChange}>
+                  <option value="visible">Visible</option>
+                  <option value="hidden">Hidden</option>
+                </select>
+              </td>
             </tr>
           </table>
         </div>

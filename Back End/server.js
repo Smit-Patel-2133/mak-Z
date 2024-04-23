@@ -220,7 +220,7 @@ app.post('/download', async (req, res) => {
             templateId+=templat_label.substring(0,2)
             templateId+=(templat_visibility) ? 't' : 'f'
             templateId+='_'+timestamp.toString().substring(2,8)
-            await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${templateId},${templat_name},${templat_label},${templat_visibility})`;
+            // await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${templateId},${templat_name},${templat_label},${templat_visibility})`;
             console.log('File Saved')
         }catch(error){
             console.log('Error at catch block: '+error)

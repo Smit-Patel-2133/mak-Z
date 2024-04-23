@@ -54,6 +54,16 @@ const editPage = () => {
     }
 
     function eyeclicked(){
+        const elements = document.getElementsByClassName('editable');
+        if(!eyeClick){
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.border = '0px solid black';
+            }
+        }else{
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].style.border = '1px solid #ccc';
+            }
+        }
         setEyeClick(!eyeClick)
     }
 
@@ -191,6 +201,23 @@ const editPage = () => {
                                     <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "video");}}>
                                         <FontAwesomeIcon icon={faVideo} />
                                         <p>Video</p>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="mainList">
+                                <p>Components</p>
+                                <ul>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "button");}}>
+                                        <FontAwesomeIcon icon={faImage} />
+                                        <p>Button</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "form");}}>
+                                        <FontAwesomeIcon icon={faImage} />
+                                        <p>Form</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "navbar");}}>
+                                        <FontAwesomeIcon icon={faImage} />
+                                        <p>Navbar</p>
                                     </li>
                                 </ul>
                             </li>
