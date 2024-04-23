@@ -10,8 +10,9 @@
     transition: 1s ease-in-out;
     padding-bottom: 100px;
     overflow: hidden;
+    position: relative;
 } 
-.editable {
+.editableBorder {
     border: 1px solid #ccc;
 }
 [contenteditable="true"]:focus {
