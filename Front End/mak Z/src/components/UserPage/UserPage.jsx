@@ -77,6 +77,25 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         sendDataToUserCss(e.target);
     }
 
+    const handleDoubleClick = (e) => {
+        e.preventDefault();
+        const el=e.target;
+        el.setAttribute('contenteditable','flase')
+    };
+
+    function handlePagebodyElementDrag(xOffset,yOffset,e){
+        const el=e.target;
+        const cursorValX=e.clientX;
+        const cursorValY=e.clientY;
+        // (cursorValY-elementPosition.top)
+        const bodyPagePosition=bodyPageRef.current.getBoundingClientRect();
+        const elementPosition=el.getBoundingClientRect();
+        // console.log(xOffset)
+        // console.log(yOffset)
+        el.style.top=`${(cursorValY-bodyPagePosition.top)-yOffset}px`
+        el.style.left=`${(cursorValX-bodyPagePosition.left)-xOffset}px`
+    }
+
     const handleDrop = (e) => {
         e.preventDefault();
         const element = e.dataTransfer.getData("element");
@@ -118,19 +137,28 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             console.log(`Function '${element}' not found`);
         }
 
-        function setCommonAttributes(contentVariable,bodyPage,targetElement,cursorPositionX,cursorPositionY){
+        function setCommonAttributes(contentVariable,bodyPage,targetElement){
             contentVariable.setAttribute('contenteditable', 'true');
             contentVariable.classList.add('editable');
             contentVariable.classList.add('editableBorder');
             contentVariable.addEventListener('click', handleActive);
             contentVariable.style.width='fit-content';
-            contentVariable.style.position='absolute';
-            contentVariable.style.top=`${cursorPositionY}px`;
-            contentVariable.style.left=`${cursorPositionX}px`;
+            const bodyPagePosition=bodyPage.getBoundingClientRect();
+            if(bodyPage===bodyPageRef.current){
+                contentVariable.style.position='absolute';
+                contentVariable.setAttribute('draggable','true');
+                contentVariable.addEventListener('dblclick',handleDoubleClick);
+                contentVariable.addEventListener('drag',(e)=>{handlePagebodyElementDrag(xOffset,yOffset,e)});
+                contentVariable.style.left=`${(cursorValueX-bodyPagePosition.left)}px`;
+                contentVariable.style.top=`${(cursorValueY-bodyPagePosition.top)}px`;
+            }
             if(targetElement){
                 const TargetTagName=targetElement.tagName.toLowerCase();
                 const cotentTagName=contentVariable.tagName.toLowerCase();
                 if(TargetTagName=='div' || TargetTagName=='section' || TargetTagName=='header' || TargetTagName=='footer' || cotentTagName=='strong' || cotentTagName=='del' || cotentTagName=='ins' || cotentTagName=='sup' || cotentTagName=='sub' || cotentTagName=='em'){
+                    const targetElementPosition=targetElement.getBoundingClientRect();
+                    contentVariable.style.left=`${(cursorValueX-targetElementPosition.left)}px`;
+                    contentVariable.style.top=`${(cursorValueY-targetElementPosition.top)}px`;
                     targetElement.appendChild(contentVariable)
                 }else{
                     targetElement.parentElement.insertBefore(contentVariable, targetElement);
@@ -153,8 +181,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             const heading1Element = document.createElement('h1');
             heading1Element.textContent = 'Here is your Heading 1';
             const targetElement = findTargetElement(e);
-            const b=bodyPage.getBoundingClientRect();
-            setCommonAttributes(heading1Element,bodyPage,targetElement,(cursorValueX-b.left),(cursorValueY-b.top));
+            setCommonAttributes(heading1Element,bodyPage,targetElement);
         }
 
         function heading2(){
@@ -494,6 +521,10 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             if (selectionElement) {
                 const clonedNode = selectionElement.cloneNode(true);
                 clonedNode.addEventListener('click', handleActive);
+                const computedStyleClone = window.getComputedStyle(selectionElement);
+                const cloneNodeHeight = computedStyleClone.getPropertyValue('height');
+                const topPosition=computedStyleClone.getPropertyValue('top');
+                clonedNode.style.top=`${parseInt(cloneNodeHeight)+parseInt(topPosition)}px`
                 clonedNode.click();
                 insertAfter(clonedNode, activeElement);
                 const range = document.createRange();

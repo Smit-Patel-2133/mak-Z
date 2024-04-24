@@ -11,9 +11,10 @@
     padding-bottom: 100px;
     overflow: hidden;
     position: relative;
+    z-index: -1;
 } 
 .editableBorder {
-    border: 1px solid #ccc;
+    border: 1px solid #ccc; 
 }
 [contenteditable="true"]:focus {
     outline: none;
