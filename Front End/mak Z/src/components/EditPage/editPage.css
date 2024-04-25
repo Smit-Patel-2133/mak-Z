@@ -3,7 +3,6 @@
     color: white;
     width: 100%;
     position: fixed;
-    top: 0;
     box-sizing: border-box; 
     display: inline;
 }
@@ -95,9 +94,7 @@
     background: #ccc;
 }
 
-.add:hover,
-.download:hover,
-.eye:hover {
+.toolBar li:hover {
     cursor: pointer;
 }
 
@@ -219,12 +216,16 @@
     width: 120px;
     max-width: fit-content;
 }
+.templateInfo input:focus, .templateLabel:focus{
+    border-bottom: 1px solid rgb(136, 134, 134);
+    outline: none;
+}
 .templateTypeBlock{
     display: flex;
     justify-content: right;
     margin: 10px;
 }
-.templateTypeBlock select{
+.templateTypeBlock select, .templateLabel{
     background-color: black;
     margin-left: 10px;
 }

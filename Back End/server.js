@@ -189,7 +189,7 @@ app.post('/download', async (req, res) => {
                             <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
                         </head>
                     <body>`;
-    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('class="editable" ','').replaceAll('class="editable active" ','');
+    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','');
     codeData += `   </body>
                 </html>`;
     codeData = beautify(codeData, { indent_size: 4 });  
@@ -210,21 +210,6 @@ app.post('/download', async (req, res) => {
         };
 
         res.set('Content-Type', 'text/html');
-        try {
-            const fileData = fs.readFileSync(filePath);
-            const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
-            const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
-            const templat_visibility=(req.body.templateType=='public') ? true : false
-            const timestamp = Date.now();
-            let templateId=templat_name.substring(0,2)
-            templateId+=templat_label.substring(0,2)
-            templateId+=(templat_visibility) ? 't' : 'f'
-            templateId+='_'+timestamp.toString().substring(2,8)
-            // await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${templateId},${templat_name},${templat_label},${templat_visibility})`;
-            console.log('File Saved')
-        }catch(error){
-            console.log('Error at catch block: '+error)
-        }
 
         res.sendFile(filePath, options, (err) => {
             if (err) {
@@ -233,6 +218,26 @@ app.post('/download', async (req, res) => {
             }
         });
     });
+});
+
+app.post('/save', async (req, res) => {
+    try {
+        const filePath = path.join(__dirname, '../../mak-Z.html');
+        const fileData = fs.readFileSync(filePath);
+        const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
+        const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
+        const templat_visibility=(req.body.templateType=='public') ? true : false
+        const timestamp = Date.now();
+        let templateId=templat_name.substring(0,2)
+        templateId+=templat_label.substring(0,2)
+        templateId+=(templat_visibility) ? 't' : 'f'
+        templateId+='_'+timestamp.toString().substring(2,8)
+        await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${templateId},${templat_name},${templat_label},${templat_visibility})`;
+        res.status(200).send('File Saved');
+    }catch(error){
+        console.log('Error at catch block: '+error);
+        res.status(500).send('Problem in File Saved');
+    }
 });
 
 app.delete('/delete/:filename', (req, res) => {

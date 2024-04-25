@@ -9,7 +9,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
     const user = useSelector(state => state.auth);
     const [activeElement,setActiveElement]=useState(null)
 
-    const logOuterHTML = (name,label,type) => {
+    const logOuterHTML = (name,label,type,saved) => {
         const code = bodyPageRef.current.outerHTML;
         const templateName=name.value
         const templateLabel=label.value
@@ -19,15 +19,26 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         html2canvas(bodyPageRef.current).then(canvas => {
             const imageOfTemplate=canvas.toDataURL();
             try {
-                axios.post('http://localhost:5000/download', { code, userEmail, imageOfTemplate, templateName, templateLabel, templateType}, { responseType: 'blob' })
+                axios.post('http://localhost:5000/download', { code }, { responseType: 'blob' })
                     .then(response => {
-                        const url = window.URL.createObjectURL(new Blob([response.data]));
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.setAttribute('download', 'Mak-Z.html');
-                        document.body.appendChild(link);
-                        link.click();
-                        link.parentNode.removeChild(link);
+                        if(!saved){
+                            const url = window.URL.createObjectURL(new Blob([response.data]));
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', 'Mak-Z.html');
+                            document.body.appendChild(link);
+                            link.click();
+                            link.parentNode.removeChild(link);
+                        }else{
+                            axios.post('http://localhost:5000/save', { userEmail, imageOfTemplate, templateName, templateLabel, templateType})
+                            .then(() => {
+                                alert('Your File Saved Successfully')
+                                console.log('File Saved');
+                            })
+                            .catch(error => {
+                                console.error('Error in File Save:', error);
+                            });
+                        }
                         axios.delete('http://localhost:5000/delete/Mak-Z.html')
                         .then(() => {
                             console.log('File deleted successfully');
@@ -66,6 +77,25 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         sendDataToUserCss(e.target);
     }
 
+    const handleDoubleClick = (e) => {
+        e.preventDefault();
+        const el=e.target;
+        el.setAttribute('contenteditable','flase')
+    };
+
+    function handlePagebodyElementDrag(xOffset,yOffset,e){
+        const el=e.target;
+        const cursorValX=e.clientX;
+        const cursorValY=e.clientY;
+        // (cursorValY-elementPosition.top)
+        const bodyPagePosition=bodyPageRef.current.getBoundingClientRect();
+        const elementPosition=el.getBoundingClientRect();
+        // console.log(xOffset)
+        // console.log(yOffset)
+        el.style.top=`${(cursorValY-bodyPagePosition.top)-yOffset}px`
+        el.style.left=`${(cursorValX-bodyPagePosition.left)-xOffset}px`
+    }
+
     const handleDrop = (e) => {
         e.preventDefault();
         const element = e.dataTransfer.getData("element");
@@ -94,8 +124,12 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             'video': video,
             'button': button,
             'form': form,
-            'navbar': navbar
+            'navbar': navbar,
+            'dropdown': dropdown
         };
+        
+        const cursorValueX=e.clientX;
+        const cursorValueY=e.clientY;
 
         if (functionMap[element]) {
             functionMap[element]();
@@ -106,11 +140,25 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function setCommonAttributes(contentVariable,bodyPage,targetElement){
             contentVariable.setAttribute('contenteditable', 'true');
             contentVariable.classList.add('editable');
+            contentVariable.classList.add('editableBorder');
             contentVariable.addEventListener('click', handleActive);
+            contentVariable.style.width='fit-content';
+            const bodyPagePosition=bodyPage.getBoundingClientRect();
+            if(bodyPage===bodyPageRef.current){
+                contentVariable.style.position='absolute';
+                contentVariable.setAttribute('draggable','true');
+                contentVariable.addEventListener('dblclick',handleDoubleClick);
+                contentVariable.addEventListener('drag',(e)=>{handlePagebodyElementDrag(xOffset,yOffset,e)});
+                contentVariable.style.left=`${(cursorValueX-bodyPagePosition.left)}px`;
+                contentVariable.style.top=`${(cursorValueY-bodyPagePosition.top)}px`;
+            }
             if(targetElement){
                 const TargetTagName=targetElement.tagName.toLowerCase();
                 const cotentTagName=contentVariable.tagName.toLowerCase();
                 if(TargetTagName=='div' || TargetTagName=='section' || TargetTagName=='header' || TargetTagName=='footer' || cotentTagName=='strong' || cotentTagName=='del' || cotentTagName=='ins' || cotentTagName=='sup' || cotentTagName=='sub' || cotentTagName=='em'){
+                    const targetElementPosition=targetElement.getBoundingClientRect();
+                    contentVariable.style.left=`${(cursorValueX-targetElementPosition.left)}px`;
+                    contentVariable.style.top=`${(cursorValueY-targetElementPosition.top)}px`;
                     targetElement.appendChild(contentVariable)
                 }else{
                     targetElement.parentElement.insertBefore(contentVariable, targetElement);
@@ -133,7 +181,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             const heading1Element = document.createElement('h1');
             heading1Element.textContent = 'Here is your Heading 1';
             const targetElement = findTargetElement(e);
-            setCommonAttributes(heading1Element,bodyPage,targetElement)
+            setCommonAttributes(heading1Element,bodyPage,targetElement);
         }
 
         function heading2(){
@@ -181,11 +229,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             const oListElement = document.createElement('ol');
             const listItemElement = document.createElement('li');
             listItemElement.textContent = 'Here is your list';
-            listItemElement.setAttribute('contenteditable', 'true');
-            listItemElement.setAttribute('class', 'editable');
-            listItemElement.addEventListener('click', handleActive);
             listItemElement.style.listStyleType = 'number';
-            oListElement.appendChild(listItemElement);
+            setCommonAttributes(listItemElement,oListElement,null);
             const targetElement = findTargetElement(e);
             setCommonAttributes(oListElement,bodyPage,targetElement);
         }
@@ -193,15 +238,10 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function uList(){
             const bodyPage = bodyPageRef.current;
             const uListElement = document.createElement('ol');
-            uListElement.setAttribute('class', 'editable');
-            uListElement.addEventListener('click', handleActive);
             const listItemElement = document.createElement('li');
             listItemElement.textContent = 'Here is your list';
-            listItemElement.setAttribute('contenteditable', 'true');
-            listItemElement.setAttribute('class', 'editable');
-            listItemElement.addEventListener('click', handleActive);
             listItemElement.style.listStyleType = 'disc';
-            uListElement.appendChild(listItemElement);
+            setCommonAttributes(listItemElement,uListElement,null);
             const targetElement = findTargetElement(e);
             setCommonAttributes(uListElement,bodyPage,targetElement);
         }
@@ -439,6 +479,29 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             return liElement;
         }
         
+        function dropdown() {
+            const bodyPage = bodyPageRef.current;
+            
+            // Create dropdown select element
+            const dropDownElement = document.createElement('select');
+            dropDownElement.classList.add('form-control'); // Add Bootstrap form-control class
+            
+            // Create dropdown options
+            const dropDownoptionElement1 = document.createElement('option');
+            dropDownoptionElement1.textContent = 'DropDown1';
+            const dropDownoptionElement2 = document.createElement('option');
+            dropDownoptionElement2.textContent = 'DropDown2';
+            const dropDownoptionElement3 = document.createElement('option');
+            dropDownoptionElement3.textContent = 'DropDown3';
+            
+            // Append options to select element
+            setCommonAttributes(dropDownoptionElement1,dropDownElement,null);
+            setCommonAttributes(dropDownoptionElement2,dropDownElement,null);
+            setCommonAttributes(dropDownoptionElement3,dropDownElement,null);
+            
+            // Append dropdown container to body or a target element
+            setCommonAttributes(dropDownElement,bodyPage,null); // Or replace bodyPage with the target element
+        }
         
 
     }
@@ -458,6 +521,10 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             if (selectionElement) {
                 const clonedNode = selectionElement.cloneNode(true);
                 clonedNode.addEventListener('click', handleActive);
+                const computedStyleClone = window.getComputedStyle(selectionElement);
+                const cloneNodeHeight = computedStyleClone.getPropertyValue('height');
+                const topPosition=computedStyleClone.getPropertyValue('top');
+                clonedNode.style.top=`${parseInt(cloneNodeHeight)+parseInt(topPosition)}px`
                 clonedNode.click();
                 insertAfter(clonedNode, activeElement);
                 const range = document.createRange();
@@ -497,14 +564,14 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         }
     }
 
-    function abhay(e){
+    function removeActiveElementClass(e){
         if (bodyPageRef.current && e.target === bodyPageRef.current) {
             activeElement.classList.remove('activeElementClass')
         }
     }
 
   return (
-    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={abhay}>
+    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={removeActiveElementClass}>
     </div>
   )
 }
