@@ -19,13 +19,8 @@ const Header = () => {
                 ) : (
                     <li><NavLink to="/login">Login</NavLink></li>
                     )}
-<<<<<<< HEAD
-                <li><NavLink to="/AboutUs">About Us</NavLink></li> {/* Example NavLink */}
-                <li><NavLink to="/ContactUs">Contact Us</NavLink></li> {/* Example NavLink */}
-=======
                 <li><NavLink to="/ContactUs">Contact Us</NavLink></li> {/* Example NavLink */}
                 <li><NavLink to="/AboutUs">About Us</NavLink></li> {/* Example NavLink */}
->>>>>>> fe9e12d0db0aae9b2660a4105c971b5b1519f344
                 <li><NavLink to="/templates">Template</NavLink></li> {/* Example NavLink */}
                 <li><NavLink to="/home">Home</NavLink></li> {/* Example NavLink */}
             </ul>
