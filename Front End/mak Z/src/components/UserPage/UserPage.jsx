@@ -8,6 +8,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
 
     const user = useSelector(state => state.auth);
     const [activeElement,setActiveElement]=useState(null)
+    var elementCursorX=0;
+    var elementCursorY=0;
 
     const logOuterHTML = (name,label,type,saved) => {
         const code = bodyPageRef.current.outerHTML;
@@ -61,6 +63,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
 
     if (bodyPageRef.current) {
         bodyPageRef.current.logOuterHTML = logOuterHTML;
+        bodyPageRef.current.eyeClickUserPage = eyeClickUserPage;
     }
         
     function selectElement(e){
@@ -77,23 +80,50 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         sendDataToUserCss(e.target);
     }
 
-    const handleDoubleClick = (e) => {
+    function eyeClickUserPage(){
+        if(activeElement){
+            const hasActiveClass = activeElement.classList.contains('activeElementClass');
+            if(!hasActiveClass){
+                activeElement.classList.add('activeElementClass')
+            }else{
+                activeElement.classList.remove('activeElementClass')
+            }
+        }
+    }
+
+    const handleDoubleClickOnDragableElement = (e) => {
         e.preventDefault();
         const el=e.target;
-        el.setAttribute('contenteditable','flase')
+        console.log(el)
+        if(el.getAttribute('contenteditable')=='true'){
+            el.setAttribute('contenteditable','flase');
+            el.classList.add('forCursorGrab')
+        }else{
+            el.setAttribute('contenteditable','true');
+            el.classList.remove('forCursorGrab')
+        }
     };
 
-    function handlePagebodyElementDrag(xOffset,yOffset,e){
+    function handlePagebodyElementDragStart(e) {
+        const xOffset = Math.max(0, e.offsetX);
+        const yOffset = Math.max(0, e.offsetY);
+        elementCursorX=xOffset+3.5;
+        elementCursorY=yOffset+3.5;
+    }
+    
+
+    function handlePagebodyElementDrag(e,bodyPage){
         const el=e.target;
         const cursorValX=e.clientX;
         const cursorValY=e.clientY;
-        // (cursorValY-elementPosition.top)
-        const bodyPagePosition=bodyPageRef.current.getBoundingClientRect();
-        const elementPosition=el.getBoundingClientRect();
-        // console.log(xOffset)
-        // console.log(yOffset)
-        el.style.top=`${(cursorValY-bodyPagePosition.top)-yOffset}px`
-        el.style.left=`${(cursorValX-bodyPagePosition.left)-xOffset}px`
+        const bodyPagePosition=bodyPage.getBoundingClientRect();
+        el.style.top=`${Math.max(0,(cursorValY-bodyPagePosition.top)-elementCursorY)}px`
+        el.style.left=`${Math.max(0,(cursorValX-bodyPagePosition.left)-elementCursorX)}px`
+    }
+
+    function handlePagebodyElementDragEnd(e){
+        e.target.setAttribute('contenteditable','true');
+        e.target.classList.remove('forCursorGrab')
     }
 
     const handleDrop = (e) => {
@@ -144,11 +174,13 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             contentVariable.addEventListener('click', handleActive);
             contentVariable.style.width='fit-content';
             const bodyPagePosition=bodyPage.getBoundingClientRect();
-            if(bodyPage===bodyPageRef.current){
+            if(bodyPage && bodyPage==bodyPageRef.current){
                 contentVariable.style.position='absolute';
                 contentVariable.setAttribute('draggable','true');
-                contentVariable.addEventListener('dblclick',handleDoubleClick);
-                contentVariable.addEventListener('drag',(e)=>{handlePagebodyElementDrag(xOffset,yOffset,e)});
+                contentVariable.addEventListener('dblclick',handleDoubleClickOnDragableElement);
+                contentVariable.addEventListener('dragstart',handlePagebodyElementDragStart);
+                contentVariable.addEventListener('drag',(e)=>handlePagebodyElementDrag(e,bodyPage));
+                contentVariable.addEventListener('dragend',handlePagebodyElementDragEnd);
                 contentVariable.style.left=`${(cursorValueX-bodyPagePosition.left)}px`;
                 contentVariable.style.top=`${(cursorValueY-bodyPagePosition.top)}px`;
             }
@@ -321,6 +353,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function div(){
             const bodyPage = bodyPageRef.current;
             const divElement = document.createElement('div');
+            divElement.style.minWidth='550px';
+            divElement.style.height='250px';
             divElement.textContent = 'Here is your Div';
             const targetElement = findTargetElement(e);
             setCommonAttributes(divElement,bodyPage,targetElement)

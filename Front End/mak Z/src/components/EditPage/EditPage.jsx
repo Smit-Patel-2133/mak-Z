@@ -61,8 +61,10 @@ const editPage = () => {
     }
 
     function eyeclicked(){
+        if(userPage.current){
+            userPage.current.eyeClickUserPage()
+        }
         const elements = document.getElementsByClassName('editable');
-        console.log(elements)
         if(!eyeClick){
             for (let i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('editableBorder');
