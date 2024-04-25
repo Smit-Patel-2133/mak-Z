@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom'; // Import NavLink
-import logo from '../../assets/picture/new black noBG.png';
+import logo from '../../assets/picture/new white cap noBG.png';
 import './header.css';
 
 const Header = () => {
