@@ -2,6 +2,7 @@ import React from "react";
 import Header from '../Header/Header';
 import './AboutUs.css'
 import dhruv from '../../assets/picture/feedback_dhruv.png';
+import abhay from '../../assets/picture/feedback_abhay.jpg';
 import Black_noBG from '../../assets/picture/white_noBG.png';
 import people from '../../assets/picture/people.jpg';
 import people1 from '../../assets/picture/people1.jpg';      
@@ -56,16 +57,46 @@ const AboutUs=()=>{
     </div>
     <div className="part3-4"><img src={working} alt="working" /></div>
     </div>
-    <dive className="part4">
+    <div className="part4">
         <div className="part4-0" style={{float:'left'}}>
            <div className="part4-1">
             content
             <p>name:Dhruv Bhatt</p>
             <p>email:bhattdhruv996@gmail.com</p>
-            <p>work as a front End develoer</p>
+            <p>work as a front End develoer.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
             </div>
+            <div><img className="A"  src={abhay} alt="Abhay" /></div>
+            <div className="part4-4">
+            content
+            <p>name:Abhay Hingragiya</p>
+            <p>email:abhayhigrajiya996@gmail.com</p>
+            <p>work as a becke End develoer.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
         </div>
-    </dive>
+            <div><img className="AK"  src={abhay} alt="Abhay" /></div>
+        </div>
+        <div className="part4-2"><img className="D"  src={dhruv} alt="Dhruv" /></div>
+        <div className="part4-3">
+            content
+            <p>name:Abhay Hingragiya</p>
+            <p>email:abhayhigrajiya996@gmail.com</p>
+            <p>work as a becke End develoer.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
+        </div>
+        <div ><img className="S"  src={dhruv} alt="Dhruv" /></div>
+        <div className="part4-5">
+            content
+            <p>name:Dhruv Bhatt</p>
+            <p>email:bhattdhruv996@gmail.com</p>
+            <p>work as a front End develoer.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
+            <p>All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</p>
+        </div>
+    </div>
 
 
     </>)

@@ -203,14 +203,65 @@
     right: 81px;
     top:-250px
 }
-
 .part4-1{
-    border: 2px black solid;
-    width: 650px;
+    width: 850px;
     padding-top: 60px;
     padding-left: 80px;
     margin-top: 20px;
     margin-left:10px ;
-    
-    
+}
+.D{
+    background-color: transparent;
+    width: 144px;
+    float: right;
+    transform:  scale(2);
+    position: relative;
+    top:116px; 
+    right: -100px;
+}
+.A{
+    background-color: transparent;
+    width: 144px;
+    transform:  scale(2);
+    position: relative;
+    top:190px; 
+    left:160px;
+}
+.part4-3{
+    width: 850px;
+    float: right;
+    padding-left: 80px;
+    margin-top: -850px;
+    margin-left:30px ;
+}
+.S{
+    background-color: transparent;
+    width: 124px;
+    float: right;
+    transform:  scale(2);
+    position: relative;
+    top:-400px;
+    right: 200px;
+}
+.part4-4{
+    width: 850px;
+    padding-top: 60px;
+    padding-left: 80px;
+    margin-top: 270px;
+    margin-left:10px ;
+}
+.AK{
+    background-color: transparent;
+    width: 144px;
+    transform:  scale(2);
+    position: relative;
+    top:170px; 
+    left:160px;
+}
+.part4-5{
+    width: 990px;
+    float: right;
+    padding-left: 250px;
+    margin-top: -50px;
+    margin-left:-10px ;
 }
