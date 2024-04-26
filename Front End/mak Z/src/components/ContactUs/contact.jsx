@@ -1,8 +1,10 @@
 import React from 'react';
-//import './header.css';
+import Header from '../Header/Header';
 
 const Contact = () => {
   return (
+    <>
+    <Header/>
     <div style={{ display: 'flex', width: '100vw', height: '100vh', background: '#FCFDFD' }}>
       <div style={{ width: '45vw', height: '100%', backgroundImage: 'url("../src/assets/picture/contactus.jpg")', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
         
@@ -28,7 +30,7 @@ const Contact = () => {
         <div id="success-msg" style={{ width: '40vw', margin: '0.125rem 0', fontSize: '0.75rem', textTransform: 'uppercase', fontFamily: 'Jost', color: '#818386', transitionDelay: '3s' }}></div>
       </div>
     </div>
-  );
+    </> );
 };
 
 export default Contact;
