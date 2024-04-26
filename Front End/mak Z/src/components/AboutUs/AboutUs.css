@@ -167,7 +167,7 @@
 
 .part3{
     width: 100%;
-    height: 100%;
+    height: 500px;
     background-color: black;
     padding-top: 100px;
     padding-left: 100px;
@@ -180,11 +180,11 @@
     font-weight: 50px;
 }
 .part3-2{
+    width: 50%;
     color: rgb(255, 255, 255);
     font-size: 50px;
     font-weight: 800px;
     text-align: left ;
-    width: 50%;
     font-style: italic;
 }
 .part3-3{
@@ -192,5 +192,25 @@
     font-size: 20px;
     font-weight: 50px;
     width: 50%;
+    
+}
+.part3-4{
+    background-color: transparent;
+    width: 250px;
+    float: right;
+    transform:  scale(2);
+    position: relative;
+    right: 81px;
+    top:-250px
+}
+
+.part4-1{
+    border: 2px black solid;
+    width: 650px;
+    padding-top: 60px;
+    padding-left: 80px;
+    margin-top: 20px;
+    margin-left:10px ;
+    
     
 }

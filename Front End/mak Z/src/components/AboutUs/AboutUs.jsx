@@ -6,6 +6,7 @@ import Black_noBG from '../../assets/picture/white_noBG.png';
 import people from '../../assets/picture/people.jpg';
 import people1 from '../../assets/picture/people1.jpg';      
 import people3 from '../../assets/picture/people3.jpg';
+import working from '../../assets/picture/working.jpg';
 
 
 const AboutUs=()=>{
@@ -48,10 +49,24 @@ const AboutUs=()=>{
         <div className="part2-5"><img src={Black_noBG} alt="logo" /></div>
     </div>
     <div className="part3">
+        <div className="part3-0" style={{float:'left'}}>
         <div className="part3-1"> WHO WE ARE</div>
         <div className="part3-2">We’re as diverse as the websites our customers create.</div>
         <div className="part3-3">All of us work on improving WordPress.com and the products that help our customers find new ways to do things online. At Automattic, we roll out updates almost every day, and develop other services, from WooCommerce and Jetpack to Gravatar and Simplenote, to enhance your experience on the web.</div>
     </div>
+    <div className="part3-4"><img src={working} alt="working" /></div>
+    </div>
+    <dive className="part4">
+        <div className="part4-0" style={{float:'left'}}>
+           <div className="part4-1">
+            content
+            <p>name:Dhruv Bhatt</p>
+            <p>email:bhattdhruv996@gmail.com</p>
+            <p>work as a front End develoer</p>
+            </div>
+        </div>
+    </dive>
+
 
     </>)
 }
