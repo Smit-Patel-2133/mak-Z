@@ -2,24 +2,25 @@ import React, { useState , useRef, useEffect } from "react";
 import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import UserCss from '../UserCss/UserCss';
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph, faHeading, faListOl, faListUl, faE, faS, faD, faI, faF, faImage, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faFloppyDisk, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
 
-    useEffect(() => {
-        const handleBeforeUnload = (event) => {
-          const confirmationMessage = "Changes you made may not be saved.";
-          event.returnValue = confirmationMessage;
-          return confirmationMessage;
-        };
+    // useEffect(() => {
+    //     const handleBeforeUnload = (event) => {
+    //       const confirmationMessage = "Changes you made may not be saved.";
+    //       event.returnValue = confirmationMessage;
+    //       return confirmationMessage;
+    //     };
     
-        window.addEventListener("beforeunload", handleBeforeUnload);
+    //     window.addEventListener("beforeunload", handleBeforeUnload);
     
-        return () => {
-          window.removeEventListener("beforeunload", handleBeforeUnload);
-        };
-    }, []);
+    //     return () => {
+    //       window.removeEventListener("beforeunload", handleBeforeUnload);
+    //     };
+    // }, []);
     
 
     const [elementHover, setElementHover] = useState(false);
@@ -49,19 +50,28 @@ const editPage = () => {
     
     function download(){
         if (userPage.current) {
-            userPage.current.logOuterHTML(templateName.current,templateLabel.current,templateType.current);
+            userPage.current.logOuterHTML(templateName.current,templateLabel.current,templateType.current,false);
+        }
+    }
+
+    function saveclicked(){
+        if (userPage.current) {
+            userPage.current.logOuterHTML(templateName.current,templateLabel.current,templateType.current,true);
         }
     }
 
     function eyeclicked(){
+        if(userPage.current){
+            userPage.current.eyeClickUserPage()
+        }
         const elements = document.getElementsByClassName('editable');
         if(!eyeClick){
             for (let i = 0; i < elements.length; i++) {
-                elements[i].style.border = '0px solid black';
+                elements[i].classList.remove('editableBorder');
             }
         }else{
             for (let i = 0; i < elements.length; i++) {
-                elements[i].style.border = '1px solid #ccc';
+                elements[i].classList.add('editableBorder');
             }
         }
         setEyeClick(!eyeClick)
@@ -78,13 +88,20 @@ const editPage = () => {
                 <div className="toolBar">
                     <ul style={{float:'left'}}>
                         <li className="add" onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>+</li>
+                        <li className='home'><NavLink to="/home"><FontAwesomeIcon icon={faHouse} /></NavLink></li>
+                        <li className='save' onClick={saveclicked}><FontAwesomeIcon icon={faFloppyDisk} /></li>
                         <li className="download" onClick={download}><FontAwesomeIcon icon={faDownload} /></li>
                         <li className='eye' onClick={eyeclicked}><FontAwesomeIcon icon={faEye} /></li>
                      </ul>
                      <div className="templateInfo">
                         <input type="text" placeholder="Template Name" ref={templateName}/>/
-                        <input type="text" placeholder="Template Label" ref={templateLabel}/>
-                     </div>
+                        <select name="templateLabel" className="templateLabel" ref={templateLabel}>
+                            <option value="home">Home</option>
+                            <option value="login">Login</option>
+                            <option value="Sign Up">Sign Up</option>
+                            <option value="Landing">Landing</option>
+                        </select>
+                    </div>
                      <div className="templateTypeBlock">
                         <label htmlFor="templateType">Template Type: </label>
                         <select name="templateType" ref={templateType}>
@@ -100,7 +117,7 @@ const editPage = () => {
                             <li className="mainList">
                                 <p>Text</p>
                                 <ul>
-                                    <li draggable='true' className={`${subElementHover ? 'subElementHover' : ''}`} onMouseEnter={() => mouseOverOnSubElement()} onMouseLeave={() => mouseLeaveOnSubElement()} onDragStart={(event) => {event.dataTransfer.setData("element", "heading1");}}>
+                                    <li draggable='true' className={`heading1Drag ${subElementHover ? 'subElementHover' : ''}`} onMouseEnter={() => mouseOverOnSubElement()} onMouseLeave={() => mouseLeaveOnSubElement()} onDragStart={(event) => {event.dataTransfer.setData("element", "heading1");}}>
                                         <FontAwesomeIcon icon={faHeading} />
                                         <p>Headings</p>
                                     </li>
@@ -208,15 +225,19 @@ const editPage = () => {
                                 <p>Components</p>
                                 <ul>
                                     <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "button");}}>
-                                        <FontAwesomeIcon icon={faImage} />
+                                        <FontAwesomeIcon icon={faB} />
                                         <p>Button</p>
                                     </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "dropdown");}}>
+                                        <FontAwesomeIcon icon={faB} />
+                                        <p>Drop Down</p>
+                                    </li>
                                     <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "form");}}>
-                                        <FontAwesomeIcon icon={faImage} />
+                                        <FontAwesomeIcon icon={faF} />
                                         <p>Form</p>
                                     </li>
                                     <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "navbar");}}>
-                                        <FontAwesomeIcon icon={faImage} />
+                                        <FontAwesomeIcon icon={faN} />
                                         <p>Navbar</p>
                                     </li>
                                 </ul>

@@ -10,9 +10,11 @@
     transition: 1s ease-in-out;
     padding-bottom: 100px;
     overflow: hidden;
+    position: relative;
+    z-index: -1;
 } 
-.editable {
-    border: 1px solid #ccc;
+.editableBorder {
+    border: 1px solid #ccc; 
 }
 [contenteditable="true"]:focus {
     outline: none;
@@ -28,4 +30,7 @@
     z-index: 1;
     height: 100%;
     width: 100%;
+}
+.forCursorGrab{
+    cursor: grab;
 }

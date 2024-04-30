@@ -167,7 +167,7 @@
 
 .part3{
     width: 100%;
-    height: 100%;
+    height: 500px;
     background-color: black;
     padding-top: 100px;
     padding-left: 100px;
@@ -180,11 +180,11 @@
     font-weight: 50px;
 }
 .part3-2{
+    width: 50%;
     color: rgb(255, 255, 255);
     font-size: 50px;
     font-weight: 800px;
     text-align: left ;
-    width: 50%;
     font-style: italic;
 }
 .part3-3{
@@ -193,4 +193,75 @@
     font-weight: 50px;
     width: 50%;
     
+}
+.part3-4{
+    background-color: transparent;
+    width: 250px;
+    float: right;
+    transform:  scale(2);
+    position: relative;
+    right: 81px;
+    top:-250px
+}
+.part4-1{
+    width: 850px;
+    padding-top: 60px;
+    padding-left: 80px;
+    margin-top: 20px;
+    margin-left:10px ;
+}
+.D{
+    background-color: transparent;
+    width: 144px;
+    float: right;
+    transform:  scale(2);
+    position: relative;
+    top:116px; 
+    right: -100px;
+}
+.A{
+    background-color: transparent;
+    width: 144px;
+    transform:  scale(2);
+    position: relative;
+    top:190px; 
+    left:160px;
+}
+.part4-3{
+    width: 850px;
+    float: right;
+    padding-left: 80px;
+    margin-top: -850px;
+    margin-left:30px ;
+}
+.S{
+    background-color: transparent;
+    width: 124px;
+    float: right;
+    transform:  scale(2);
+    position: relative;
+    top:-400px;
+    right: 200px;
+}
+.part4-4{
+    width: 850px;
+    padding-top: 60px;
+    padding-left: 80px;
+    margin-top: 270px;
+    margin-left:10px ;
+}
+.AK{
+    background-color: transparent;
+    width: 144px;
+    transform:  scale(2);
+    position: relative;
+    top:170px; 
+    left:160px;
+}
+.part4-5{
+    width: 990px;
+    float: right;
+    padding-left: 250px;
+    margin-top: -50px;
+    margin-left:-10px ;
 }
