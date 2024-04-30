@@ -13,7 +13,7 @@ const Contact = () => {
         </div>
 
         <h1 style={{ color: '#3F444C', textTransform: 'uppercase', fontSize: '2.5rem', letterSpacing: '0.5rem', fontWeight: 300 }}>Contact us</h1>
-        <p style={{ color: '#818386', fontSize: '0.9rem', letterSpacing: '0.01rem', width: '40vw', margin: '0.25rem 0' }}>Code with Ease, Design with Style - Mak: Your Drag-and-Drop Website Wizard !</p>
+        <p style={{ color: '#818386', fontSize: '0.9rem', letterSpacing: '0.01rem', width: '40vw', margin: '0.25rem 0' }}>Code with Ease, Design with Style - MakZ: Your Drag-and-Drop Website Wizard !</p>
 
         <form id="contact-form" method="post" style={{ width: '31.25rem', position: 'relative', marginTop: '2rem', padding: '1rem 0' }}>
           <label htmlFor="name" style={{ color: '#818386', textTransform: 'uppercase', fontSize: '0.625rem' }}>Full name</label>
