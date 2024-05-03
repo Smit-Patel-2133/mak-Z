@@ -10,12 +10,13 @@ const Header = () => {
     const navigate =useNavigate()
 
     return (
-        <div className='bg-blue-700'>
+
         <div className='navbar '>
+
             <img src={logo} alt="" className='logo' />
             <ul>
                 {user.isLogedin ? (
-                    <li><img src={user.profilePicture} alt="Profile"/></li>
+                    <li><img src={user.profilePicture} alt="Profile" className='profa'/></li>
                 ) : (
                     <li><NavLink to="/login">Login</NavLink></li>
                     )}
@@ -25,7 +26,7 @@ const Header = () => {
                 <li><NavLink to="/home">Home</NavLink></li> {/* Example NavLink */}
             </ul>
         </div>
-        </div>
+
     );
 }
 
