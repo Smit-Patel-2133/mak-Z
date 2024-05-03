@@ -24,6 +24,7 @@
 }
 
 /* Image container */
+/* Image container */
 .inner {
     width: 300px;
     height: 400px;
@@ -34,6 +35,12 @@
     scroll-snap-align: start;
     position: relative;
     overflow: hidden; /* Hide any overflow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and box-shadow */
+}
+
+.inner:hover {
+    transform: translateY(-10px); /* Moves the element up */
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2); /* Stronger shadow to give depth */
 }
 
 /* Image styles */
@@ -90,6 +97,4 @@
     width: 100%;
 }
 
-.inner:hover {
-    background-color: #f0f0f0; /* Background color on hover */
-}
+
