@@ -19,7 +19,9 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         const userEmail=user.email
 
         html2canvas(bodyPageRef.current).then(canvas => {
-            const imageOfTemplate=canvas.toDataURL();
+            const base64String = canvas.toDataURL();
+            const imageOfTemplate = base64String.split(',')[1].trim(); // Get base64 part and trim whitespace
+            console.log("Base64 String:", imageOfTemplate,typeof imageOfTemplate);
             try {
                 axios.post('http://localhost:5000/download', { code }, { responseType: 'blob' })
                     .then(response => {

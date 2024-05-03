@@ -8,7 +8,6 @@ const beautify = require('js-beautify').html;
 const sql = require('./db'); // Import the sql function from db.js
 const multer = require('multer'); // Import multer for handling file uploads
 
-
 const app = express();
 app.use(cors());
 app.use((req, res, next) => {
@@ -44,18 +43,7 @@ const transporter = nodemailer.createTransport({
 // Temporary storage for OTPs (in a production environment, consider using a database)
 let otpStorage = {};
 
-// Multer storage configuration
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/') // Destination folder for storing uploaded files
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname) // Use the original file name
-    }
-});
 
-// Create multer instance with storage configuration
-const upload = multer({ storage: storage });
 
 // Endpoint to send OTP to the user's email
 app.post('/api/send-otp', async (req, res) => {
@@ -192,7 +180,7 @@ app.post('/download', async (req, res) => {
     codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','');
     codeData += `   </body>
                 </html>`;
-    codeData = beautify(codeData, { indent_size: 4 });  
+    codeData = beautify(codeData, { indent_size: 4 });
     const filePath = path.join(__dirname, '../../mak-Z.html');
 
     fs.appendFile(filePath, codeData, { encoding: 'utf8', flag: 'a+' }, async (err) => {
@@ -255,14 +243,10 @@ app.delete('/delete/:filename', (req, res) => {
 });
 
 // Placing logs to track the request flow
-app.get('/featchThis', async (req, res) => {
-    console.log("Endpoint hit: /featchThis"); // Log to confirm endpoint is hit
-    const templateType = req.query.type; // Access the specific query parameter
-    console.log("Template type:", templateType); // Log to confirm template type
-
+app.post('/fetchThis', async (req, res) => {
+    const templateType = req.body.type; // Accessing the parameter from the request body
     if (!templateType) {
-        console.log("No template type provided"); // Log to track missing query parameter
-        return res.status(400).json({error: 'Missing template type in query parameter'});
+        return res.status(400).json({ error: 'Missing template type in request body' });
     }
 
     try {
@@ -270,28 +254,56 @@ app.get('/featchThis', async (req, res) => {
         const result = await sql`SELECT * FROM template WHERE templatetype = ${templateType}`;
 
         if (result.length === 0) {
-            console.log("No templates found for type:", templateType); // Log when no templates are found
-            return res.status(404).json({error: 'No templates found for the specified type'});
+            return res.status(404).json({ error: 'No templates found for the specified type' });
         }
-        console.log(result)
-        const templates = result.map(row => ({
-            id: row.templateid,
-            name: row.templatename,
-            likes: row.templatelikes,
-            downloads: row.templatedownloads,
-            visibility: row.templatevisibility,
-            htmlCode: row.templatehtmlfile ? row.templatehtmlfile.toString('utf8') : '',
-        }));
 
-        console.log("Templates retrieved:", templates); // Log templates retrieved
+        const templates = result.map(row => {
+
+            return {
+                id: row.templateid,
+                name: row.templatename,
+                likes: row.templatelikes,
+                downloads: row.templatedownloads,
+                visibility: row.templatevisibility,
+                htmlImg: row.templateimage // Ensure correct MIME type
+            };
+        });
+
         res.status(200).json(templates); // Send the response
     } catch (error) {
         console.error('Error fetching templates:', error);
-        res.status(500).json({error: 'An error occurred while fetching templates'});
+        res.status(500).json({ error: 'An error occurred while fetching templates' });
     }
 });
+app.post('/fetchThis/forhome', async (req, res) => {
 
 
+    try {
+        // Fetching templates from the database
+        const result = await sql`SELECT * FROM template`;
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'No templates found for the specified type' });
+        }
+
+        const templates = result.map(row => {
+
+            return {
+                id: row.templateid,
+                name: row.templatename,
+                likes: row.templatelikes,
+                downloads: row.templatedownloads,
+                visibility: row.templatevisibility,
+                htmlImg: row.templateimage // Ensure correct MIME type
+            };
+        });
+
+        res.status(200).json(templates); // Send the response
+    } catch (error) {
+        console.error('Error fetching templates:', error);
+        res.status(500).json({ error: 'An error occurred while fetching templates' });
+    }
+});
 // Endpoint to get user details
 app.get('/user/details', async (req, res) => {
     const {email} = req.query;

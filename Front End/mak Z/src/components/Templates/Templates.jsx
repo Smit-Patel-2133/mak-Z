@@ -11,11 +11,10 @@ const Templates = () => {
     useEffect(() => {
         const fetchTemplates = async () => {
             try {
-                console.log("Fetching templates..."); // Log to confirm fetch
-                const response = await axios.get(`http://localhost:5000/featchThis?type=Home Page`); // Correct endpoint
-                console.log("Response received:", response.data); // Log the response data
+                const response = await axios.post('http://localhost:5000/fetchThis', {
+                    type: 'login' // Send data in the body
+                });
 
-                // Check if data is in expected format
                 if (Array.isArray(response.data)) {
                     setTemplates(response.data); // Store fetched data
                     setIsLoading(false); // Loading complete
@@ -40,8 +39,7 @@ const Templates = () => {
             ) : error ? (
                 <p>Error fetching templates: {error.message}</p> // Display error message
             ) : (
-                // Pass the fetched templates to FetchTemplate
-                <FetchTemplate images={templates} templateHeading="Home" />
+                <FetchTemplate images={templates} templateHeading="Home" /> // Display fetched templates
             )}
         </div>
     );
