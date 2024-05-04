@@ -17,6 +17,11 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         const templateLabel=label.value
         const templateType=type.value
         const userEmail=user.email
+        const allElements=document.getElementsByClassName('editableBorder');
+        const elementsArray = Array.from(allElements);
+        elementsArray.forEach(element => {
+            element.classList.remove('editableBorder');
+        });
 
         html2canvas(bodyPageRef.current).then(canvas => {
             const base64String = canvas.toDataURL();
@@ -60,6 +65,9 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
                 console.error('Code passed from client side generate error ', error);
             }
         });
+        elementsArray.forEach(element => {
+            element.classList.add('editableBorder');
+        });
     };
     
 
@@ -78,7 +86,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
     }
     
     function handleActive(e){
-        setActiveElement(e.target)
+        setActiveElement(e.target);
+        e.target.classList.add('activeElementClass')
         sendDataToUserCss(e.target);
     }
 
@@ -95,15 +104,27 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
 
     const handleDoubleClickOnDragableElement = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const el=e.target;
-        console.log(el)
+        let perent=e.target.parentElement;
+        while(!perent.classList.contains('pageBody')){
+            if(el.getAttribute('contenteditable')=='true'){
+                perent.setAttribute('contenteditable','flase');
+                perent.classList.add('forCursorGrab');
+            }else{
+                perent.setAttribute('contenteditable','true');
+                perent.classList.remove('forCursorGrab');
+            }
+            perent=perent.parentElement;
+        }
         if(el.getAttribute('contenteditable')=='true'){
             el.setAttribute('contenteditable','flase');
-            el.classList.add('forCursorGrab')
+            el.classList.add('forCursorGrab');
         }else{
             el.setAttribute('contenteditable','true');
-            el.classList.remove('forCursorGrab')
+            el.classList.remove('forCursorGrab');
         }
+        return false;
     };
 
     function handlePagebodyElementDragStart(e) {
@@ -114,18 +135,27 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
     }
     
 
-    function handlePagebodyElementDrag(e,bodyPage){
+    function handlePagebodyElementDrag(e){
+        e.preventDefault()
         const el=e.target;
+        const bodyPage=el.parentElement;
+        const bodyPagePosition=bodyPage.getBoundingClientRect();
+        console.log('bodypage '+bodyPagePosition.top)
         const cursorValX=e.clientX;
         const cursorValY=e.clientY;
-        const bodyPagePosition=bodyPage.getBoundingClientRect();
         el.style.top=`${Math.max(0,(cursorValY-bodyPagePosition.top)-elementCursorY)}px`
         el.style.left=`${Math.max(0,(cursorValX-bodyPagePosition.left)-elementCursorX)}px`
     }
 
     function handlePagebodyElementDragEnd(e){
         e.target.setAttribute('contenteditable','true');
-        e.target.classList.remove('forCursorGrab')
+        e.target.classList.remove('forCursorGrab');
+        let perent=e.target.parentElement;
+        while(!perent.classList.contains('pageBody')){
+                perent.setAttribute('contenteditable','true');
+                perent.classList.remove('forCursorGrab');
+                perent=perent.parentElement;
+        }
     }
 
     const handleDrop = (e) => {
@@ -176,16 +206,16 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             contentVariable.addEventListener('click', handleActive);
             contentVariable.style.width='fit-content';
             const bodyPagePosition=bodyPage.getBoundingClientRect();
-            if(bodyPage && bodyPage==bodyPageRef.current){
+            // if(bodyPage && bodyPage==bodyPageRef.current){
                 contentVariable.style.position='absolute';
                 contentVariable.setAttribute('draggable','true');
                 contentVariable.addEventListener('dblclick',handleDoubleClickOnDragableElement);
                 contentVariable.addEventListener('dragstart',handlePagebodyElementDragStart);
-                contentVariable.addEventListener('drag',(e)=>handlePagebodyElementDrag(e,bodyPage));
                 contentVariable.addEventListener('dragend',handlePagebodyElementDragEnd);
+                contentVariable.addEventListener('drag',handlePagebodyElementDrag);
                 contentVariable.style.left=`${(cursorValueX-bodyPagePosition.left)}px`;
                 contentVariable.style.top=`${(cursorValueY-bodyPagePosition.top)}px`;
-            }
+            // }
             if(targetElement){
                 const TargetTagName=targetElement.tagName.toLowerCase();
                 const cotentTagName=contentVariable.tagName.toLowerCase();
@@ -579,7 +609,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
                     selectedNode.remove()
                 }else{
                     const parentElement = selectedNode.parentElement; 
-                    if (parentElement) {
+                    if (parentElement && !parentElement.classList.contains('pageBody')) {
                         parentElement.remove();
                     }
                 }    
@@ -602,7 +632,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
 
     function removeActiveElementClass(e){
         if (bodyPageRef.current && e.target === bodyPageRef.current) {
-            activeElement.classList.remove('activeElementClass')
+            activeElement.classList.remove('activeElementClass');
+            setActiveElement(null);
         }
     }
 

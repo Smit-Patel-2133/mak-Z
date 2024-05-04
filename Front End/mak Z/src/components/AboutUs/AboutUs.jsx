@@ -9,7 +9,7 @@ import Black_noBG from '../../assets/picture/white_noBG.png';
 import people from '../../assets/picture/people.jpg';
 import people1 from '../../assets/picture/people1.jpg';      
 import people3 from '../../assets/picture/people3.jpg';
-import working from '../../assets/picture/working.jpg';
+// import working from '../../assets/picture/working.jpg';
 
 
 const AboutUs=()=>{
