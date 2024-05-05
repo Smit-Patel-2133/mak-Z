@@ -54,7 +54,7 @@
     background: #ccc;
 }
 
-.styleHovered {
+.styleHovered, .hardStyleHovered {
     width: 0px;
 }
 .style label{
@@ -77,8 +77,9 @@ td input,td select{
 }
 .style p{
     color: white;
-    text-align: center;
-    margin-top: 5px;
+    display: flex;
+    padding-top: 10px;
+    padding-left: 10px;
     cursor: pointer;
 }
 .styleTable{
@@ -86,7 +87,7 @@ td input,td select{
     overflow: hidden !important;
     transition: 1s ease-in-out;
 }
-.style p::after{
+/* .style p::after{
     content: '';
     display: inline-block;
     background-color: white;
@@ -103,12 +104,15 @@ td input,td select{
     height: 2px;
     margin-bottom: 3px;
     margin-right: 5px;
-}
+} */
 .expandTextTable, .expandBoxStyle, .expandPositioning, .expandfexboxAndGridStyles, .expandMiscellaneous, .expandBackgroundStyles{
     max-height: 2000px;
 }
 .style svg{
-    font-size: 15px;
+    position: absolute;
+    right: 8px;
+    font-size: 20px;
+    padding: 4.5px;
 } 
 .styleBlocks{
     margin: 2px;

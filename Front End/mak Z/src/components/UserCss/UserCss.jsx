@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown} from '@fortawesome/free-solid-svg-icons';
 
 
-const UserCss = ({ styleHover, receivedData  }) => {
+const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
   const fontSize=useRef(null)
   const [fontSizeValue, fontSizeFun] = useState(true);
   const fontWeight=useRef(null)
@@ -554,11 +554,12 @@ const UserCss = ({ styleHover, receivedData  }) => {
   }
 
   return (
-    <div className={`style ${styleHover ? '' : 'styleHovered'}`}>
+    <div className={`style ${styleHover ? '' : 'styleHovered'} ${hardStyleHover ? '' : 'hardStyleHovered'}`}>
       <div className="styleBlocks" style={{overflow:'hidden'}}>
-        <p onClick={textTableStyle}><FontAwesomeIcon icon={faAngleDown} /> Text Styles <FontAwesomeIcon icon={faAngleDown} /></p>
+        <p onClick={textTableStyle}>Text Styles <FontAwesomeIcon icon={faAngleDown} style={{transition:'0.5s ease-in-out',transform:`${expandTextTable ? 'none' : 'rotate(-90deg)'}`}}/></p>
         <div className={`styleTable ${expandTextTable ? 'expandTextTable' : ''}`}>
           <table>
+          <tbody>
             <tr>
               <td><label htmlFor="fontFamily">Font Family: </label></td>
               <td>
@@ -656,13 +657,15 @@ const UserCss = ({ styleHover, receivedData  }) => {
                 </select>
               </td>
             </tr>
+          </tbody>
           </table>
         </div>
       </div>
       <div className="styleBlocks" style={{overflow:'hidden'}}>
-        <p onClick={backgroundStyles}><FontAwesomeIcon icon={faAngleDown} />Background Styles<FontAwesomeIcon icon={faAngleDown} /></p>
+        <p onClick={backgroundStyles}>Background Styles <FontAwesomeIcon icon={faAngleDown} style={{transition:'0.5s ease-in-out',transform:`${expandBackgroundStyles ? 'none' : 'rotate(-90deg)'}`}}/></p>
         <div className={`styleTable ${expandBackgroundStyles ? 'expandBackgroundStyles' : ''}`}>
           <table>
+          <tbody>
             <tr>
               <td><label htmlFor="bgColor"> Background Color:</label></td>
               <td><input type="color" ref={bgColor} name='bgColor' className='bgColor' onChange={bgColorOnChange}/><br /></td>
@@ -698,13 +701,15 @@ const UserCss = ({ styleHover, receivedData  }) => {
               <td><label htmlFor="bgSizeY"> Background <br /> Size-Y:</label></td>
               <td><input type="number" ref={bgSizeY} name='bgSizeY' className='bgSizeY' onChange={bgSizeYOnChange}/><br /></td>
             </tr>
+          </tbody>
           </table>
         </div>
       </div>
       <div className="styleBlocks" style={{overflow:'hidden'}}>
-        <p onClick={boxStyle}><FontAwesomeIcon icon={faAngleDown} /> Box Style <FontAwesomeIcon icon={faAngleDown} /></p>
+        <p onClick={boxStyle}>Box Style <FontAwesomeIcon icon={faAngleDown} style={{transition:'0.5s ease-in-out',transform:`${expandBoxStyle ? 'none' : 'rotate(-90deg)'}`}}/></p>
         <div className={`styleTable ${expandBoxStyle ? 'expandBoxStyle' : ''}`}>
           <table>
+          <tbody>
             <tr>
               <td><label htmlFor="width">Width: </label></td>
               <td><input type="number" ref={width} name='width' className='width' onChange={widthOnChange}/><br /></td>
@@ -842,13 +847,15 @@ const UserCss = ({ styleHover, receivedData  }) => {
                 </select>
               </td>
             </tr>
+          </tbody>
           </table>
         </div>
       </div>
       <div className="styleBlocks" style={{overflow:'hidden'}}>
-        <p onClick={positioning}><FontAwesomeIcon icon={faAngleDown} /> Positioning <FontAwesomeIcon icon={faAngleDown} /></p>
+        <p onClick={positioning}>Positioning <FontAwesomeIcon icon={faAngleDown} style={{transition:'0.5s ease-in-out',transform:`${expandPositioning ? 'none' : 'rotate(-90deg)'}`}}/></p>
         <div className={`styleTable ${expandPositioning ? 'expandPositioning' : ''}`}>
           <table>
+          <tbody>
             <tr>
               <td><label htmlFor="position">Position: </label></td>
               <td>
@@ -881,14 +888,15 @@ const UserCss = ({ styleHover, receivedData  }) => {
               <td><label htmlFor="zIndex">Z-index: </label></td>
               <td><input type="number" ref={zIndex} name='zIndex' className='zIndex' onChange={zIndexOnChange}/><br /></td>
             </tr>
-  
+          </tbody>
           </table>
         </div>
       </div>
       <div className="styleBlocks" style={{overflow:'hidden'}}>
-        <p onClick={flexboxAndGridStyles}><FontAwesomeIcon icon={faAngleDown} />Flex and Grid<FontAwesomeIcon icon={faAngleDown} /></p>
+        <p onClick={flexboxAndGridStyles}>Flex and Grid <FontAwesomeIcon icon={faAngleDown} style={{transition:'0.5s ease-in-out',transform:`${expandfexboxAndGridStyles ? 'none' : 'rotate(-90deg)'}`}}/></p>
         <div className={`styleTable ${expandfexboxAndGridStyles ? 'expandfexboxAndGridStyles' : ''}`}>
           <table>
+          <tbody>
             <tr>
               <td><label htmlFor="displayStyle">Display Style: </label></td>
               <td>
@@ -961,13 +969,15 @@ const UserCss = ({ styleHover, receivedData  }) => {
                 </select>
               </td>
             </tr>
+          </tbody>
           </table>
         </div>
       </div>
       <div className="styleBlocks" style={{overflow:'hidden'}}>
-        <p onClick={miscellaneous}><FontAwesomeIcon icon={faAngleDown} />Miscellaneous<FontAwesomeIcon icon={faAngleDown} /></p>
+        <p onClick={miscellaneous}>Miscellaneous <FontAwesomeIcon icon={faAngleDown} style={{transition:'0.5s ease-in-out',transform:`${expandMiscellaneous ? 'none' : 'rotate(-90deg)'}`}}/></p>
         <div className={`styleTable ${expandMiscellaneous ? 'expandMiscellaneous' : ''}`}>
           <table>
+          <tbody>
             <tr>
               <td><label htmlFor="cursor">Cursor: </label></td>
               <td>
@@ -1026,6 +1036,7 @@ const UserCss = ({ styleHover, receivedData  }) => {
                 </select>
               </td>
             </tr>
+          </tbody>
           </table>
         </div>
       </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSelector } from 'react-redux';
 import html2canvas from 'html2canvas';
 
-const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}) => {
+const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyleHover, onUpdateHardStyleHover, eyeClick}) => {
 
     const user = useSelector(state => state.auth);
     const [activeElement,setActiveElement]=useState(null)
@@ -26,7 +26,6 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         html2canvas(bodyPageRef.current).then(canvas => {
             const base64String = canvas.toDataURL();
             const imageOfTemplate = base64String.split(',')[1].trim(); // Get base64 part and trim whitespace
-            console.log("Base64 String:", imageOfTemplate,typeof imageOfTemplate);
             try {
                 axios.post('http://localhost:5000/download', { code }, { responseType: 'blob' })
                     .then(response => {
@@ -140,7 +139,6 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         const el=e.target;
         const bodyPage=el.parentElement;
         const bodyPagePosition=bodyPage.getBoundingClientRect();
-        console.log('bodypage '+bodyPagePosition.top)
         const cursorValX=e.clientX;
         const cursorValY=e.clientY;
         el.style.top=`${Math.max(0,(cursorValY-bodyPagePosition.top)-elementCursorY)}px`
@@ -204,9 +202,9 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             contentVariable.classList.add('editable');
             contentVariable.classList.add('editableBorder');
             contentVariable.addEventListener('click', handleActive);
-            contentVariable.style.width='fit-content';
+            // contentVariable.style.width='fit-content';
             const bodyPagePosition=bodyPage.getBoundingClientRect();
-            // if(bodyPage && bodyPage==bodyPageRef.current){
+            if(bodyPage && bodyPage==bodyPageRef.current){
                 contentVariable.style.position='absolute';
                 contentVariable.setAttribute('draggable','true');
                 contentVariable.addEventListener('dblclick',handleDoubleClickOnDragableElement);
@@ -215,7 +213,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
                 contentVariable.addEventListener('drag',handlePagebodyElementDrag);
                 contentVariable.style.left=`${(cursorValueX-bodyPagePosition.left)}px`;
                 contentVariable.style.top=`${(cursorValueY-bodyPagePosition.top)}px`;
-            // }
+                if(contentVariable.tagName.toLowerCase()=='nav') contentVariable.style.left=`0px`;
+            }
             if(targetElement){
                 const TargetTagName=targetElement.tagName.toLowerCase();
                 const cotentTagName=contentVariable.tagName.toLowerCase();
@@ -369,6 +368,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function header(){
             const bodyPage = bodyPageRef.current;
             const headerElement = document.createElement('header');
+            headerElement.style.width='550px';
+            headerElement.style.height='250px';
             headerElement.textContent = 'Here is your Header Area';
             const targetElement = findTargetElement(e);
             setCommonAttributes(headerElement,bodyPage,targetElement)
@@ -377,6 +378,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function footer(){
             const bodyPage = bodyPageRef.current;
             const footerElement = document.createElement('footer');
+            footerElement.style.width='550px';
+            footerElement.style.height='250px';
             footerElement.textContent = 'Here is your Footer Area';
             const targetElement = findTargetElement(e);
             setCommonAttributes(footerElement,bodyPage,targetElement)
@@ -385,7 +388,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function div(){
             const bodyPage = bodyPageRef.current;
             const divElement = document.createElement('div');
-            divElement.style.minWidth='550px';
+            divElement.style.width='550px';
             divElement.style.height='250px';
             divElement.textContent = 'Here is your Div';
             const targetElement = findTargetElement(e);
@@ -458,6 +461,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
         function form() {
             const bodyPage = bodyPageRef.current;
             const formElement = document.createElement('form');
+            formElement.style.width='500px'
             formElement.classList.add('container');
             const formGroup = document.createElement('div');
             formGroup.classList.add('form-group');
@@ -470,22 +474,25 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             setCommonAttributes(labelElement,formGroup,null);
             setCommonAttributes(inputElement,formGroup,null);
             const submitButton = document.createElement('button');
-            submitButton.type = 'submit';
             submitButton.textContent = 'Submit';
+            formElement.addEventListener('submit', handleSubmitForm);
             submitButton.classList.add('btn', 'btn-primary', 'mt-2');
             setCommonAttributes(formGroup,formElement,null);
             setCommonAttributes(submitButton,formElement,null);
             const targetElement = findTargetElement(e);
             setCommonAttributes(formElement,bodyPage,targetElement);
         }
+        function handleSubmitForm(event) {
+            event.preventDefault();
+        }
 
         function navbar() {
             const bodyPage = bodyPageRef.current;
             const navElement = document.createElement('nav');
+            navElement.style.width='100%'
             navElement.style.backgroundColor = 'lightblue';
             navElement.style.padding = '10px';
             const containerElement = document.createElement('div');
-            containerElement.style.maxWidth = '900px';
             containerElement.style.margin = '0 auto';
             containerElement.style.display = 'flex';
             containerElement.style.justifyContent = 'space-between';
@@ -504,7 +511,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
             const ulElement = document.createElement('ul');
             ulElement.style.listStyleType = 'none';
             ulElement.style.margin = '0';
-            ulElement.style.padding = '0';
+            ulElement.style.padding = '2';
             ulElement.style.display = 'flex';
         
             // Create list items for each navbar link
@@ -574,6 +581,16 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
 
     const handleDragOver = (event) => {
         event.preventDefault();
+        const element=bodyPageRef.current
+        if(element.classList.contains('pageBody')){
+            const rect = element.getBoundingClientRect();
+            const y = event.clientY - rect.top;
+            const computedStyle = window.getComputedStyle(element);
+            const minH = parseInt(computedStyle.getPropertyValue('min-height'));
+            if (y>minH-100) {
+                element.style.minHeight = `${minH + 80}px`;
+            }
+        }
     };
 
     function insertAfter(newNode, referenceNode) {
@@ -631,14 +648,15 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, eyeClick}
     }
 
     function removeActiveElementClass(e){
-        if (bodyPageRef.current && e.target === bodyPageRef.current) {
+        onUpdateHardStyleHover(true)
+        if (bodyPageRef.current && e.target === bodyPageRef.current && activeElement) {
             activeElement.classList.remove('activeElementClass');
             setActiveElement(null);
         }
     }
 
   return (
-    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={removeActiveElementClass}>
+    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${hardStyleHover ? '' : 'hardStyleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={removeActiveElementClass}>
     </div>
   )
 }

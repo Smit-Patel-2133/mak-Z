@@ -4,7 +4,7 @@ import UserPage from '../UserPage/UserPage';
 import UserCss from '../UserCss/UserCss';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph, faHeading, faFloppyDisk, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faFloppyDisk, faLock, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faPlus, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
 
@@ -26,6 +26,8 @@ const editPage = () => {
     const [elementHover, setElementHover] = useState(false);
     const [subElementHover, setSubElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
+    const [hardElementHover, setHardElementHover]=useState(false);
+    const [hardStyleHover, setHardStyleHover]=useState(true);
     const [eyeClick, setEyeClick] = useState(false);
     const [dataFromUserPage, setDataFromUserPage] = useState('');
     const userPage = useRef(null);
@@ -46,6 +48,14 @@ const editPage = () => {
     }
     function mouseLeaveOnSubElement(){
         setSubElementHover(false)
+    }
+    function addOnClick(){
+        setHardElementHover(!hardElementHover);
+        setHardStyleHover(!hardStyleHover)
+    }
+    function setOnUpdateHardStyleHover(value){
+        setHardElementHover(!value);
+        setHardStyleHover(value)
     }
     
     function download(){
@@ -87,7 +97,7 @@ const editPage = () => {
             <div className="tags">
                 <div className="toolBar">
                     <ul style={{float:'left'}}>
-                        <li className="add" onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>+</li>
+                        <li className="add" onClick={()=>addOnClick()} onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>{!hardElementHover ? <FontAwesomeIcon icon={faPlus} /> : <FontAwesomeIcon icon={faLock} />}</li>
                         <li className='home'><NavLink to="/home"><FontAwesomeIcon icon={faHouse} /></NavLink></li>
                         <li className='save' onClick={saveclicked}><FontAwesomeIcon icon={faFloppyDisk} /></li>
                         <li className="download" onClick={download}><FontAwesomeIcon icon={faDownload} /></li>
@@ -110,7 +120,7 @@ const editPage = () => {
                         </select>
                      </div>
                 </div>
-                <div className={`elements ${elementHover ? 'elementHovered' : ''}`}  onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>
+                <div className={`elements ${elementHover ? 'elementHovered' : ''} ${hardElementHover ? 'hardElementHover' : ''}`}  onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>
                     <h5>Drag Elements</h5>
                     <div className="list">
                         <ul>
@@ -249,8 +259,8 @@ const editPage = () => {
             <div className={`eyeBack ${eyeClick ? 'eyeClick' : ''}`} onClick={eyeclicked}>
                 <p><FontAwesomeIcon icon={faEye} /></p>
             </div>
-            <UserPage bodyPageRef={userPage} styleHover={styleHover} eyeClick={eyeClick} className='edit' sendDataToUserCss={sendDataToUserCss}/>
-            <UserCss styleHover={styleHover} receivedData={dataFromUserPage} />
+            <UserPage bodyPageRef={userPage} styleHover={styleHover} hardStyleHover={hardStyleHover} onUpdateHardStyleHover={setOnUpdateHardStyleHover} eyeClick={eyeClick} className='edit' sendDataToUserCss={sendDataToUserCss}/>
+            <UserCss styleHover={styleHover} hardStyleHover={hardStyleHover} receivedData={dataFromUserPage} />
         </div>
         </>
     )

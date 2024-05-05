@@ -5,7 +5,7 @@
     float: left;
     height: auto;
     border-radius: 10px;
-    min-height: 700px !important;
+    min-height: 700px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: 1s ease-in-out;
     padding-bottom: 100px;
@@ -19,7 +19,7 @@
 [contenteditable="true"]:focus {
     outline: none;
 }
-.styleHoveredPageBody{
+.styleHoveredPageBody, .hardStyleHoveredPageBody{
     margin-left: 230px;
 }
 .eyeClicked{

@@ -98,7 +98,7 @@
     cursor: pointer;
 }
 
-.elementHovered {
+.elementHovered, .hardElementHover {
     width: 200px;
 }
 .elements h5 {
@@ -170,7 +170,7 @@
     font-size: x-large;
 }
 
-.styleHovered {
+.styleHovered, .hardStyleHove {
     width: 0px;
 }
 
