@@ -304,6 +304,33 @@ app.post('/fetchThis/forhome', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching templates' });
     }
 });
+app.post('/fetchThis/userProjects', async (req, res) => {
+    const { email } = req.body; // Get the email from the request body
+
+    try {
+        const result = await sql`SELECT * FROM template WHERE email = ${email}`; // Filter by email
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'No projects found for the specified email' });
+        }
+
+        const templates = result.map(row => {
+
+            return {
+                id: row.templateid,
+                name: row.templatename,
+                likes: row.templatelikes,
+                downloads: row.templatedownloads,
+                visibility: row.templatevisibility,
+                htmlImg: row.templateimage // Ensure correct MIME type
+            };
+        });
+        console.log("templates",templates)
+        res.status(200).json(templates); // Return the fetched projects
+    } catch (error) {
+        console.error('Error fetching user projects:', error);
+        res.status(500).json({ error: 'An error occurred while fetching user projects' });
+    }
+});
 // Endpoint to get user details
 app.get('/user/details', async (req, res) => {
     const {email} = req.query;
