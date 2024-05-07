@@ -295,34 +295,49 @@ app.post('/fetchThis', async (req, res) => {
 });
 
 app.post('/fetchThis/forhome', async (req, res) => {
-
-
     try {
-        // Fetching templates from the database
-        const result = await sql`SELECT * FROM template`;
+        // Fetching templates and associated user information from the database with a JOIN operation
+        const result = await sql`
+            SELECT
+              template.templateid,
+              template.templatename,
+              template.templatelikes,
+              template.templatedownloads,
+              template.templatevisibility,
+              template.templateimage,
+              users.profile_pic,
+              users.username
+            FROM
+              template
+            JOIN
+              users
+            ON
+              template.email = users.email
+        `;
 
         if (result.length === 0) {
-            return res.status(404).json({ error: 'No templates found for the specified type' });
+            return res.status(404).json({ error: 'No templates found' });
         }
 
-        const templates = result.map(row => {
+        // Map the fetched data to a structured format
+        const templates = result.map(row => ({
+            id: row.templateid,
+            name: row.templatename,
+            likes: row.templatelikes,
+            downloads: row.templatedownloads,
+            visibility: row.templatevisibility,
+            htmlImg: row.templateimage, // Ensure correct MIME type
+            profilePic: row.profile_pic, // User's profile picture
+            username: row.username       // User's username
+        }));
 
-            return {
-                id: row.templateid,
-                name: row.templatename,
-                likes: row.templatelikes,
-                downloads: row.templatedownloads,
-                visibility: row.templatevisibility,
-                htmlImg: row.templateimage // Ensure correct MIME type
-            };
-        });
-
-        res.status(200).json(templates); // Send the response
+        res.status(200).json(templates); // Send the response with the structured templates data
     } catch (error) {
         console.error('Error fetching templates:', error);
         res.status(500).json({ error: 'An error occurred while fetching templates' });
     }
 });
+
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
 
