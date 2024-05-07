@@ -44,7 +44,7 @@ const Home = () => {
         navigate('/editPage')
     }
     return (
-        <div>
+        <div className='bg-gray-100'>
             <Header/>
             <SliderImages/>
             <div className='outer'><h1 className='mt-3 italic'>Welcome {user.name}</h1>

@@ -244,37 +244,56 @@ app.delete('/delete/:filename', (req, res) => {
 
 // Placing logs to track the request flow
 app.post('/fetchThis', async (req, res) => {
-    const templateType = req.body.type; // Accessing the parameter from the request body
+    const templateType = req.body.type; // Extract template type from request body
     if (!templateType) {
         return res.status(400).json({ error: 'Missing template type in request body' });
     }
 
     try {
-        // Fetching templates from the database
-        const result = await sql`SELECT * FROM template WHERE templatetype = ${templateType}`;
+        // Fetching templates and user information with a JOIN operation
+        const result = await sql`
+            SELECT
+              template.templateid,
+              template.templatename,
+              template.templatelikes,
+              template.templatedownloads,
+              template.templatevisibility,
+              template.templateimage,
+              users.profile_pic,
+              users.username
+            FROM
+              template
+            JOIN
+              users
+            ON
+              template.email = users.email
+            WHERE
+              template.templatetype = ${templateType}
+        `;
 
         if (result.length === 0) {
             return res.status(404).json({ error: 'No templates found for the specified type' });
         }
 
-        const templates = result.map(row => {
-
-            return {
-                id: row.templateid,
-                name: row.templatename,
-                likes: row.templatelikes,
-                downloads: row.templatedownloads,
-                visibility: row.templatevisibility,
-                htmlImg: row.templateimage // Ensure correct MIME type
-            };
-        });
-
-        res.status(200).json(templates); // Send the response
+        // Extracting and structuring the response data
+        const templates = result.map(row => ({
+            id: row.templateid,
+            name: row.templatename,
+            likes: row.templatelikes,
+            downloads: row.templatedownloads,
+            visibility: row.templatevisibility,
+            htmlImg: row.templateimage,
+            profilePic: row.profile_Pic, // User's profile picture
+            username: row.username       // User's username
+        }));
+        console.log("templates:-",templates);
+        res.status(200).json(templates); // Send the response back to the client
     } catch (error) {
         console.error('Error fetching templates:', error);
         res.status(500).json({ error: 'An error occurred while fetching templates' });
     }
 });
+
 app.post('/fetchThis/forhome', async (req, res) => {
 
 
