@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import ImageZoom from './ImageZoom.jsx';
 import ims from '../../assets/Profile picture/3.png'
+import {useNavigate} from "react-router-dom";
 const FetchTemplate = ({ templateHeading, images }) => {
     const sliderRef = useRef(null);
     const isDown = useRef(false);
@@ -43,7 +44,10 @@ const FetchTemplate = ({ templateHeading, images }) => {
     };
 
     const userName = selectedImage ? selectedImage.name : 'Unknown';
-
+    const navigate = useNavigate();
+    const handleEditClick = (projectId) => {
+        navigate(`/editPage/${projectId}`);
+    };
     return (
         <div className="fetch-template-container">
             <h1 className="mt-3 italic">{templateHeading}</h1>
@@ -87,7 +91,8 @@ const FetchTemplate = ({ templateHeading, images }) => {
                                                 <h5 className="ml-2">{image.username}</h5>
                                             </div>
                                             <div className="flex flex-col justify-between h-full items-center">
-                                                <button className="mr-2 mb-2 bg-gray-600 rounded h-10 w-20 text-white">
+                                                <button className="mr-2 mb-2 bg-gray-600 rounded h-10 w-20 text-white"
+                                                        onClick={() => handleEditClick(image.id)}>
                                                     Edit
                                                 </button>
                                             </div>
