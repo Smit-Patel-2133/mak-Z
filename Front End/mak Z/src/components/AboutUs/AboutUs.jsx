@@ -159,11 +159,11 @@ const AboutUs=()=>{
                         <img className='h-60 w-60 rounded-full' src={ak} alt="Abhay's photo"/>
                     </div>
                     <div className='pl-20 w-3/6'>
-                        <p className="text-lg text-white">Name: Adarsh Khan</p>
+                        <p className="text-lg text-white">Name: Adarsh Loshi</p>
                         <p className="text-lg text-white">GitHub: <a href="https://github.com/akbapu" target="_blank"
                                                           className="text-white ">github.com/akbapu</a>
                         </p>
-                        <p className="text-lg text-white">Email: ak@gmail.com</p>
+                        <p className="text-lg text-white">Email: adarshlodhi22@gmail.com</p>
                     </div>
 
                 </div>
