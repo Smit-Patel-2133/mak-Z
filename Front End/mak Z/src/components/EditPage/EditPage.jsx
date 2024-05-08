@@ -22,7 +22,7 @@ const editPage = () => {
     //     };
     // }, []);
     const { projectId } = useParams();
-    console.log("pId:-",projectId)
+    // console.log("pId:-",projectId)
     const [elementHover, setElementHover] = useState(false);
     const [subElementHover, setSubElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);

@@ -190,7 +190,7 @@
 }
 .eyeBack{
     display: none;
-    position: absolute;
+    position: fixed;
     font-size: x-large;
     top: 0;
     right: 0;
@@ -199,6 +199,7 @@
     padding: 3px;
     height: 45px;
     opacity: .7;
+    color: red;
     cursor: pointer;
 }
 .eyeClick{

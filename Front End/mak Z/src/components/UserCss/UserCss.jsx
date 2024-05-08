@@ -517,8 +517,7 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
 
     reader.onload = function(e) {
       bgImageValue.style.backgroundImage = `url('${e.target.result}')`;
-      bgPositionXValue.style.backgroundPositionX=`100%`;
-      bgPositionYValue.style.backgroundPositionY=`100%`;
+      bgSizeXValue.style.backgroundSize=`100% 100%`;
     };
     reader.readAsDataURL(bgImage.current.files[0]);
   }
@@ -534,15 +533,15 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
     bgRepeatValue.style.backgroundRepeat=bgRepeat.current.value
   }
   function bgSizeXOnChange(){
-    const valX=document.querySelector('.bgPositionX');
-    const valY=document.querySelector('.bgPositionY');
+    const valX=document.querySelector('.bgSizeXUnit');
+    const valY=document.querySelector('.bgSizeYUnit');
     const bx=bgSizeX.current.value ? `${bgSizeX.current.value}${valX.value}` : 'auto';
     const by=bgSizeY.current.value ? `${bgSizeY.current.value}${valY.value}` : 'auto';
-    bgSizeXValue.style.backgroundSize=`${bx} ${by}`
+    bgSizeXValue.style.backgroundSize=`${bx} ${by}`;
   }
   function bgSizeYOnChange(){
-    const valX=document.querySelector('.bgPositionX');
-    const valY=document.querySelector('.bgPositionY');
+    const valX=document.querySelector('.bgSizeXUnit');
+    const valY=document.querySelector('.bgSizeYUnit');
     const bx=bgSizeX.current.value ? `${bgSizeX.current.value}${valX.value}` : 'auto';
     const by=bgSizeY.current.value ? `${bgSizeY.current.value}${valY.value}` : 'auto';
     bgSizeXValue.style.backgroundSize=`${bx} ${by}`

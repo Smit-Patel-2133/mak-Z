@@ -428,6 +428,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
                     const reader = new FileReader();
                     reader.onload = function(event) {
                         const imgElement = document.createElement('img');
+                        imgElement.style.width='300px'
                         imgElement.setAttribute('src', event.target.result);
                         imgElement.addEventListener('click',selectElement)
                         setCommonAttributes(imgElement,bodyPage,targetElement)

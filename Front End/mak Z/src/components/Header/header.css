@@ -33,3 +33,7 @@
 .profa{
 margin-top: -8px !important;
 }
+.navbar a{
+    color: white;
+    text-decoration: none;
+}

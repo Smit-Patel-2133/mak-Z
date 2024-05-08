@@ -15,7 +15,7 @@ const Header = () => {
             <img src={logo} alt="" className='logo' />
             <ul>
                 {user.isLogedin ? (
-                    <li><img src={user.profilePicture} alt="Profile" className='profa'/></li>
+                    <li><NavLink to="/userProfile"><img src={user.profilePicture} alt="Profile" className='profa'/></NavLink></li>
                 ) : (
                     <li><NavLink to="/login">Login</NavLink></li>
                     )}

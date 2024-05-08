@@ -16,6 +16,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import Templates from "./components/Templates/Templates.jsx";
 import AboutUs from "./components/AboutUs/AboutUs.jsx";
 import ContactUs from"./components/ContactUs/contact.jsx";
+import UserProfile from"./components/UserProfile/UserProfile.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<App/>}>
@@ -28,6 +29,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path='/templates' element={<Templates/>} />
         <Route path='/aboutus' element={<AboutUs/>} />
         <Route path='/ContactUs' element={<ContactUs/>}/>
+        <Route path='/userProfile' element={<UserProfile/>}/>
     </Route>
 ));
 
