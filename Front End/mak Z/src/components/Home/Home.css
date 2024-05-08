@@ -1,0 +1,77 @@
+/* Styles for the outer div containing the button */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px; /* Original height */
+    width: 300px; /* Original width */
+    border: 1px solid black; /* Border for visibility */
+    margin-top: 10px; /* Top margin */
+    margin-left: 10px; /* Left margin */
+    transition: height 0.3s, width 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+.flex-center:hover {
+    height: 50px; /* Reduced height on hover */
+    width: 50px; /* Reduced width on hover */
+    box-shadow: 0px 0px 10px black; /* Shadow on hover */
+}
+
+/* Styles for the circle button */
+.circle-button {
+    background-color: #1e40af; /* Blue background */
+    color: white; /* White text */
+    border-radius: 50%; /* Circular shape */
+    width: 64px; /* 16 * 4 */
+    height: 64px; /* 16 * 4 */
+    display: flex; /* Flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.circle-button:hover {
+    background-color: #1d4ed8; /* Darker blue on hover */
+}
+
+.circle-button .fa-plus {
+    font-size: 2em; /* Icon size */
+}
+.outer{
+    margin-top: 30px;
+    margin-left:50px;
+}
+/* Divider container */
+.divider-container {
+    position: relative; /* Relative positioning for absolute child positioning */
+    height: 40px; /* Height of the container to allow space for the line and icon */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center items vertically */
+}
+
+/* Horizontal line styles */
+.divider {
+    background-color: black; /* Black horizontal line */
+    height: 3px; /* Thickness of the line */
+    width: 100%; /* Full width */
+    position: relative; /* Relative positioning for child elements */
+}
+
+/* Styles for the circle with plus icon */
+.plus-container {
+    position: absolute; /* Absolute positioning to center on the line */
+    top: 50%; /* Align with the center */
+    left: 50%; /* Align with the center */
+    transform: translate(-50%, -50%); /* Adjust to the exact center */
+    background-color: white; /* White background for the circle */
+    border: 3px solid black; /* 3px border for the circle */
+    border-radius: 50%; /* Circular shape */
+    padding: 10px; /* Padding for the circle */
+    cursor: pointer; /* Pointer cursor */
+}
+
+/* Large plus icon */
+.fa-plus-large {
+    font-size: 2em; /* Larger size for the plus icon */
+}

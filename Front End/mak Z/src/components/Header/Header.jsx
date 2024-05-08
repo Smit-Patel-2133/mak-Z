@@ -12,7 +12,6 @@ const Header = () => {
     return (
 
         <div className='navbar '>
-
             <img src={logo} alt="" className='logo' />
             <ul>
                 {user.isLogedin ? (

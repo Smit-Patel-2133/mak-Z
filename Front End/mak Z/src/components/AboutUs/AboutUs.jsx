@@ -3,13 +3,13 @@ import Header from '../Header/Header';
 import './AboutUs.css'
 import dhruv from '../../assets/picture/feedback_dhruv.png';
 import abhay from '../../assets/picture/feedback_abhay.jpg';
-import ak from '../../assets/picture/a_khan.png'
+import ak from '../../assets/picture/Adarsh.png'
 import smit from '../../assets/picture/smit.jpg'
 import Black_noBG from '../../assets/picture/white_noBG.png';
 import people from '../../assets/picture/people.jpg';
 import people1 from '../../assets/picture/people1.jpg';      
 import people3 from '../../assets/picture/people3.jpg';
-// import working from '../../assets/picture/working.jpg';
+import working from '../../assets/picture/working.jpg';
 
 
 const AboutUs=()=>{
@@ -159,11 +159,11 @@ const AboutUs=()=>{
                         <img className='h-60 w-60 rounded-full' src={ak} alt="Abhay's photo"/>
                     </div>
                     <div className='pl-20 w-3/6'>
-                        <p className="text-lg text-white">Name: Adarsh Khan</p>
+                        <p className="text-lg text-white">Name: Adarsh Loshi</p>
                         <p className="text-lg text-white">GitHub: <a href="https://github.com/akbapu" target="_blank"
                                                           className="text-white ">github.com/akbapu</a>
                         </p>
-                        <p className="text-lg text-white">Email: ak@gmail.com</p>
+                        <p className="text-lg text-white">Email: adarshlodhi22@gnu.ac.in</p>
                     </div>
 
                 </div>

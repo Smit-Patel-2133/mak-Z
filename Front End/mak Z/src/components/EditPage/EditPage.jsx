@@ -2,7 +2,7 @@ import React, { useState , useRef, useEffect } from "react";
 import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import UserCss from '../UserCss/UserCss';
-import { NavLink } from 'react-router-dom';
+import {NavLink, useParams} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faParagraph, faHeading, faFloppyDisk, faLock, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faPlus, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,8 +21,8 @@ const editPage = () => {
     //       window.removeEventListener("beforeunload", handleBeforeUnload);
     //     };
     // }, []);
-    
-
+    const { projectId } = useParams();
+    console.log("pId:-",projectId)
     const [elementHover, setElementHover] = useState(false);
     const [subElementHover, setSubElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
