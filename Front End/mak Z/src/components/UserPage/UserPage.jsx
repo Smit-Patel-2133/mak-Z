@@ -138,11 +138,14 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
         e.preventDefault()
         const el=e.target;
         const bodyPage=el.parentElement;
+        const elStyle=window.getComputedStyle(el);
+        const bodyPageStyle=window.getComputedStyle(bodyPage)
+        const widthEl=pxToPr(parseInt(bodyPageStyle.getPropertyValue('width'))-parseInt(elStyle.getPropertyValue('width')),bodyPage);
         const bodyPagePosition=bodyPage.getBoundingClientRect();
         const cursorValX=e.clientX;
         const cursorValY=e.clientY;
         el.style.top=`${Math.max(0,(cursorValY-bodyPagePosition.top)-elementCursorY)}px`
-        el.style.left=`${Math.max(0,(cursorValX-bodyPagePosition.left)-elementCursorX)}px`
+        el.style.left=`${Math.min(pxToPr(Math.max(0,(cursorValX-bodyPagePosition.left)-elementCursorX),bodyPage),widthEl)}%`
     }
 
     function handlePagebodyElementDragEnd(e){
@@ -154,6 +157,12 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
                 perent.classList.remove('forCursorGrab');
                 perent=perent.parentElement;
         }
+    }
+
+    function pxToPr(x,perentElement){
+      const computedStyle = window.getComputedStyle(perentElement);
+      const width = parseInt(computedStyle.getPropertyValue('width'));
+      return (x/width)*100;
     }
 
     const handleDrop = (e) => {
@@ -185,7 +194,9 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
             'button': button,
             'form': form,
             'navbar': navbar,
-            'dropdown': dropdown
+            'dropdown': dropdown,
+            'input': input,
+            'link': link
         };
         
         const cursorValueX=e.clientX;
@@ -202,7 +213,6 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
             contentVariable.classList.add('editable');
             contentVariable.classList.add('editableBorder');
             contentVariable.addEventListener('click', handleActive);
-            // contentVariable.style.width='fit-content';
             const bodyPagePosition=bodyPage.getBoundingClientRect();
             if(bodyPage && bodyPage==bodyPageRef.current){
                 contentVariable.style.position='absolute';
@@ -211,8 +221,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
                 contentVariable.addEventListener('dragstart',handlePagebodyElementDragStart);
                 contentVariable.addEventListener('dragend',handlePagebodyElementDragEnd);
                 contentVariable.addEventListener('drag',handlePagebodyElementDrag);
-                contentVariable.style.left=`${(cursorValueX-bodyPagePosition.left)}px`;
-                contentVariable.style.top=`${(cursorValueY-bodyPagePosition.top)}px`;
+                contentVariable.style.left=`${pxToPr(cursorValueX-bodyPagePosition.left,bodyPage)}%`;
+                contentVariable.style.top=`${pxToPr(cursorValueY-bodyPagePosition.top,bodyPage)}%`;
                 if(contentVariable.tagName.toLowerCase()=='nav') contentVariable.style.left=`0px`;
             }
             if(targetElement){
@@ -223,11 +233,20 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
                     contentVariable.style.left=`${(cursorValueX-targetElementPosition.left)}px`;
                     contentVariable.style.top=`${(cursorValueY-targetElementPosition.top)}px`;
                     targetElement.appendChild(contentVariable)
+                    const computedStyleContent = window.getComputedStyle(contentVariable);
+                    const widthContent = parseInt(computedStyleContent.getPropertyValue('width'));
+                    contentVariable.style.width=`${pxToPr(widthContent,targetElement)+1}%`;
                 }else{
                     targetElement.parentElement.insertBefore(contentVariable, targetElement);
+                    const computedStyleContent = window.getComputedStyle(contentVariable);
+                    const widthContent = parseInt(computedStyleContent.getPropertyValue('width'));
+                    contentVariable.style.width=`${pxToPr(widthContent,bodyPage)+1}%`;
                 }
             }else{
                 bodyPage.insertBefore(contentVariable, targetElement);
+                const computedStyleContent = window.getComputedStyle(contentVariable);
+                const widthContent = parseInt(computedStyleContent.getPropertyValue('width'));
+                contentVariable.style.width=`${pxToPr(widthContent,bodyPage)+1}%`;
             }
         }
 
@@ -575,6 +594,31 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
             // Append dropdown container to body or a target element
             setCommonAttributes(dropDownElement,bodyPage,null); // Or replace bodyPage with the target element
         }
+
+        function input(){
+            const bodyPage = bodyPageRef.current;
+            const divElement = document.createElement('div');
+            divElement.style.padding='5px';
+            const labelElement = document.createElement('label');
+            labelElement.textContent="Enter your Label:"
+            const br=document.createElement('br');
+            const inputElement = document.createElement('input');
+            inputElement.setAttribute('type','text')
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(labelElement,divElement,null);
+            setCommonAttributes(br,divElement,null);
+            setCommonAttributes(inputElement,divElement,null);
+            setCommonAttributes(divElement,bodyPage,targetElement);
+        }
+
+        function link(){
+            const bodyPage = bodyPageRef.current;
+            const link = document.createElement('a');
+            link.textContent="Here is your Link"
+            link.setAttribute('href','#')
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(link,bodyPage,targetElement);
+        }
         
 
     }
@@ -598,12 +642,16 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
     }
     
     const handleKeyDown = (event) => {
-        if (event && event.key === 'Enter' && !event.shiftKey) {
+        if (event && event.key === 'Enter' && event.shiftKey) {
             event.preventDefault(); 
             const selectionElement = activeElement
             if (selectionElement) {
                 const clonedNode = selectionElement.cloneNode(true);
                 clonedNode.addEventListener('click', handleActive);
+                clonedNode.addEventListener('dblclick',handleDoubleClickOnDragableElement);
+                clonedNode.addEventListener('dragstart',handlePagebodyElementDragStart);
+                clonedNode.addEventListener('dragend',handlePagebodyElementDragEnd);
+                clonedNode.addEventListener('drag',handlePagebodyElementDrag);
                 const computedStyleClone = window.getComputedStyle(selectionElement);
                 const cloneNodeHeight = computedStyleClone.getPropertyValue('height');
                 const topPosition=computedStyleClone.getPropertyValue('top');
@@ -620,6 +668,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
         }else if(event && event.key === 'Delete'){
             const selection = window.getSelection();
             const selectedNode = selection.focusNode;
+            console.log(selectedNode)
             
             if (selectedNode) {
                 if(selectedNode.tagName === 'IMG' || selectedNode.tagName === 'VIDEO'){
@@ -628,6 +677,8 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
                     const parentElement = selectedNode.parentElement; 
                     if (parentElement && !parentElement.classList.contains('pageBody')) {
                         parentElement.remove();
+                    }else{
+                        selectedNode.remove();
                     }
                 }    
             }

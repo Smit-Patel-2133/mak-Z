@@ -149,6 +149,10 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
     }
   }
 
+  function pxToPr(x){
+    return ((x/(600*2))*100)+4;
+  }
+
   useEffect(() => {
     if (receivedData) {
       const computedStyle = window.getComputedStyle(receivedData);
@@ -173,7 +177,9 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
       const targetBgColor = rgbToHex(computedStyle.getPropertyValue('background-color'));
       bgColor.current.value = targetBgColor;
       bgColorFun(receivedData)
-      const targetwidth = computedStyle.getPropertyValue('width');
+      let targetwidth = computedStyle.getPropertyValue('width');
+      const widthU=document.querySelector('.widthUnit');
+      if(widthU.value=='%') targetwidth=(pxToPr(parseInt(targetwidth)))
       width.current.value = parseInt(targetwidth);
       widthFun(receivedData)
       const targetheight = computedStyle.getPropertyValue('height');
@@ -341,7 +347,7 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
 
 
   function fontSizeOnChange(){
-    fontSizeValue.style.fontSize=`${fontSize.current.value}px`
+    fontSizeValue.style.fontSize=`${fontSize.current.value}px`;
   }
   function fontColorOnChange(){
     fontColorValue.style.color=fontColor.current.value;
@@ -350,7 +356,8 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
     bgColorValue.style.backgroundColor=bgColor.current.value;
   }
   function widthOnChange(){
-    widthValue.style.width=`${width.current.value}px`
+    const val=document.querySelector('.widthUnit');
+    widthValue.style.width=`${width.current.value}${val.value}`
   }
   function heightOnChange(){
     heightValue.style.height=`${height.current.value}px`
@@ -383,13 +390,13 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
     textTransformValue.style.textTransform = textTransform.current.value;
   }
   function borderWidthOnChange(){
-    borderWidthValue.style.borderWidth=`${borderWidth.current.value}px`
+    borderWidthValue.style.border=`${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
   }
   function borderStyleOnChange() {
-    borderStyleValue.style.borderStyle = borderStyle.current.value;
+    borderStyleValue.style.border =`${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
   }
   function borderColorOnChange() {
-    borderColorValue.style.borderColor = borderColor.current.value;
+    borderColorValue.style.border = `${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
   }
   function borderRadiusOnChange(){
     borderRadiusValue.style.borderRadius=`${borderRadius.current.value}px`
@@ -510,26 +517,34 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
 
     reader.onload = function(e) {
       bgImageValue.style.backgroundImage = `url('${e.target.result}')`;
+      bgPositionXValue.style.backgroundPositionX=`100%`;
+      bgPositionYValue.style.backgroundPositionY=`100%`;
     };
     reader.readAsDataURL(bgImage.current.files[0]);
   }
   function bgPositionXOnChange(){
-    bgPositionXValue.style.backgroundPositionX=`${bgPositionX.current.value}px`;
+    const val=document.querySelector('.bgPositionXUnit');
+    bgPositionXValue.style.backgroundPositionX=`${bgPositionX.current.value}${val.value}`;
   }
   function bgPositionYOnChange(){
-    bgPositionYValue.style.backgroundPositionY=`${bgPositionY.current.value}px`;
+    const val=document.querySelector('.bgPositionYUnit');
+    bgPositionYValue.style.backgroundPositionY=`${bgPositionY.current.value}${val.value}`;
   }
   function bgRepeatOnChange(){
     bgRepeatValue.style.backgroundRepeat=bgRepeat.current.value
   }
   function bgSizeXOnChange(){
-    const bx=bgSizeX.current.value ? `${bgSizeX.current.value}px` : 'auto';
-    const by=bgSizeY.current.value ? `${bgSizeY.current.value}px` : 'auto';
+    const valX=document.querySelector('.bgPositionX');
+    const valY=document.querySelector('.bgPositionY');
+    const bx=bgSizeX.current.value ? `${bgSizeX.current.value}${valX.value}` : 'auto';
+    const by=bgSizeY.current.value ? `${bgSizeY.current.value}${valY.value}` : 'auto';
     bgSizeXValue.style.backgroundSize=`${bx} ${by}`
   }
   function bgSizeYOnChange(){
-    const bx=bgSizeX.current.value ? `${bgSizeX.current.value}px` : 'auto';
-    const by=bgSizeY.current.value ? `${bgSizeY.current.value}px` : 'auto';
+    const valX=document.querySelector('.bgPositionX');
+    const valY=document.querySelector('.bgPositionY');
+    const bx=bgSizeX.current.value ? `${bgSizeX.current.value}${valX.value}` : 'auto';
+    const by=bgSizeY.current.value ? `${bgSizeY.current.value}${valY.value}` : 'auto';
     bgSizeXValue.style.backgroundSize=`${bx} ${by}`
   }
   
@@ -676,11 +691,19 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
             </tr>
             <tr>
               <td><label htmlFor="bgPositionX"> Background <br /> Position-X:</label></td>
-              <td><input type="number" ref={bgPositionX} name='bgPositionX' className='bgPositionX' onChange={bgPositionXOnChange}/><br /></td>
+              <td><input type="number" ref={bgPositionX} name='bgPositionX' className='bgPositionX' onChange={bgPositionXOnChange}/><br />
+                <select name="bgPositionXUnit" className='bgPositionXUnit'>
+                  <option value="%">PR(%)</option>
+                  <option value="px">PX</option>
+                </select></td>
             </tr>
             <tr>
               <td><label htmlFor="bgPositionY"> Background <br /> Position-Y:</label></td>
-              <td><input type="number" ref={bgPositionY} name='bgPositionY' className='bgPositionY' onChange={bgPositionYOnChange}/><br /></td>
+              <td><input type="number" ref={bgPositionY} name='bgPositionY' className='bgPositionY' onChange={bgPositionYOnChange}/><br />
+                <select name="bgPositionYUnit" className='bgPositionYUnit'>
+                  <option value="%">PR(%)</option>
+                  <option value="px">PX</option>
+                </select></td>
             </tr>
             <tr>
               <td><label htmlFor="bgRepeat">Background <br /> Repeat: </label></td>
@@ -695,11 +718,19 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
             </tr>
             <tr>
               <td><label htmlFor="bgSizeX"> Background <br /> Size-X:</label></td>
-              <td><input type="number" ref={bgSizeX} name='bgSizeX' className='bgSizeX' onChange={bgSizeXOnChange}/><br /></td>
+              <td><input type="number" ref={bgSizeX} name='bgSizeX' className='bgSizeX' onChange={bgSizeXOnChange}/><br />
+                <select name="bgSizeXUnit" className='bgSizeXUnit'>
+                  <option value="%">PR(%)</option>
+                  <option value="px">PX</option>
+                </select></td>
             </tr>
             <tr>
               <td><label htmlFor="bgSizeY"> Background <br /> Size-Y:</label></td>
-              <td><input type="number" ref={bgSizeY} name='bgSizeY' className='bgSizeY' onChange={bgSizeYOnChange}/><br /></td>
+              <td><input type="number" ref={bgSizeY} name='bgSizeY' className='bgSizeY' onChange={bgSizeYOnChange}/><br />
+                <select name="bgSizeYUnit" className='bgSizeYUnit'>
+                  <option value="%">PR(%)</option>
+                  <option value="px">PX</option>
+                </select></td>
             </tr>
           </tbody>
           </table>
@@ -712,7 +743,11 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
           <tbody>
             <tr>
               <td><label htmlFor="width">Width: </label></td>
-              <td><input type="number" ref={width} name='width' className='width' onChange={widthOnChange}/><br /></td>
+              <td><input type="number" ref={width} name='width' className='width' onChange={widthOnChange}/><br />
+                  <select name="widthUnit" className='widthUnit'>
+                    <option value="%">PR(%)</option>
+                    <option value="px">PX</option>
+                  </select></td>
             </tr>
             <tr>
               <td><label htmlFor="height">Height: </label></td>

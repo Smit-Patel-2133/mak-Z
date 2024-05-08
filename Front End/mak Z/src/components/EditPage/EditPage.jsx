@@ -98,7 +98,7 @@ const editPage = () => {
                 <div className="toolBar">
                     <ul style={{float:'left'}}>
                         <li className="add" onClick={()=>addOnClick()} onMouseEnter={() => mouseOver()} onMouseLeave={() => mouseLeave()}>{!hardElementHover ? <FontAwesomeIcon icon={faPlus} /> : <FontAwesomeIcon icon={faLock} />}</li>
-                        <li className='home'><NavLink to="/home"><FontAwesomeIcon icon={faHouse} /></NavLink></li>
+                        <li className='home'><NavLink to="/home"><FontAwesomeIcon style={{color:'white'}} icon={faHouse} /></NavLink></li>
                         <li className='save' onClick={saveclicked}><FontAwesomeIcon icon={faFloppyDisk} /></li>
                         <li className="download" onClick={download}><FontAwesomeIcon icon={faDownload} /></li>
                         <li className='eye' onClick={eyeclicked}><FontAwesomeIcon icon={faEye} /></li>
@@ -127,7 +127,7 @@ const editPage = () => {
                             <li className="mainList">
                                 <p>Text</p>
                                 <ul>
-                                    <li draggable='true' className={`heading1Drag ${subElementHover ? 'subElementHover' : ''}`} onMouseEnter={() => mouseOverOnSubElement()} onMouseLeave={() => mouseLeaveOnSubElement()} onDragStart={(event) => {event.dataTransfer.setData("element", "heading1");}}>
+                                    <li draggable='true' className={`heading1Drag ${subElementHover ? 'subElementHover' : ''}`} onClick={() => mouseOverOnSubElement()} onDragStart={(event) => {event.dataTransfer.setData("element", "heading1");}}>
                                         <FontAwesomeIcon icon={faHeading} />
                                         <p>Headings</p>
                                     </li>
@@ -249,6 +249,14 @@ const editPage = () => {
                                     <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "navbar");}}>
                                         <FontAwesomeIcon icon={faN} />
                                         <p>Navbar</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "input");}}>
+                                        <FontAwesomeIcon icon={faN} />
+                                        <p>Input Box</p>
+                                    </li>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "link");}}>
+                                        <FontAwesomeIcon icon={faN} />
+                                        <p>Hyper Link</p>
                                     </li>
                                 </ul>
                             </li>
