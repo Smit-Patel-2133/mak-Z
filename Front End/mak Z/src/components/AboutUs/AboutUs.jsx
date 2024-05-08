@@ -163,7 +163,7 @@ const AboutUs=()=>{
                         <p className="text-lg text-white">GitHub: <a href="https://github.com/akbapu" target="_blank"
                                                           className="text-white ">github.com/akbapu</a>
                         </p>
-                        <p className="text-lg text-white">Email: adarshlodhi22@gmail.com</p>
+                        <p className="text-lg text-white">Email: adarshlodhi22@gnu.ac.in</p>
                     </div>
 
                 </div>
