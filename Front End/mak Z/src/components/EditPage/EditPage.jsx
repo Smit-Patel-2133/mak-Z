@@ -2,6 +2,7 @@ import React, { useState , useRef, useEffect } from "react";
 import './editPage.css';
 import UserPage from '../UserPage/UserPage';
 import UserCss from '../UserCss/UserCss';
+import axios from "axios";
 import {NavLink, useParams} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faParagraph, faHeading, faFloppyDisk, faLock, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faPlus, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
@@ -22,7 +23,7 @@ const editPage = () => {
     //     };
     // }, []);
     const { projectId } = useParams();
-    // console.log("pId:-",projectId)
+
     const [elementHover, setElementHover] = useState(false);
     const [subElementHover, setSubElementHover] = useState(false);
     const [styleHover, setStyleHover] = useState(true);
@@ -267,7 +268,7 @@ const editPage = () => {
             <div className={`eyeBack ${eyeClick ? 'eyeClick' : ''}`} onClick={eyeclicked}>
                 <p><FontAwesomeIcon icon={faEye} /></p>
             </div>
-            <UserPage bodyPageRef={userPage} styleHover={styleHover} hardStyleHover={hardStyleHover} onUpdateHardStyleHover={setOnUpdateHardStyleHover} eyeClick={eyeClick} className='edit' sendDataToUserCss={sendDataToUserCss}/>
+            <UserPage bodyPageRef={userPage} templateId={projectId} styleHover={styleHover} hardStyleHover={hardStyleHover} onUpdateHardStyleHover={setOnUpdateHardStyleHover} eyeClick={eyeClick} className='edit' sendDataToUserCss={sendDataToUserCss}/>
             <UserCss styleHover={styleHover} hardStyleHover={hardStyleHover} receivedData={dataFromUserPage} />
         </div>
         </>

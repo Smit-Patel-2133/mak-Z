@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSelector } from 'react-redux';
 import html2canvas from 'html2canvas';
 
-const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyleHover, onUpdateHardStyleHover, eyeClick}) => {
+const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHover, hardStyleHover, onUpdateHardStyleHover, eyeClick}) => {
 
     const user = useSelector(state => state.auth);
     const [activeElement,setActiveElement]=useState(null)
@@ -13,10 +13,10 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
 
     const logOuterHTML = (name,label,type,saved) => {
         const code = bodyPageRef.current.outerHTML;
-        const templateName=name.value
-        const templateLabel=label.value
-        const templateType=type.value
-        const userEmail=user.email
+        const templateName=name.value;
+        const templateLabel=label.value;
+        const templateType=type.value;
+        const userEmail=user.email;
         const allElements=document.getElementsByClassName('editableBorder');
         const elementsArray = Array.from(allElements);
         elementsArray.forEach(element => {
@@ -27,7 +27,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
             const base64String = canvas.toDataURL();
             const imageOfTemplate = base64String.split(',')[1].trim(); // Get base64 part and trim whitespace
             try {
-                axios.post('http://localhost:5000/download', { code }, { responseType: 'blob' })
+                axios.post('http://localhost:5000/download', { code}, { responseType: 'blob' })
                     .then(response => {
                         if(!saved){
                             const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -38,7 +38,7 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
                             link.click();
                             link.parentNode.removeChild(link);
                         }else{
-                            axios.post('http://localhost:5000/save', { userEmail, imageOfTemplate, templateName, templateLabel, templateType})
+                            axios.post('http://localhost:5000/save', { userEmail, imageOfTemplate, templateName, templateLabel, templateType, templateId})
                             .then(() => {
                                 alert('Your File Saved Successfully')
                                 console.log('File Saved');
@@ -68,6 +68,49 @@ const UserPage = ({props , bodyPageRef, sendDataToUserCss, styleHover, hardStyle
             element.classList.add('editableBorder');
         });
     };
+
+    useEffect(() => {
+        if(templateId){
+            try{
+                axios.post('http://localhost:5000/fetchCodeFromId',{templateId})
+                .then((res) => {
+                    bodyPageRef.current.innerHTML=res.data;
+                    const pageBodyElements = document.querySelectorAll('.pageBody *');
+                    pageBodyElements.forEach(contentVariable => {   
+                            contentVariable.setAttribute('draggable','true');     
+                            contentVariable.addEventListener('dblclick', handleDoubleClickOnDragableElement);
+                            contentVariable.addEventListener('dragstart', handlePagebodyElementDragStart);
+                            contentVariable.addEventListener('dragend', handlePagebodyElementDragEnd);
+                            contentVariable.addEventListener('drag', handlePagebodyElementDrag);
+                            attachEventListenersToDescendants(contentVariable)
+                       
+                    });
+                    axios.delete('http://localhost:5000/delete/Mak-Z.html')
+                    .then(() => {
+                        console.log('File deleted successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error deleting file:', error);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error Code fatching:', error);
+                });
+            }catch(error){
+                console.log('Error in add code in userPage: ' +error)
+            }
+        }
+    }, []);
+
+    function attachEventListenersToDescendants(element) {
+        if (!element) return;
+        element.classList.add('editableBorder');
+        element.addEventListener('click', handleActive);
+        element.setAttribute('contenteditable', 'true');
+        for (let child of element.children) {
+            attachEventListenersToDescendants(child);
+        }
+    }
     
 
     if (bodyPageRef.current) {

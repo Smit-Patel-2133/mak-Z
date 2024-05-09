@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const cheerio = require('cheerio'); //for reading html file
 const beautify = require('js-beautify').html;
 const sql = require('./db'); // Import the sql function from db.js
 const multer = require('multer'); // Import multer for handling file uploads
@@ -212,16 +213,21 @@ app.post('/save', async (req, res) => {
     try {
         const filePath = path.join(__dirname, '../../mak-Z.html');
         const fileData = fs.readFileSync(filePath);
-        const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
-        const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
-        const templat_visibility=(req.body.templateType=='public') ? true : false
-        const timestamp = Date.now();
-        let templateId=templat_name.substring(0,2)
-        templateId+=templat_label.substring(0,2)
-        templateId+=(templat_visibility) ? 't' : 'f'
-        templateId+='_'+timestamp.toString().substring(2,8)
-        await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${templateId},${templat_name},${templat_label},${templat_visibility})`;
-        res.status(200).send('File Saved');
+        if(req.body.templateId==undefined){
+            const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
+            const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
+            const templat_visibility=(req.body.templateType=='public') ? true : false
+            const timestamp = Date.now();
+            let generatedTemplateId=templat_name.substring(0,2)
+            generatedTemplateId+=templat_label.substring(0,2)
+            generatedTemplateId+=(templat_visibility) ? 't' : 'f'
+            generatedTemplateId+='_'+timestamp.toString().substring(2,8)
+            await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${generatedTemplateId},${templat_name},${templat_label},${templat_visibility})`;
+            res.status(200).send('File Saved');
+        }else{
+            await sql `UPDATE template SET templatehtmlfile = ${fileData}, templateimage = ${req.body.imageOfTemplate} WHERE templateid = ${req.body.templateId}`;
+            res.status(200).send('File Updated');
+        }
     }catch(error){
         console.log('Error at catch block: '+error);
         res.status(500).send('Problem in File Saved');
@@ -383,6 +389,42 @@ app.get('/user/details', async (req, res) => {
         res.status(500).json({error: 'Internal server error', details: error.message});
     }
 });
+
+app.post('/fetchCodeFromId', async(req,res)=>{
+    const id=req.body.templateId;
+    console.log(id)
+    const htmlFile = await sql`SELECT templatehtmlfile FROM template WHERE templateid = ${id}`;
+    if(htmlFile.length===0){
+        console.log('Html file not found...');
+        res.status(404).send('Html file not found...');
+    }else{
+        try {
+            const bytes = htmlFile[0].templatehtmlfile; // Fetch bytes from the database
+            const filePath = path.join(__dirname, '../../mak-Z.html'); // File path where the HTML file will be written
+            await bytesToFile(bytes, filePath);
+            const fileContent = fs.readFileSync(filePath, 'utf-8');
+            const $ = cheerio.load(fileContent);
+            const pageBodyContent = $('.pageBody').html();
+            res.send(pageBodyContent);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+});
+function bytesToFile(bytes, filePath) {
+    return new Promise((resolve, reject) => {
+        // Create a buffer from the bytes
+        const buffer = Buffer.from(bytes, 'binary');
+        // Write the buffer to a file
+        fs.writeFile(filePath, buffer, 'binary', (error) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
