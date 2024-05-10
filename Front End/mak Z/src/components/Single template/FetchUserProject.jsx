@@ -5,6 +5,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import ImageZoom from './ImageZoom.jsx';
 import { useNavigate } from 'react-router-dom';
 import './FetchTemplate.css'
+
 const FetchUserProject = ({ email }) => {
     const [projects, setProjects] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -71,8 +72,8 @@ const FetchUserProject = ({ email }) => {
                 );
                 setProjects(response.data); // Set the fetched projects
             } catch (err) {
-                setError(err); // Set error if fetching fails
-                console.error('Error fetching user projects:', err);
+                setError(); // Set error if fetching fails
+
             } finally {
                 setIsLoading(false); // End loading state
             }
