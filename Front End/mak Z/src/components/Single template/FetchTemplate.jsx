@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import ImageZoom from './ImageZoom.jsx';
-import ims from '../../assets/Profile picture/3.png'
 import {useNavigate} from "react-router-dom";
 const FetchTemplate = ({ templateHeading, images }) => {
     const sliderRef = useRef(null);

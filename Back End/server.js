@@ -250,13 +250,14 @@ app.delete('/delete/:filename', (req, res) => {
 
 // Placing logs to track the request flow
 app.post('/fetchThis', async (req, res) => {
-    const templateType = req.body.type; // Extract template type from request body
-    if (!templateType) {
+    const { type, userEmail } = req.body; // Extract template type and user email from request body
+
+    if (!type) {
         return res.status(400).json({ error: 'Missing template type in request body' });
     }
 
     try {
-        // Fetching templates and user information with a JOIN operation
+        // Fetching templates with JOIN and excluding those created by the current user
         const result = await sql`
             SELECT
               template.templateid,
@@ -274,35 +275,38 @@ app.post('/fetchThis', async (req, res) => {
             ON
               template.email = users.email
             WHERE
-              template.templatetype = ${templateType}
+            template.templatevisibility=true 
+            AND template.templatetype = ${type}
+            AND template.email != ${userEmail}
         `;
 
         if (result.length === 0) {
             return res.status(404).json({ error: 'No templates found for the specified type' });
         }
 
-        // Extracting and structuring the response data
-        const templates = result.map(row => ({
+        const templates = result.map((row) => ({
             id: row.templateid,
             name: row.templatename,
             likes: row.templatelikes,
             downloads: row.templatedownloads,
             visibility: row.templatevisibility,
             htmlImg: row.templateimage,
-            profilePic: row.profile_Pic, // User's profile picture
-            username: row.username       // User's username
+            profilePic: row.profile_pic,
+            username: row.username,
         }));
-        console.log("templates:-",templates);
-        res.status(200).json(templates); // Send the response back to the client
+
+        res.status(200).json(templates); // Send the templates back to the client
     } catch (error) {
         console.error('Error fetching templates:', error);
         res.status(500).json({ error: 'An error occurred while fetching templates' });
     }
 });
 
+
 app.post('/fetchThis/forhome', async (req, res) => {
+    const { userEmail } = req.body;
+
     try {
-        // Fetching templates and associated user information from the database with a JOIN operation
         const result = await sql`
             SELECT
               template.templateid,
@@ -311,7 +315,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
               template.templatedownloads,
               template.templatevisibility,
               template.templateimage,
-              users.profile_pic,
               users.username
             FROM
               template
@@ -319,42 +322,58 @@ app.post('/fetchThis/forhome', async (req, res) => {
               users
             ON
               template.email = users.email
+            WHERE
+              template.templatevisibility = true
+              ${userEmail ? sql`AND template.email != ${userEmail}` : sql``}
         `;
 
         if (result.length === 0) {
             return res.status(404).json({ error: 'No templates found' });
         }
 
-        // Map the fetched data to a structured format
-        const templates = result.map(row => ({
+        const templates = result.map((row) => ({
             id: row.templateid,
             name: row.templatename,
             likes: row.templatelikes,
             downloads: row.templatedownloads,
             visibility: row.templatevisibility,
-            htmlImg: row.templateimage, // Ensure correct MIME type
-            profilePic: row.profile_pic, // User's profile picture
-            username: row.username       // User's username
+            htmlImg: row.templateimage,
+            username: row.username,
         }));
 
-        res.status(200).json(templates); // Send the response with the structured templates data
+        res.status(200).json(templates);
     } catch (error) {
         console.error('Error fetching templates:', error);
         res.status(500).json({ error: 'An error occurred while fetching templates' });
     }
 });
 
+
+
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
 
     try {
-        const result = await sql`SELECT * FROM template WHERE email = ${email}`; // Filter by email
+        // Fetch only the necessary fields from the template table
+        const result = await sql`
+            SELECT
+                templateid,
+                templatename,
+                templatelikes,
+                templatedownloads,
+                templatevisibility,
+                templateimage
+            FROM
+                template
+            WHERE
+                email = ${email}
+        `;
+
         if (result.length === 0) {
             return res.status(404).json({ error: 'No projects found for the specified email' });
         }
 
         const templates = result.map(row => {
-
             return {
                 id: row.templateid,
                 name: row.templatename,
@@ -370,6 +389,7 @@ app.post('/fetchThis/userProjects', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching user projects' });
     }
 });
+
 // Endpoint to get user details
 app.get('/user/details', async (req, res) => {
     const {email} = req.query;
