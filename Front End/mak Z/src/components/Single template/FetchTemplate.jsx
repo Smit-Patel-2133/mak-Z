@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import ImageZoom from './ImageZoom.jsx';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import LoginModal from '../login/LoginModal'; // Import the LoginModal component
-import ProjectDetailsModalEdit from './ProjectDetailsModalEdit'; // Import the ProjectDetailsModalEdit component
+import LoginModal from '../login/LoginModal';
+import ProjectDetailsModalEdit from './ProjectDetailsModalEdit';
 
 const FetchTemplate = ({ templateHeading, images }) => {
     const user = useSelector(state => state.auth);
@@ -16,8 +16,9 @@ const FetchTemplate = ({ templateHeading, images }) => {
 
     const [isZoomed, setIsZoomed] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [showLoginModal, setShowLoginModal] = useState(false); // State to control login modal
-    const [showProjectDetailsModal, setShowProjectDetailsModal] = useState(false); // State to control project details modal
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showProjectDetailsModal, setShowProjectDetailsModal] = useState(false);
+    const [templateDetails, setTemplateDetails] = useState(null);
 
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -49,9 +50,12 @@ const FetchTemplate = ({ templateHeading, images }) => {
 
     const userName = selectedImage ? selectedImage.name : 'Unknown';
     const navigate = useNavigate();
-    const handleEditClick = (projectId) => {
+
+    const handleEditClick = (template) => {
         if (user.isLogedin) {
+            const { id, name, visibility, type } = template;
             setShowProjectDetailsModal(true);
+            setTemplateDetails({ id, name, visibility, type });
         } else {
             setShowLoginModal(true);
         }
@@ -64,14 +68,13 @@ const FetchTemplate = ({ templateHeading, images }) => {
                 show={showLoginModal}
                 onClose={() => setShowLoginModal(false)}
                 onLogin={() => {
-                    // Handle login action here
-                    // For example, navigate to the login page
                     setShowLoginModal(false);
                 }}
             />
             <ProjectDetailsModalEdit
                 show={showProjectDetailsModal}
                 onClose={() => setShowProjectDetailsModal(false)}
+                templateDetails={templateDetails}
             />
             {isZoomed ? (
                 <ImageZoom
@@ -114,7 +117,7 @@ const FetchTemplate = ({ templateHeading, images }) => {
                                             </div>
                                             <div className="flex flex-col justify-between h-full items-center">
                                                 <button className="mr-2 mb-2 bg-gray-600 rounded h-10 w-20 text-white"
-                                                        onClick={() => handleEditClick(image.id)}>
+                                                        onClick={() => handleEditClick(image)}>
                                                     Edit
                                                 </button>
                                             </div>

@@ -382,7 +382,7 @@ app.post('/fetchThis/userProjects', async (req, res) => {
             };
         });
 
-        console.log("Templates fetched for email:", email, "Templates:", templates);
+
         res.status(200).json(templates); // Return the fetched projects
     } catch (error) {
         console.error('Error fetching user projects:', error);
@@ -464,6 +464,43 @@ app.post('/createNewProject', async (req, res) => {
     } catch (error) {
         console.error('Error creating project:', error);
         res.status(500).json({ error: 'Problem in File Saved' });
+    }
+});
+
+app.post('/copyProject', async (req, res) => {
+    try {
+        const { id, templateName, templateType, templateVisibility, email } = req.body;
+        console.log("templateName:", templateName);
+        console.log("templateType:", templateType);
+        console.log("templateVisibility:", templateVisibility);
+        // Assuming you're using some library like 'sql-template-strings'
+        const result = await sql`SELECT templatehtmlfile, templateimage FROM template WHERE templateid = ${id}`;
+        console.log("1 is exe")
+        // Extracting templatehtmlfile and templateimage from the result
+        const { templatehtmlfile, templateimage } = result[0];
+
+        // Generating template ID
+        const timestamp = Date.now();
+        let generatedTemplateId = templateName.substring(0, 2) +
+            templateType.substring(0, 2) +
+            (templateVisibility ? 't' : 'f') +
+            '_' + timestamp.toString().substring(2, 8);
+
+
+        // Inserting data into the database
+        await sql`
+            INSERT INTO template (templatename, templatetype, templatevisibility, email, templatehtmlfile, templateimage, templateid)
+            VALUES (${templateName}, ${templateType}, ${templateVisibility}, ${email}, ${templatehtmlfile}, ${templateimage}, ${generatedTemplateId})
+        `;
+        console.log("2 is exe")
+
+
+        res.json({ generatedTemplateId });
+    } catch (e) {
+        // Handle any errors
+        console.error('Error copying project:', e);
+        // Sending an error response if something goes wrong
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

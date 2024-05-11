@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from "react-redux";
 
-const ProjectDetailsModalEdit = ({ show, onClose }) => {
+const ProjectDetailsModalEdit = ({ show, onClose, templateDetails }) => {
     const navigate = useNavigate();
     const [projectName, setProjectName] = useState('');
     const [projectType, setProjectType] = useState('');
+    const[projectId,setProjectId]=useState('')
     const [visibility, setVisibility] = useState('public');
     const [showError, setShowError] = useState(false);
     const user = useSelector(state => state.auth);
+    console.log(templateDetails)
+    useEffect(() => {
+        if (templateDetails) {
+            const { id,name, type, visibility } = templateDetails;
+            setProjectId(id)
+            setProjectName(name);
+            setProjectType(type);
+            setVisibility(visibility);
+        }
+    }, [templateDetails]);
+
     const handleSubmit = async () => {
         if (projectName.trim() === '') {
             setShowError(true);
@@ -17,18 +29,18 @@ const ProjectDetailsModalEdit = ({ show, onClose }) => {
         }
 
         try {
+            console.log("projectType:", projectType);
             const response = await axios.post('http://localhost:5000/copyProject', {
+                id: projectId, // Assuming projectId is correctly set
                 templateName: projectName,
                 templateType: projectType,
                 templateVisibility: visibility,
                 email: user.email,
-                htmlContent: htmlContent,
-                image: image
             });
 
-            const projectId = response.data.projectId;
+            const generatedTemplateId = response.data.generatedTemplateId;
 
-            navigate(`/editPage/${projectId}`);
+            navigate(`/editPage/${generatedTemplateId}`);
         } catch (error) {
             console.error('Error creating project:', error);
         }
