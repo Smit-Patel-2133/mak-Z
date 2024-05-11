@@ -22,6 +22,9 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
         elementsArray.forEach(element => {
             element.classList.remove('editableBorder');
         });
+        setActiveElement(null);
+        let acti=document.getElementsByClassName('activeElementClass');
+        if(acti[0]) acti[0].classList.remove('activeElementClass');
 
         html2canvas(bodyPageRef.current).then(canvas => {
             const base64String = canvas.toDataURL();
