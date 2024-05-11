@@ -160,7 +160,7 @@ const AboutUs=()=>{
                     </div>
                     <div className='pl-20 w-3/6'>
                         <p className="text-lg text-white">Name: Adarsh Loshi</p>
-                        <p className="text-lg text-white">GitHub: <a href="https://github.com/akbapu" target="_blank"
+                        <p className="text-lg text-white">GitHub: <a href="https://github.com/AdarshhLodhi" target="_blank"
                                                           className="text-white ">github.com/akbapu</a>
                         </p>
                         <p className="text-lg text-white">Email: adarshlodhi22@gnu.ac.in</p>
