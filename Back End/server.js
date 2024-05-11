@@ -471,5 +471,24 @@ app.post('/createNewProject', async (req, res) => {
 
 
 
+app.post('/getInfoForTemplate', async (req,res)=>{
+    const info = await sql`SELECT templateid,templatename,templatetype,templatevisibility FROM template WHERE email = ${req.body.userEmail}`;
+    res.send(info)
+});
+
+app.post('/getInfoForUserImage', async (req,res)=>{
+    const info = await sql`SELECT profile_pic FROM users WHERE email = ${req.body.userEmail}`;
+    res.send(info)
+});
+
+app.post('/deleteTemplateFromProfile', async (req,res)=>{
+    try{
+        await sql`DELETE FROM template WHERE templateid = ${req.body.deleteId}`;
+        res.status(200).send('deleted');
+    }catch(error){
+        console.error(error);
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
