@@ -348,8 +348,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
     }
 });
 
-
-
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
 
@@ -446,6 +444,32 @@ function bytesToFile(bytes, filePath) {
         });
     });
 }
+
+
+app.post('/createNewProject', async (req, res) => {
+    try {
+        const { email, templateName, templateType, templateVisibility } = req.body;
+
+        // Generate template ID
+        const timestamp = Date.now();
+        const generatedTemplateId = `${templateName.substring(0, 2)}${templateType.substring(0, 2)}${templateVisibility ? 't' : 'f'}_${timestamp.toString().substring(2, 8)}`;
+
+        // Insert data into the database with placeholder values for templatehtmlfile and templateimage
+        await sql`
+            INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility)
+            VALUES (${email}, ${null}, ${null}, ${generatedTemplateId}, ${templateName}, ${templateType}, ${templateVisibility})
+        `;
+
+        res.status(200).json({ message: 'File Saved', projectId: generatedTemplateId });
+    } catch (error) {
+        console.error('Error creating project:', error);
+        res.status(500).json({ error: 'Problem in File Saved' });
+    }
+});
+
+
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

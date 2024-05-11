@@ -2,8 +2,13 @@ import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import ImageZoom from './ImageZoom.jsx';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import LoginModal from '../login/LoginModal'; // Import the LoginModal component
+import ProjectDetailsModalEdit from './ProjectDetailsModalEdit'; // Import the ProjectDetailsModalEdit component
+
 const FetchTemplate = ({ templateHeading, images }) => {
+    const user = useSelector(state => state.auth);
     const sliderRef = useRef(null);
     const isDown = useRef(false);
     const startX = useRef(null);
@@ -11,6 +16,8 @@ const FetchTemplate = ({ templateHeading, images }) => {
 
     const [isZoomed, setIsZoomed] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [showLoginModal, setShowLoginModal] = useState(false); // State to control login modal
+    const [showProjectDetailsModal, setShowProjectDetailsModal] = useState(false); // State to control project details modal
 
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -18,9 +25,7 @@ const FetchTemplate = ({ templateHeading, images }) => {
         startX.current = e.pageX - sliderRef.current.offsetLeft;
         scrollLeft.current = sliderRef.current.scrollLeft;
     };
-    const profilePicturePath = async (val)=>{
-        await import(`../../assets/Profile picture/${val}.png`);
-    }
+
     const handleMouseUp = () => {
         isDown.current = false;
     };
@@ -45,11 +50,29 @@ const FetchTemplate = ({ templateHeading, images }) => {
     const userName = selectedImage ? selectedImage.name : 'Unknown';
     const navigate = useNavigate();
     const handleEditClick = (projectId) => {
-        navigate(`/editPage/${projectId}`);
+        if (user.isLogedin) {
+            setShowProjectDetailsModal(true);
+        } else {
+            setShowLoginModal(true);
+        }
     };
+
     return (
         <div className="fetch-template-container">
             <h1 className="mt-3 italic">{templateHeading}</h1>
+            <LoginModal
+                show={showLoginModal}
+                onClose={() => setShowLoginModal(false)}
+                onLogin={() => {
+                    // Handle login action here
+                    // For example, navigate to the login page
+                    setShowLoginModal(false);
+                }}
+            />
+            <ProjectDetailsModalEdit
+                show={showProjectDetailsModal}
+                onClose={() => setShowProjectDetailsModal(false)}
+            />
             {isZoomed ? (
                 <ImageZoom
                     image={selectedImage}

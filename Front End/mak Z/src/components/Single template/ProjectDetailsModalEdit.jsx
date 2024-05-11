@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {useSelector} from "react-redux"; // Import axios for making HTTP requests
+import { useSelector } from "react-redux";
 
-const ProjectDetailsModal = ({ show, onClose }) => {
+const ProjectDetailsModalEdit = ({ show, onClose }) => {
     const navigate = useNavigate();
     const [projectName, setProjectName] = useState('');
     const [projectType, setProjectType] = useState('');
@@ -17,22 +17,20 @@ const ProjectDetailsModal = ({ show, onClose }) => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/createNewProject', {
+            const response = await axios.post('http://localhost:5000/copyProject', {
                 templateName: projectName,
                 templateType: projectType,
                 templateVisibility: visibility,
-                email:user.email,
-                // Add other data you want to send to the backend
+                email: user.email,
+                htmlContent: htmlContent,
+                image: image
             });
 
-            // Assuming the backend sends back the project ID in the response data
             const projectId = response.data.projectId;
 
-            // Navigate to the edit page with the newly created project ID
             navigate(`/editPage/${projectId}`);
         } catch (error) {
             console.error('Error creating project:', error);
-            // Handle error, show a message to the user, etc.
         }
     };
 
@@ -50,7 +48,7 @@ const ProjectDetailsModal = ({ show, onClose }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-8 w-2/3 md:w-1/2 lg:w-1/3 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold text-center">New Project</h2>
+                <h2 className="text-2xl font-bold text-center">Take Project</h2>
                 <div className="mt-4">
                     <label htmlFor="projectName" className="block text-left">
                         Project Name:
@@ -101,7 +99,7 @@ const ProjectDetailsModal = ({ show, onClose }) => {
                     <button
                         onClick={handleSubmit}
                         className="bg-green-500 text-white py-2 px-4 rounded-lg mr-2 hover:bg-green-600 transition duration-200"
-                        disabled={projectName.trim() === ''} // Disable if project name is empty
+                        disabled={projectName.trim() === ''}
                     >
                         Create
                     </button>
@@ -116,4 +114,5 @@ const ProjectDetailsModal = ({ show, onClose }) => {
         </div>
     );
 };
-export default ProjectDetailsModal
+
+export default ProjectDetailsModalEdit;
