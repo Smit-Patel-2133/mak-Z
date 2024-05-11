@@ -275,8 +275,9 @@ app.post('/fetchThis', async (req, res) => {
             ON
               template.email = users.email
             WHERE
-              template.templatetype = ${type}
-              AND template.email != ${userEmail}
+            template.templatevisibility=true 
+            AND template.templatetype = ${type}
+            AND template.email != ${userEmail}
         `;
 
         if (result.length === 0) {
@@ -301,6 +302,7 @@ app.post('/fetchThis', async (req, res) => {
     }
 });
 
+
 app.post('/fetchThis/forhome', async (req, res) => {
     const { userEmail } = req.body;
 
@@ -313,7 +315,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
               template.templatedownloads,
               template.templatevisibility,
               template.templateimage,
-              users.profile_pic,
               users.username
             FROM
               template
@@ -321,7 +322,9 @@ app.post('/fetchThis/forhome', async (req, res) => {
               users
             ON
               template.email = users.email
-            ${userEmail ? sql`WHERE template.email != ${userEmail}` : sql``} -- Exclude templates created by the current user, if specified
+            WHERE
+              template.templatevisibility = true
+              ${userEmail ? sql`AND template.email != ${userEmail}` : sql``}
         `;
 
         if (result.length === 0) {
@@ -335,7 +338,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
             downloads: row.templatedownloads,
             visibility: row.templatevisibility,
             htmlImg: row.templateimage,
-            profilePic: row.profile_pic,
             username: row.username,
         }));
 
@@ -352,13 +354,26 @@ app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
 
     try {
-        const result = await sql`SELECT * FROM template WHERE email = ${email}`; // Filter by email
+        // Fetch only the necessary fields from the template table
+        const result = await sql`
+            SELECT
+                templateid,
+                templatename,
+                templatelikes,
+                templatedownloads,
+                templatevisibility,
+                templateimage
+            FROM
+                template
+            WHERE
+                email = ${email}
+        `;
+
         if (result.length === 0) {
             return res.status(404).json({ error: 'No projects found for the specified email' });
         }
 
         const templates = result.map(row => {
-
             return {
                 id: row.templateid,
                 name: row.templatename,
@@ -368,13 +383,15 @@ app.post('/fetchThis/userProjects', async (req, res) => {
                 htmlImg: row.templateimage // Ensure correct MIME type
             };
         });
-        console.log("templates",templates)
+
+        console.log("Templates fetched for email:", email, "Templates:", templates);
         res.status(200).json(templates); // Return the fetched projects
     } catch (error) {
         console.error('Error fetching user projects:', error);
         res.status(500).json({ error: 'An error occurred while fetching user projects' });
     }
 });
+
 // Endpoint to get user details
 app.get('/user/details', async (req, res) => {
     const {email} = req.query;

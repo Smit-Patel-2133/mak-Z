@@ -3,6 +3,7 @@ import axios from 'axios';
 import Header from '../Header/Header.jsx';
 import FetchTemplate from '../Single template/FetchTemplate.jsx';
 import {useSelector} from "react-redux";
+import { ClimbingBoxLoader } from 'react-spinners';
 
 const Templates = () => {
     const user = useSelector(state => state.auth);
@@ -57,7 +58,9 @@ const Templates = () => {
         <div>
             <Header />
             {isLoading ? (
-                <p>Loading...</p>
+                <div className="flex justify-center items-center h-screen">
+                    <ClimbingBoxLoader color={'#123abc'} loading={isLoading}/>
+                </div>
             ) : error ? (
                 <p>Error fetching templates: {error.message}</p>
             ) : (
