@@ -411,9 +411,8 @@ app.get('/user/details', async (req, res) => {
 
 app.post('/fetchCodeFromId', async(req,res)=>{
     const id=req.body.templateId;
-    console.log(id)
-    const htmlFile = await sql`SELECT templatehtmlfile FROM template WHERE templateid = ${id}`;
-    if(htmlFile.length===0){
+    let htmlFile = await sql`SELECT templatehtmlfile FROM template WHERE templateid = ${id}`;
+    if(htmlFile.length===0 || htmlFile[0].templatehtmlfile==null){
         console.log('Html file not found...');
         res.status(404).send('Html file not found...');
     }else{
@@ -524,6 +523,42 @@ app.post('/deleteTemplateFromProfile', async (req,res)=>{
         res.status(200).send('deleted');
     }catch(error){
         console.error(error);
+    }
+});
+
+app.post('/createNewTemplate', async (req,res)=>{
+    try{    
+        const templat_name=(req.body.projectName=='') ? 'Mak-Z' : req.body.projectName;
+        const templat_label=(req.body.projectType=='') ? 'none' : req.body.projectType;
+        const templat_visibility=(req.body.visibility=='public') ? true : false
+        const timestamp = Date.now();
+        let generatedTemplateId=templat_name.substring(0,2)
+        generatedTemplateId+=templat_label.substring(0,2)
+        generatedTemplateId+=(templat_visibility) ? 't' : 'f'
+        generatedTemplateId+='_'+timestamp.toString().substring(2,8)
+        await sql`INSERT INTO template (email, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${generatedTemplateId},${templat_name},${templat_label},${templat_visibility})`;
+        res.status(200).send(generatedTemplateId);
+    }catch(error){
+        console.error(error);
+    }
+});
+
+app.post('/getTemplateInfoForEditPage', async (req,res)=>{
+    try{    
+        const info = await sql`SELECT templatename,templatetype,templatevisibility FROM template WHERE templateid = ${req.body.projectId}`;
+        res.send(info)
+    }catch(error){
+        console.error('Error in getTemplateInfoForEditPage '+error);
+    }
+});
+
+
+app.post('/changeUserProfile', async (req,res)=>{
+    try{    
+        await sql `UPDATE users SET profile_pic = ${req.body.userProfileOption}, username = ${req.body.newName} WHERE email = ${req.body.userEmail}`;
+        res.status(200).send('update');
+    }catch(error){
+        console.error('Error in changeUserProfile '+error);
     }
 });
 

@@ -8,21 +8,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faParagraph, faHeading, faFloppyDisk, faLock, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faPlus, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
-
-    // useEffect(() => {
-    //     const handleBeforeUnload = (event) => {
-    //       const confirmationMessage = "Changes you made may not be saved.";
-    //       event.returnValue = confirmationMessage;
-    //       return confirmationMessage;
-    //     };
-    
-    //     window.addEventListener("beforeunload", handleBeforeUnload);
-    
-    //     return () => {
-    //       window.removeEventListener("beforeunload", handleBeforeUnload);
-    //     };
-    // }, []);
     const { projectId } = useParams();
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+          const confirmationMessage = "Changes you made may not be saved.";
+          event.returnValue = confirmationMessage;
+          return confirmationMessage;
+        };
+    
+        window.addEventListener("beforeunload", handleBeforeUnload);
+    
+        axios.post('http://localhost:5000/getTemplateInfoForEditPage',{projectId})
+        .then((res) => {
+            console.log(res.data)
+            templateName.current.value=res.data[0].templatename;
+            templateLabel.current.value=res.data[0].templatetype;
+            templateType.current.value=(res.data[0].templatevisibility) ? 'public' : 'private';
+        })
+        .catch(error => {
+            console.error('Error deleting file:', error);
+        });
+        return () => {
+          window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
 
     const [elementHover, setElementHover] = useState(false);
     const [subElementHover, setSubElementHover] = useState(false);
@@ -109,8 +119,8 @@ const editPage = () => {
                         <select name="templateLabel" className="templateLabel" ref={templateLabel}>
                             <option value="home">Home</option>
                             <option value="login">Login</option>
-                            <option value="Sign Up">Sign Up</option>
-                            <option value="Landing">Landing</option>
+                            <option value="sign Up">Sign Up</option>
+                            <option value="landing">Landing</option>
                         </select>
                     </div>
                      <div className="templateTypeBlock">
