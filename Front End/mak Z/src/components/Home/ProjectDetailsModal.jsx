@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from "axios";
 
 const ProjectDetailsModal = ({ show, onClose }) => {
+    const user = useSelector(state => state.auth);
+    const userEmail=user.email;
     const navigate = useNavigate();
     const [projectName, setProjectName] = useState('');
     const [projectType, setProjectType] = useState('');
@@ -17,9 +21,13 @@ const ProjectDetailsModal = ({ show, onClose }) => {
             setShowError(true); // Show error if the project name is empty
             return;
         }
-
-        console.log(`Project Name: ${projectName}, Type: ${projectType}, Visibility: ${visibility}`);
-        navigate('/editPage/123', { state: { projectName, projectType, visibility } });
+        axios.post('http://localhost:5000/createNewTemplate', {userEmail, projectName, projectType, visibility})
+        .then((res) => {
+            navigate(`/editPage/${res.data}`, { state: { projectName, projectType, visibility } });
+        })
+        .catch(error => {
+            console.error('Error in Delete Template:', error);
+        });
     };
 
     const handleProjectNameChange = (e) => {

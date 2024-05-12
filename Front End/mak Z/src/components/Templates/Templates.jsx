@@ -58,7 +58,7 @@ const Templates = () => {
         <div>
             <Header />
             {isLoading ? (
-                <div className="flex justify-center items-center h-screen">
+                <div className="flex justify-center items-center h-screen mt-[-74px]">
                     <ClimbingBoxLoader color={'#123abc'} loading={isLoading}/>
                 </div>
             ) : error ? (

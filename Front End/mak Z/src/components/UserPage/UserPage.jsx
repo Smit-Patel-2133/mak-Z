@@ -3,11 +3,14 @@ import './userPage.css';
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import html2canvas from 'html2canvas';
+import { ClimbingBoxLoader } from 'react-spinners';
 
 const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHover, hardStyleHover, onUpdateHardStyleHover, eyeClick}) => {
 
     const user = useSelector(state => state.auth);
     const [activeElement,setActiveElement]=useState(null)
+    const [isLoding,setIsLoding]=useState(false);
+    const [templateInfo,setTemplateInfo]=useState(null);
     var elementCursorX=0;
     var elementCursorY=0;
 
@@ -73,36 +76,33 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     };
 
     useEffect(() => {
-        if(templateId){
-            try{
-                axios.post('http://localhost:5000/fetchCodeFromId',{templateId})
-                .then((res) => {
-                    bodyPageRef.current.innerHTML=res.data;
+        async function fetchDataAndDeleteFile() {
+            if (templateId) {
+                setIsLoding(true);
+                try {
+                    const res = await axios.post('http://localhost:5000/fetchCodeFromId', { templateId });
+                    bodyPageRef.current.innerHTML = res.data;
                     const pageBodyElements = document.querySelectorAll('.pageBody *');
-                    pageBodyElements.forEach(contentVariable => {   
-                            contentVariable.setAttribute('draggable','true');     
-                            contentVariable.addEventListener('dblclick', handleDoubleClickOnDragableElement);
-                            contentVariable.addEventListener('dragstart', handlePagebodyElementDragStart);
-                            contentVariable.addEventListener('dragend', handlePagebodyElementDragEnd);
-                            contentVariable.addEventListener('drag', handlePagebodyElementDrag);
-                            attachEventListenersToDescendants(contentVariable)
-                       
+                    pageBodyElements.forEach(contentVariable => {
+                        contentVariable.setAttribute('draggable', 'true');
+                        contentVariable.addEventListener('dblclick', handleDoubleClickOnDragableElement);
+                        contentVariable.addEventListener('dragstart', handlePagebodyElementDragStart);
+                        contentVariable.addEventListener('dragend', handlePagebodyElementDragEnd);
+                        contentVariable.addEventListener('drag', handlePagebodyElementDrag);
+                        attachEventListenersToDescendants(contentVariable);
                     });
-                    axios.delete('http://localhost:5000/delete/Mak-Z.html')
-                    .then(() => {
-                        console.log('File deleted successfully');
-                    })
-                    .catch(error => {
-                        console.error('Error deleting file:', error);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error Code fatching:', error);
-                });
-            }catch(error){
-                console.log('Error in add code in userPage: ' +error)
+    
+                    await axios.delete('http://localhost:5000/delete/Mak-Z.html');
+                    console.log('File deleted successfully');
+                } catch (error) {
+                    console.error('Error:', error);
+                } finally {
+                    setIsLoding(false);
+                }
             }
         }
+    
+        fetchDataAndDeleteFile();
     }, []);
 
     function attachEventListenersToDescendants(element) {
@@ -754,8 +754,15 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     }
 
   return (
-    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${hardStyleHover ? '' : 'hardStyleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={removeActiveElementClass}>
-    </div>
+    <>
+    { isLoding
+     ? (<div className="mt-60 ml-80 pl-40 float-left">
+            <ClimbingBoxLoader color={'#123abc'} loading={true}/>
+        </div>)
+     : (<div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${hardStyleHover ? '' : 'hardStyleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={removeActiveElementClass}>
+        </div>)
+    }
+    </>
   )
 }
 
