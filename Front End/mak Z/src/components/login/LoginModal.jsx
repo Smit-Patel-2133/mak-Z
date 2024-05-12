@@ -1,10 +1,14 @@
 import React from 'react';
+import {useNavigate} from "react-router-dom";
 
 const LoginModal = ({ show, onClose, onLogin }) => {
     if (!show) {
         return null; // Don't render if not shown
     }
-
+    const navigate=useNavigate()
+const HandleLogin=()=>{
+    navigate('/login')
+}
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
@@ -16,7 +20,7 @@ const LoginModal = ({ show, onClose, onLogin }) => {
                 <p className="mt-2">Please log in to create a new project.</p>
                 <div className="mt-4 flex justify-center">
                     <button
-                        onClick={onLogin}
+                        onClick={HandleLogin}
                         className="bg-blue-500 text-white py-2 px-4 rounded-lg mr-2 hover:bg-blue-600 transition duration-200"
                     >
                         Log In

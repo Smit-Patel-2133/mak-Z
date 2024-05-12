@@ -348,8 +348,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
     }
 });
 
-
-
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
 
@@ -383,6 +381,8 @@ app.post('/fetchThis/userProjects', async (req, res) => {
                 htmlImg: row.templateimage // Ensure correct MIME type
             };
         });
+
+
         res.status(200).json(templates); // Return the fetched projects
     } catch (error) {
         console.error('Error fetching user projects:', error);
@@ -444,6 +444,69 @@ function bytesToFile(bytes, filePath) {
     });
 }
 
+
+app.post('/createNewProject', async (req, res) => {
+    try {
+        const { email, templateName, templateType, templateVisibility } = req.body;
+
+        // Generate template ID
+        const timestamp = Date.now();
+        const generatedTemplateId = `${templateName.substring(0, 2)}${templateType.substring(0, 2)}${templateVisibility ? 't' : 'f'}_${timestamp.toString().substring(2, 8)}`;
+
+        // Insert data into the database with placeholder values for templatehtmlfile and templateimage
+        await sql`
+            INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility)
+            VALUES (${email}, ${null}, ${null}, ${generatedTemplateId}, ${templateName}, ${templateType}, ${templateVisibility})
+        `;
+
+        res.status(200).json({ message: 'File Saved', projectId: generatedTemplateId });
+    } catch (error) {
+        console.error('Error creating project:', error);
+        res.status(500).json({ error: 'Problem in File Saved' });
+    }
+});
+
+app.post('/copyProject', async (req, res) => {
+    try {
+        const { id, templateName, templateType, templateVisibility, email } = req.body;
+        console.log("templateName:", templateName);
+        console.log("templateType:", templateType);
+        console.log("templateVisibility:", templateVisibility);
+        // Assuming you're using some library like 'sql-template-strings'
+        const result = await sql`SELECT templatehtmlfile, templateimage FROM template WHERE templateid = ${id}`;
+        console.log("1 is exe")
+        // Extracting templatehtmlfile and templateimage from the result
+        const { templatehtmlfile, templateimage } = result[0];
+
+        // Generating template ID
+        const timestamp = Date.now();
+        let generatedTemplateId = templateName.substring(0, 2) +
+            templateType.substring(0, 2) +
+            (templateVisibility ? 't' : 'f') +
+            '_' + timestamp.toString().substring(2, 8);
+
+
+        // Inserting data into the database
+        await sql`
+            INSERT INTO template (templatename, templatetype, templatevisibility, email, templatehtmlfile, templateimage, templateid)
+            VALUES (${templateName}, ${templateType}, ${templateVisibility}, ${email}, ${templatehtmlfile}, ${templateimage}, ${generatedTemplateId})
+        `;
+        console.log("2 is exe")
+
+
+        res.json({ generatedTemplateId });
+    } catch (e) {
+        // Handle any errors
+        console.error('Error copying project:', e);
+        // Sending an error response if something goes wrong
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+
+
+
 app.post('/getInfoForTemplate', async (req,res)=>{
     const info = await sql`SELECT templateid,templatename,templatetype,templatevisibility FROM template WHERE email = ${req.body.userEmail}`;
     res.send(info)
@@ -455,7 +518,7 @@ app.post('/getInfoForUserImage', async (req,res)=>{
 });
 
 app.post('/deleteTemplateFromProfile', async (req,res)=>{
-    try{    
+    try{
         await sql`DELETE FROM template WHERE templateid = ${req.body.deleteId}`;
         res.status(200).send('deleted');
     }catch(error){
