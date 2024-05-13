@@ -21,7 +21,6 @@ const editPage = () => {
     
         axios.post('http://localhost:5000/getTemplateInfoForEditPage',{projectId})
         .then((res) => {
-            console.log(res.data)
             templateName.current.value=res.data[0].templatename;
             templateLabel.current.value=res.data[0].templatetype;
             templateType.current.value=(res.data[0].templatevisibility) ? 'public' : 'private';
@@ -41,6 +40,7 @@ const editPage = () => {
     const [hardStyleHover, setHardStyleHover]=useState(true);
     const [eyeClick, setEyeClick] = useState(false);
     const [dataFromUserPage, setDataFromUserPage] = useState('');
+    const [userPageSendCss, setUserPageSendCss] = useState('');
     const userPage = useRef(null);
     const templateType = useRef(null);
     const templateName = useRef(null);
@@ -98,8 +98,9 @@ const editPage = () => {
         setEyeClick(!eyeClick)
     }
 
-    function sendDataToUserCss(data) {
+    function sendDataToUserCss(data,data1) {
         setDataFromUserPage(data);
+        setUserPageSendCss(data1);
     }
 
     return(
@@ -279,7 +280,7 @@ const editPage = () => {
                 <p><FontAwesomeIcon icon={faEye} /></p>
             </div>
             <UserPage bodyPageRef={userPage} templateId={projectId} styleHover={styleHover} hardStyleHover={hardStyleHover} onUpdateHardStyleHover={setOnUpdateHardStyleHover} eyeClick={eyeClick} className='edit' sendDataToUserCss={sendDataToUserCss}/>
-            <UserCss styleHover={styleHover} hardStyleHover={hardStyleHover} receivedData={dataFromUserPage} />
+            <UserCss styleHover={styleHover} getUserPage={userPageSendCss} hardStyleHover={hardStyleHover} receivedData={dataFromUserPage} />
         </div>
         </>
     )

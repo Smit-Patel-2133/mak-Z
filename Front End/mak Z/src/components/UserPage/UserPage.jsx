@@ -81,7 +81,8 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 setIsLoding(true);
                 try {
                     const res = await axios.post('http://localhost:5000/fetchCodeFromId', { templateId });
-                    bodyPageRef.current.innerHTML = res.data;
+                    bodyPageRef.current.innerHTML = res.data.pageBodyContent;
+                    document.getElementsByClassName('pageBody')[0].style.minHeight=res.data.minHeightBody;
                     const pageBodyElements = document.querySelectorAll('.pageBody *');
                     pageBodyElements.forEach(contentVariable => {
                         contentVariable.setAttribute('draggable', 'true');
@@ -133,7 +134,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     function handleActive(e){
         setActiveElement(e.target);
         e.target.classList.add('activeElementClass')
-        sendDataToUserCss(e.target);
+        sendDataToUserCss(e.target,bodyPageRef.current);
     }
 
     function eyeClickUserPage(){
@@ -203,6 +204,13 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 perent.classList.remove('forCursorGrab');
                 perent=perent.parentElement;
         }
+        const checkOverflowHeight=window.getComputedStyle(e.target);
+        const checkTop=checkOverflowHeight.getPropertyValue('top');
+        const checkHeightontent=checkOverflowHeight.getPropertyValue('height');
+        const computedStyleUserPage = window.getComputedStyle(bodyPageRef.current);
+        const userPageMinHeight = computedStyleUserPage.getPropertyValue('min-height');
+        bodyPageRef.current.style.minHeight=`${Math.max(parseInt(userPageMinHeight),(parseInt(checkTop)+parseInt(checkHeightontent))+100)}px`;
+    
     }
 
     function pxToPr(x,perentElement){
@@ -713,21 +721,10 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 selection.addRange(range); // Add the new range to the selection
             }
         }else if(event && event.key === 'Delete'){
-            const selection = window.getSelection();
-            const selectedNode = selection.focusNode;
-            console.log(selectedNode)
-            
-            if (selectedNode) {
-                if(selectedNode.tagName === 'IMG' || selectedNode.tagName === 'VIDEO'){
-                    selectedNode.remove()
-                }else{
-                    const parentElement = selectedNode.parentElement; 
-                    if (parentElement && !parentElement.classList.contains('pageBody')) {
-                        parentElement.remove();
-                    }else{
-                        selectedNode.remove();
-                    }
-                }    
+            event.preventDefault()
+            const selectedNode = document.getElementsByClassName('activeElementClass')[0];
+            if (selectedNode && !selectedNode.classList.contains('pageBody')) {
+                selectedNode.remove()   
             }
         }
     };

@@ -178,7 +178,7 @@ app.post('/download', async (req, res) => {
                             <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
                         </head>
                     <body>`;
-    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','');
+    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','').replaceAll("forCursorGrab","").replaceAll('activeElementClass','');
     codeData += `   </body>
                 </html>`;
     codeData = beautify(codeData, { indent_size: 4 });
@@ -423,7 +423,8 @@ app.post('/fetchCodeFromId', async(req,res)=>{
             const fileContent = fs.readFileSync(filePath, 'utf-8');
             const $ = cheerio.load(fileContent);
             const pageBodyContent = $('.pageBody').html();
-            res.send(pageBodyContent);
+            const minHeightBody=$('.pageBody').css('min-height');
+            res.send({pageBodyContent,minHeightBody});
         } catch (error) {
             console.error('Error:', error);
         }
