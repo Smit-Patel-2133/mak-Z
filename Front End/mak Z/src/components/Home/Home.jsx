@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 import SliderImages from '../SliderImages/SliderImages';
 import FeedBack from '../FeedBack/FeedBack.jsx';
 import FetchTemplate from "../Single template/FetchTemplate.jsx";
@@ -108,6 +109,7 @@ const Home = () => {
                 show={showProjectDetailsModal}
                 onClose={handleCloseProjectDetailsModal}
             />
+            <Footer/>
         </div>
     );
 };
