@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown} from '@fortawesome/free-solid-svg-icons';
 
 
-const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
+const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => {
   const fontSize=useRef(null)
   const [fontSizeValue, fontSizeFun] = useState(true);
   const fontWeight=useRef(null)
@@ -360,6 +360,11 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData  }) => {
     widthValue.style.width=`${width.current.value}${val.value}`
   }
   function heightOnChange(){
+    const checkOverflowHeight=window.getComputedStyle(heightValue);
+    const checkTop=checkOverflowHeight.getPropertyValue('top');
+    const computedStyleUserPage = window.getComputedStyle(getUserPage);
+    const userPageMinHeight = computedStyleUserPage.getPropertyValue('min-height');
+    getUserPage.style.minHeight=`${Math.max(parseInt(userPageMinHeight),(parseInt(checkTop)+parseInt(height.current.value))+100)}px`;
     heightValue.style.height=`${height.current.value}px`
   }
   function fontWeightOnChange(){

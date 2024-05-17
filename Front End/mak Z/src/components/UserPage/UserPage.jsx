@@ -3,11 +3,14 @@ import './userPage.css';
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import html2canvas from 'html2canvas';
+import { ClimbingBoxLoader } from 'react-spinners';
 
 const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHover, hardStyleHover, onUpdateHardStyleHover, eyeClick}) => {
 
     const user = useSelector(state => state.auth);
     const [activeElement,setActiveElement]=useState(null)
+    const [isLoding,setIsLoding]=useState(false);
+    const [templateInfo,setTemplateInfo]=useState(null);
     var elementCursorX=0;
     var elementCursorY=0;
 
@@ -73,36 +76,34 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     };
 
     useEffect(() => {
-        if(templateId){
-            try{
-                axios.post('http://localhost:5000/fetchCodeFromId',{templateId})
-                .then((res) => {
-                    bodyPageRef.current.innerHTML=res.data;
+        async function fetchDataAndDeleteFile() {
+            if (templateId) {
+                setIsLoding(true);
+                try {
+                    const res = await axios.post('http://localhost:5000/fetchCodeFromId', { templateId });
+                    bodyPageRef.current.innerHTML = res.data.pageBodyContent;
+                    document.getElementsByClassName('pageBody')[0].style.minHeight=res.data.minHeightBody;
                     const pageBodyElements = document.querySelectorAll('.pageBody *');
-                    pageBodyElements.forEach(contentVariable => {   
-                            contentVariable.setAttribute('draggable','true');     
-                            contentVariable.addEventListener('dblclick', handleDoubleClickOnDragableElement);
-                            contentVariable.addEventListener('dragstart', handlePagebodyElementDragStart);
-                            contentVariable.addEventListener('dragend', handlePagebodyElementDragEnd);
-                            contentVariable.addEventListener('drag', handlePagebodyElementDrag);
-                            attachEventListenersToDescendants(contentVariable)
-                       
+                    pageBodyElements.forEach(contentVariable => {
+                        contentVariable.setAttribute('draggable', 'true');
+                        contentVariable.addEventListener('dblclick', handleDoubleClickOnDragableElement);
+                        contentVariable.addEventListener('dragstart', handlePagebodyElementDragStart);
+                        contentVariable.addEventListener('dragend', handlePagebodyElementDragEnd);
+                        contentVariable.addEventListener('drag', handlePagebodyElementDrag);
+                        attachEventListenersToDescendants(contentVariable);
                     });
-                    axios.delete('http://localhost:5000/delete/Mak-Z.html')
-                    .then(() => {
-                        console.log('File deleted successfully');
-                    })
-                    .catch(error => {
-                        console.error('Error deleting file:', error);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error Code fatching:', error);
-                });
-            }catch(error){
-                console.log('Error in add code in userPage: ' +error)
+    
+                    await axios.delete('http://localhost:5000/delete/Mak-Z.html');
+                    console.log('File deleted successfully');
+                } catch (error) {
+                    console.error('Error:', error);
+                } finally {
+                    setIsLoding(false);
+                }
             }
         }
+    
+        fetchDataAndDeleteFile();
     }, []);
 
     function attachEventListenersToDescendants(element) {
@@ -133,7 +134,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     function handleActive(e){
         setActiveElement(e.target);
         e.target.classList.add('activeElementClass')
-        sendDataToUserCss(e.target);
+        sendDataToUserCss(e.target,bodyPageRef.current);
     }
 
     function eyeClickUserPage(){
@@ -203,6 +204,13 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 perent.classList.remove('forCursorGrab');
                 perent=perent.parentElement;
         }
+        const checkOverflowHeight=window.getComputedStyle(e.target);
+        const checkTop=checkOverflowHeight.getPropertyValue('top');
+        const checkHeightontent=checkOverflowHeight.getPropertyValue('height');
+        const computedStyleUserPage = window.getComputedStyle(bodyPageRef.current);
+        const userPageMinHeight = computedStyleUserPage.getPropertyValue('min-height');
+        bodyPageRef.current.style.minHeight=`${Math.max(parseInt(userPageMinHeight),(parseInt(checkTop)+parseInt(checkHeightontent))+100)}px`;
+    
     }
 
     function pxToPr(x,perentElement){
@@ -713,21 +721,10 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 selection.addRange(range); // Add the new range to the selection
             }
         }else if(event && event.key === 'Delete'){
-            const selection = window.getSelection();
-            const selectedNode = selection.focusNode;
-            console.log(selectedNode)
-            
-            if (selectedNode) {
-                if(selectedNode.tagName === 'IMG' || selectedNode.tagName === 'VIDEO'){
-                    selectedNode.remove()
-                }else{
-                    const parentElement = selectedNode.parentElement; 
-                    if (parentElement && !parentElement.classList.contains('pageBody')) {
-                        parentElement.remove();
-                    }else{
-                        selectedNode.remove();
-                    }
-                }    
+            event.preventDefault()
+            const selectedNode = document.getElementsByClassName('activeElementClass')[0];
+            if (selectedNode && !selectedNode.classList.contains('pageBody')) {
+                selectedNode.remove()   
             }
         }
     };
@@ -754,8 +751,15 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     }
 
   return (
-    <div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${hardStyleHover ? '' : 'hardStyleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={removeActiveElementClass}>
-    </div>
+    <>
+    { isLoding
+     ? (<div className="mt-60 ml-80 pl-40 float-left">
+            <ClimbingBoxLoader color={'#123abc'} loading={true}/>
+        </div>)
+     : (<div className={`pageBody ${styleHover ? '' : 'styleHoveredPageBody'} ${hardStyleHover ? '' : 'hardStyleHoveredPageBody'} ${eyeClick ? 'eyeClicked' : ''}`} onKeyDown={handleKeyDown} ref={bodyPageRef} onDrop={handleDrop} onDragOver={handleDragOver} onClick={removeActiveElementClass}>
+        </div>)
+    }
+    </>
   )
 }
 

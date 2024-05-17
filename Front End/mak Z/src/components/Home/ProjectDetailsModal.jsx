@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import {useSelector} from "react-redux"; // Import axios for making HTTP requests
+import { useSelector } from 'react-redux';
+import axios from "axios";
 
 const ProjectDetailsModal = ({ show, onClose }) => {
+    const user = useSelector(state => state.auth);
+    const userEmail=user.email;
     const navigate = useNavigate();
     const [projectName, setProjectName] = useState('');
     const [projectType, setProjectType] = useState('');
     const [visibility, setVisibility] = useState('public');
     const [showError, setShowError] = useState(false);
-    const user = useSelector(state => state.auth);
     const handleSubmit = async () => {
         if (projectName.trim() === '') {
             setShowError(true);

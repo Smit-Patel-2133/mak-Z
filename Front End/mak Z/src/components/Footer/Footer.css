@@ -1,0 +1,46 @@
+.footerMain{
+    height: 400px;
+    width: calc(100% + 12px);
+    background-color: black;
+    padding-right: 3px;
+    color: white;
+    overflow: hidden;
+}
+.col1{
+    margin-top: 35px;
+    margin-left: 65px;
+}
+.col1 img{
+    height: 150px;
+    width: 230px;
+}
+.col1 p{
+    margin-left: 45px;
+}
+.col1 ul{
+    height: 53px;
+    overflow: hidden;
+}
+.col1 svg{
+    padding: 15px;
+    width: 20px !important;
+    height: 20px !important;
+    background-color: #2c2a2a;
+    border-radius: 50%;
+}
+.col1 li{
+    position: relative;
+    top: 0px;
+    transition: .5s ease-in-out;
+    float: left;
+    margin: 0px 3px;
+    width: 55px !important;
+}
+.col1 li:hover{
+    top: -52px;
+    cursor: pointer;
+}
+.col1 a{
+    color: white;
+    text-decoration: none;
+}
