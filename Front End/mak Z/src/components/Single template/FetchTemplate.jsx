@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import ImageZoom from './ImageZoom.jsx';
@@ -22,6 +22,7 @@ const FetchTemplate = ({ templateHeading, images }) => {
     const [templateDetails, setTemplateDetails] = useState(null);
     const [showReportModal, setShowReportModal] = useState(false); // State to control the visibility of the report modal
     const [reportedTemplateName, setReportedTemplateName] = useState(''); // State to store the name of the reported template
+    const [reportedTemplateId, setReportedTemplateId] = useState(''); // State to store the ID of the reported template
     const [reportDescription, setReportDescription] = useState(''); // State to store the report description
 
     const handleMouseDown = (e) => {
@@ -66,9 +67,14 @@ const FetchTemplate = ({ templateHeading, images }) => {
     };
 
     // Function to handle report button click
-    const handleReportClick = (templateName) => {
-        setReportedTemplateName(templateName);
-        setShowReportModal(true);
+    const handleReportClick = (template) => {
+        if (user.isLogedin) {
+            setReportedTemplateName(template.name);
+            setReportedTemplateId(template.id);
+            setShowReportModal(true);
+        } else {
+            setShowLoginModal(true);
+        }
     };
 
     return (
@@ -90,6 +96,8 @@ const FetchTemplate = ({ templateHeading, images }) => {
                 show={showReportModal}
                 onClose={() => setShowReportModal(false)}
                 templateName={reportedTemplateName}
+                templateId={reportedTemplateId} // Pass the template ID
+                userEmail={user.email} // Pass the current user's email
                 reportDescription={reportDescription}
                 setReportDescription={setReportDescription}
             />
@@ -129,7 +137,6 @@ const FetchTemplate = ({ templateHeading, images }) => {
                                                     <FontAwesomeIcon icon={faHeart}/>
                                                     <span className="ml-2">{image.likes}</span>
                                                 </button>
-
                                             </div>
                                             <div className='flex items-center mb-3'>
                                                 <h5 className="ml-2">{image.username}</h5>
@@ -141,13 +148,11 @@ const FetchTemplate = ({ templateHeading, images }) => {
                                                     Edit
                                                 </button>
                                                 <button
-                                                    className="mr-10 mb-2  bg-emerald-400 rounded h-10 w-20 text-white"
-                                                    onClick={() => handleReportClick(image.name)}>
+                                                    className="mr-10 mb-2 bg-emerald-400 rounded h-10 w-20 text-white"
+                                                    onClick={() => handleReportClick(image)}>
                                                     Report
                                                 </button>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </li>

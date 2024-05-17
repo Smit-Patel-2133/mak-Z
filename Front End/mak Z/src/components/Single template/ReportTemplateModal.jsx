@@ -1,18 +1,31 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { useSelector } from "react-redux";
 
-const ReportTemplateModal = ({ show, onClose, templateName }) => {
-    const [reportDescription, setReportDescription] = useState('');
-    useEffect(() => {
+const ReportTemplateModal = ({ show, onClose, templateName, templateId, userEmail, reportDescription, setReportDescription }) => {
+    const user = useSelector(state => state.auth);
 
-    }, []);
+    useEffect(() => {}, []);
 
-    const handleSubmit = () => {
-        // Implement reporting functionality here
-        console.log('Reported Template:', templateName);
-        console.log('Report Description:', reportDescription);
+    const handleSubmit = async () => {
+        const reportData = {
+            templateId,
+            userEmail: user.email, // Ensure user email is being used
+            reportDescription,
+        };
 
+        try {
+            const response = await axios.post('http://localhost:5000/api/report', reportData);
 
-        onClose(); // Close the modal after submitting the report
+            if (response.status === 200) {
+                console.log('Report submitted successfully');
+                onClose(); // Close the modal after submitting the report
+            } else {
+                console.error('Failed to submit report');
+            }
+        } catch (error) {
+            console.error('Error submitting report:', error);
+        }
     };
 
     return (
