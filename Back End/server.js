@@ -275,7 +275,8 @@ app.post('/fetchThis', async (req, res) => {
             ON
               template.email = users.email
             WHERE
-            template.templatevisibility=true 
+            template.templatevisibility=true
+            AND template.reported=false 
             AND template.templatetype = ${type}
             AND template.email != ${userEmail}
         `;
@@ -324,6 +325,7 @@ app.post('/fetchThis/forhome', async (req, res) => {
               template.email = users.email
             WHERE
               template.templatevisibility = true
+              AND template.reported=false
               ${userEmail ? sql`AND template.email != ${userEmail}` : sql``}
         `;
 
@@ -562,6 +564,23 @@ app.post('/changeUserProfile', async (req,res)=>{
         console.error('Error in changeUserProfile '+error);
     }
 });
+app.post("/api/report", async (req, res) => {
+    try {
+        const { templateId, userEmail, reportDescription } = req.body;
+
+
+        await sql`UPDATE template SET reported = true WHERE templateid=${templateId}`;
+
+        // Insert the report details into the reportedtemplate table
+        await sql`INSERT INTO reportedtemplate (description, email, templateid) VALUES (${reportDescription}, ${userEmail}, ${templateId})`;
+
+        res.status(200).send('Report submitted successfully');
+    } catch (e) {
+        console.error('Error handling report submission:', e);
+        res.status(500).send('Failed to submit report');
+    }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
