@@ -276,7 +276,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 contentVariable.addEventListener('dragend',handlePagebodyElementDragEnd);
                 contentVariable.addEventListener('drag',handlePagebodyElementDrag);
                 contentVariable.style.left=`${pxToPr(cursorValueX-bodyPagePosition.left,bodyPage)}%`;
-                contentVariable.style.top=`${pxToPr(cursorValueY-bodyPagePosition.top,bodyPage)}%`;
+                contentVariable.style.top=`${cursorValueY-bodyPagePosition.top}px`;
                 if(contentVariable.tagName.toLowerCase()=='nav') contentVariable.style.left=`0px`;
             }
             if(targetElement){
@@ -284,7 +284,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 const cotentTagName=contentVariable.tagName.toLowerCase();
                 if(TargetTagName=='div' || TargetTagName=='section' || TargetTagName=='header' || TargetTagName=='footer' || cotentTagName=='strong' || cotentTagName=='del' || cotentTagName=='ins' || cotentTagName=='sup' || cotentTagName=='sub' || cotentTagName=='em'){
                     const targetElementPosition=targetElement.getBoundingClientRect();
-                    contentVariable.style.left=`${(cursorValueX-targetElementPosition.left)}px`;
+                    contentVariable.style.left=`${pxToPr(cursorValueX-targetElementPosition.left,targetElement)}%`;
                     contentVariable.style.top=`${(cursorValueY-targetElementPosition.top)}px`;
                     targetElement.appendChild(contentVariable)
                     const computedStyleContent = window.getComputedStyle(contentVariable);

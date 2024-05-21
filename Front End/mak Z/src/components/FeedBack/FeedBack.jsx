@@ -2,12 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './feedBack.css';
 import axios from "axios";
 import feedBackBd from '../../assets/picture/feedBackBg.jpeg';
-import abhay from '../../assets/picture/feedback_abhay.jpg'
-import ayan from '../../assets/picture/feedback_ayan.jpg'
-import darpan from '../../assets/picture/feedback_darpan.jpg'
-import dhruv from '../../assets/picture/feedback_dhruv.png'
-import hitesh from '../../assets/picture/feedback_hitesh.jpg'
-import pradip from '../../assets/picture/feedback_pradip.jpg'
 
 function Feedback() {
   
@@ -79,7 +73,7 @@ function Feedback() {
   return (
     <>
     { loding || feedback==null 
-    ? (<p>Loading</p>) 
+    ? (<p></p>) 
     : (<div className="feedback">
       <img className="feedbackFront" src={feedBackBd} alt="feedback" />
       <h1>FEEDBACK</h1>
@@ -88,8 +82,8 @@ function Feedback() {
           <div className="mySlides">
             <div>
               <p>{feedback.feedback}</p>
-              <h6>{feedback.name}</h6>
-              <img src={`/src/assets/Profile picture/${feedback.profilePic}.png`} alt="abhay" />
+              <h6>- {feedback.name}</h6>
+              <img src={`/src/assets/Profile picture/${feedback.profilepic}.png`} alt="abhay" />
             </div>
           </div>
         ))}
@@ -98,7 +92,7 @@ function Feedback() {
             <div>
               <p>{feedback.feedback}</p>
               <h6>{feedback.name}</h6>
-              <img src={`/src/assets/Profile picture/${feedback.profilePic}.png`} alt="abhay" />
+              <img src={`/src/assets/Profile picture/${feedback.profilepic}.png`} alt="abhay" />
             </div>
           </div>
         ))}
@@ -107,7 +101,7 @@ function Feedback() {
             <div>
               <p>{feedback.feedback}</p>
               <h6>{feedback.name}</h6>
-              <img src={`/src/assets/Profile picture/${feedback.profilePic}.png`} alt="abhay" />
+              <img src={`/src/assets/Profile picture/${feedback.profilepic}.png`} alt="abhay" />
             </div>
           </div>
         ))}
@@ -116,7 +110,7 @@ function Feedback() {
             <div>
               <p>{feedback.feedback}</p>
               <h6>{feedback.name}</h6>
-              <img src={`/src/assets/Profile picture/${feedback.profilePic}.png`} alt="abhay" />
+              <img src={`/src/assets/Profile picture/${feedback.profilepic}.png`} alt="abhay" />
             </div>
           </div>
         ))}

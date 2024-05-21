@@ -127,7 +127,22 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
   const [bgSizeXValue, bgSizeXFun] = useState(null);
   const bgSizeY = useRef(null);
   const [bgSizeYValue, bgSizeYFun] = useState(null);
-
+  const inputType = useRef(null);
+  const [inputTypeValue, inputTypeFun] = useState(null);
+  const inputPlaceHolder = useRef(null);
+  const [inputPlaceHolderValue, inputPlaceHolderFun] = useState(null);
+  const aLink = useRef(null);
+  const [aLinkValue, aLinkFun] = useState(null);
+  const inputMaxLen = useRef(null);
+  const [inputMaxLenValue, inputMaxLenFun] = useState(null);
+  const inputMinLen = useRef(null);
+  const [inputMinLenValue, inputMinLenFun] = useState(null);
+  const inputValue = useRef(null);
+  const [inputValueValue, inputValueFun] = useState(null);
+  const inputRequire = useRef(null);
+  const [inputRequireValue, inputRequireFun] = useState(null);
+  const aTarget = useRef(null);
+  const [aTargetValue, aTargetFun] = useState(null);
 
   const [activeElement,setActiveElement] = useState(null);
   const [expandTextTable,setExpandTextTable] = useState(false);
@@ -136,6 +151,7 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
   const [expandfexboxAndGridStyles,setExpandfexboxAndGridStyles] = useState(false);
   const [expandMiscellaneous,setExpandMiscellaneous] = useState(false);
   const [expandBackgroundStyles,setExpandBackgroundStyles] = useState(false);
+  const [expandAdditional,setExpandAdditional] = useState(false);
 
   useEffect(() => {
       if(activeElement) activeElement.classList.add('activeElementClass');
@@ -155,6 +171,11 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
 
   useEffect(() => {
     if (receivedData) {
+      document.getElementsByClassName('forHyperLink')[0].style.display='none';
+      document.getElementsByClassName('forInputTag')[0].style.display='none';
+      if(receivedData.tagName=='A') document.getElementsByClassName('forHyperLink')[0].style.display='block';
+      if(receivedData.tagName=='INPUT') document.getElementsByClassName('forInputTag')[0].style.display='block';
+      
       const computedStyle = window.getComputedStyle(receivedData);
       const targetFontSize = computedStyle.getPropertyValue('font-size');
       fontSize.current.value = parseInt(targetFontSize);
@@ -339,6 +360,15 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
       const targetBgSizeY = computedStyle.getPropertyValue('background-size').split(' ')[1];
       bgSizeY.current.value = parseInt(targetBgSizeY);
       bgSizeYFun(receivedData)
+      inputTypeFun(receivedData);
+      inputPlaceHolderFun(receivedData);
+      aLinkFun(receivedData);
+      inputMaxLenFun(receivedData);
+      inputMinLenFun(receivedData);
+      inputValueFun(receivedData);
+      inputRequireFun(receivedData);
+      aTargetFun(receivedData);
+      
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
       setActiveElement(receivedData)
@@ -549,7 +579,31 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
     const valY=document.querySelector('.bgSizeYUnit');
     const bx=bgSizeX.current.value ? `${bgSizeX.current.value}${valX.value}` : 'auto';
     const by=bgSizeY.current.value ? `${bgSizeY.current.value}${valY.value}` : 'auto';
-    bgSizeXValue.style.backgroundSize=`${bx} ${by}`
+    bgSizeYValue.style.backgroundSize=`${bx} ${by}`
+  }
+  function inputTypeOnChange(){
+    inputTypeValue.setAttribute('type',inputType.current.value);
+  }
+  function inputPlaceHolderOnChange(){
+    inputPlaceHolderValue.setAttribute('placeholder',inputPlaceHolder.current.value);
+  }
+  function aLinkOnChange(){
+    aLinkValue.setAttribute('href',aLink.current.value);
+  }
+  function inputMaxLenOnChange(){
+    inputMaxLenValue.setAttribute('maxlength',inputMaxLen.current.value);
+  }
+  function inputMinLenOnChange(){
+    inputMinLenValue.setAttribute('minlength',inputMinLen.current.value);
+  }
+  function inputValueOnChange(){
+    inputValueValue.setAttribute('value',inputValue.current.value);
+  }
+  function inputRequireOnChange(){
+    inputRequireValue.setAttribute('required',inputRequire.current.value);
+  }
+  function aTargetOnChange(){
+    aTargetValue.setAttribute('target',aTarget.current.value);
   }
   
   
@@ -570,6 +624,9 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
   }
   function backgroundStyles(){
     setExpandBackgroundStyles(!expandBackgroundStyles)
+  }
+  function additional(){
+    setExpandAdditional(!expandAdditional)
   }
 
   return (
@@ -1072,6 +1129,90 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
                 <select ref={visibility} name='visibility' className='visibility' onChange={visibilityOnChange}>
                   <option value="visible">Visible</option>
                   <option value="hidden">Hidden</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="styleBlocks" style={{overflow:'hidden'}}>
+        <p onClick={additional}>Additional <FontAwesomeIcon icon={faAngleDown} style={{transition:'0.5s ease-in-out',transform:`${expandAdditional ? 'none' : 'rotate(-90deg)'}`}}/></p>
+        <div className={`styleTable ${expandAdditional ? 'expandAdditional' : ''}`}>
+          <table className='forInputTag' style={{display:'none'}}>
+          <tbody>
+            <tr>
+              <td><label htmlFor="inputType">Input Type: </label></td>
+              <td>
+                <select ref={inputType} name='inputType' className='inputType' onChange={inputTypeOnChange}>
+                  <option value="text">Text</option>
+                  <option value="number">Number</option>
+                  <option value="password">password</option>
+                  <option value="submit">submit</option>
+                  <option value="button">button</option>
+                  <option value="email">email</option>
+                  <option value="url">url</option>
+                  <option value="tel">tel</option>
+                  <option value="range">range</option>
+                  <option value="date">date</option>
+                  <option value="time">time</option>
+                  <option value="color">color</option>
+                  <option value="file">file</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="inputPlaceHolder">Place Holder: </label></td>
+              <td>
+                <input ref={inputPlaceHolder} type='text' name='inputPlaceHolder' className='inputPlaceHolder' onChange={inputPlaceHolderOnChange} />
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="inputMaxLen">Max Length: </label></td>
+              <td>
+                <input ref={inputMaxLen} type='text' name='inputMaxLen' className='inputMaxLen' onChange={inputMaxLenOnChange} />
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="inputMinLen">Min Length: </label></td>
+              <td>
+                <input ref={inputMinLen} type='text' name='inputMinLen' className='inputMinLen' onChange={inputMinLenOnChange} />
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="inputValue">Value: </label></td>
+              <td>
+                <input ref={inputValue} type='text' name='inputValue' className='inputValue' onChange={inputValueOnChange} />
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="inputRequire">Require: </label></td>
+              <td>
+                <select ref={inputRequire} name='inputRequire' className='inputRequire' onChange={inputRequireOnChange}>
+                  <option value="false">false</option>
+                  <option value="true">true</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+          <table className='forHyperLink' style={{display:'none'}}>
+          <tbody>
+            <tr>
+              <td><label htmlFor="aLink">Redirack Link: </label></td>
+              <td>
+                <input ref={aLink} type='text' name='aLink' className='aLink' onChange={aLinkOnChange} />
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="aTarget">Target: </label></td>
+              <td>
+                <select ref={aTarget} name="aTarget" className="aTarget" onChange={aTargetOnChange}>
+                  <option value="_self">Open in the same tab</option>
+                  <option value="_blank">Open in a new tab</option>
+                  <option value="_parent">Open in the parent frame</option>
+                  <option value="_top">Open in the topmost frame</option>
+                  <option value="myFrame">Open in a custom named frame (myFrame)</option>
                 </select>
               </td>
             </tr>
