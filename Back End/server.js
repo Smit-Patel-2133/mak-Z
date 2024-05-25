@@ -565,18 +565,34 @@ app.post('/changeUserProfile', async (req,res)=>{
     }
 });
 app.post("/api/report", async (req, res) => {
+    const { templateId, userEmail, reportDescription } = req.body;
+
     try {
-        const { templateId, userEmail, reportDescription } = req.body;
+        // First, retrieve the creator's email from the template table
+        const creator = await sql`
+            SELECT email
+            FROM template
+            WHERE templateid = ${templateId}
+        `;
 
+        if (creator.count === 0) {
+            return res.status(404).send('Template not found');
+        }
 
-        await sql`UPDATE template SET reported = true WHERE templateid=${templateId}`;
+        const creatorEmail = creator[0].email; // Assuming the query returns at least one result
+
+        // Update the template's reported status
+        await sql`UPDATE template SET reported = true WHERE templateid = ${templateId}`;
 
         // Insert the report details into the reportedtemplate table
-        await sql`INSERT INTO reportedtemplate (description, email, templateid) VALUES (${reportDescription}, ${userEmail}, ${templateId})`;
+        await sql`
+            INSERT INTO reportedtemplate (description, email, reported_to, templateid)
+            VALUES (${reportDescription}, ${userEmail}, ${creatorEmail}, ${templateId})
+        `;
 
         res.status(200).send('Report submitted successfully');
-    } catch (e) {
-        console.error('Error handling report submission:', e);
+    } catch (error) {
+        console.error('Error handling report submission:', error);
         res.status(500).send('Failed to submit report');
     }
 });
@@ -600,6 +616,29 @@ app.post('/getFeedbacks', async (req,res)=>{
         console.error('Error in getFeedbacks '+error);
     }
 });
+// Node.js/Express API endpoint
+app.post('/api/adminData', async (req, res) => {
+    console.log("Fetching admin data");
+
+    try {
+        const userCount = await sql`SELECT COUNT(*) FROM users`;
+        const templateDownloadsCount = await sql`SELECT SUM(templatedownloads) AS totalDownloads FROM template`;
+        const reportedTemplates = await sql`
+            SELECT templateid, email, reported_to, description
+            FROM reportedtemplate
+        `;
+
+        res.status(200).json({
+            userCount: userCount[0].count,
+            templateDownloadsCount: templateDownloadsCount[0].totalDownloads,
+            reportedTemplates: reportedTemplates
+        });
+    } catch (error) {
+        console.error('Error in /api/adminData:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
