@@ -87,25 +87,7 @@ td input,td select{
     overflow: hidden !important;
     transition: 1s ease-in-out;
 }
-/* .style p::after{
-    content: '';
-    display: inline-block;
-    background-color: white;
-    width: 55px;
-    height: 2px;
-    margin-bottom: 3px;
-    margin-left: 5px;
-}
-.style p::before{
-    display: inline-block;
-    content: '';
-    background-color: white;
-    width: 55px;
-    height: 2px;
-    margin-bottom: 3px;
-    margin-right: 5px;
-} */
-.expandTextTable, .expandBoxStyle, .expandPositioning, .expandfexboxAndGridStyles, .expandMiscellaneous, .expandBackgroundStyles{
+.expandTextTable,.expandAdditional, .expandBoxStyle, .expandPositioning, .expandfexboxAndGridStyles, .expandMiscellaneous, .expandBackgroundStyles{
     max-height: 2000px;
 }
 .style svg{

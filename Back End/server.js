@@ -582,5 +582,24 @@ app.post("/api/report", async (req, res) => {
 });
 
 
+app.post('/addFeedbacks', async (req,res)=>{
+    try{
+        await sql`INSERT INTO feedback (email, name, feedback, profilePic) VALUES (${req.body.email}, ${req.body.name}, ${req.body.feedback}, ${req.body.profilePic})`;
+        res.status(200).send('Feedback Added');
+        console.log('feedback added...')
+    }catch(error){
+        console.error('Error in addFeedbacks '+error);
+    }
+});
+
+app.post('/getFeedbacks', async (req,res)=>{
+    try{
+        let feedback=await sql`SELECT name, profilePic, feedback FROM feedback`;
+        res.status(200).send(feedback);
+    }catch(error){
+        console.error('Error in getFeedbacks '+error);
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
