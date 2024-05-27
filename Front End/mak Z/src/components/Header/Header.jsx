@@ -23,6 +23,7 @@ const Header = () => {
                 <li><NavLink to="/AboutUs">About Us</NavLink></li> {/* Example NavLink */}
                 <li><NavLink to="/templates">Template</NavLink></li> {/* Example NavLink */}
                 <li><NavLink to="/home">Home</NavLink></li> {/* Example NavLink */}
+                <li><NavLink to={"/admin"}>DashBord</NavLink></li>
             </ul>
         </div>
 
