@@ -18,6 +18,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
         const code = bodyPageRef.current.outerHTML;
         const templateName=name.value;
         const templateLabel=label.value;
+        console.log(templateName)
         const templateType=type.value;
         const userEmail=user.email;
         const allElements=document.getElementsByClassName('editableBorder');
@@ -248,7 +249,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
             'button': button,
             'form': form,
             'navbar': navbar,
-            'dropdown': dropdown,
+            'table': table,
             'input': input,
             'link': link
         };
@@ -626,28 +627,24 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
             return liElement;
         }
         
-        function dropdown() {
+        function table() {
             const bodyPage = bodyPageRef.current;
+            const tableElement = document.createElement('table');
+            tableElement.style.height='fit-content';
+            tableElement.style.width='fit-content';
             
-            // Create dropdown select element
-            const dropDownElement = document.createElement('select');
-            dropDownElement.classList.add('form-control'); // Add Bootstrap form-control class
-            
-            // Create dropdown options
-            const dropDownoptionElement1 = document.createElement('option');
-            dropDownoptionElement1.textContent = 'DropDown1';
-            const dropDownoptionElement2 = document.createElement('option');
-            dropDownoptionElement2.textContent = 'DropDown2';
-            const dropDownoptionElement3 = document.createElement('option');
-            dropDownoptionElement3.textContent = 'DropDown3';
-            
-            // Append options to select element
-            setCommonAttributes(dropDownoptionElement1,dropDownElement,null);
-            setCommonAttributes(dropDownoptionElement2,dropDownElement,null);
-            setCommonAttributes(dropDownoptionElement3,dropDownElement,null);
-            
-            // Append dropdown container to body or a target element
-            setCommonAttributes(dropDownElement,bodyPage,null); // Or replace bodyPage with the target element
+            for (let i = 0; i < 5; i++) {
+                const row = tableElement.insertRow();
+                for (let j = 0; j < 3; j++) {
+                    const cell = row.insertCell();
+                    cell.textContent = `MakZ`;
+                    cell.style.border = '1px solid black'; // Optional: to add borders to the cells
+                    cell.style.padding = '5px'; // Optional: to add some padding to the cells
+                }
+            }
+        
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(tableElement, bodyPage, targetElement);
         }
 
         function input(){
@@ -697,7 +694,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     }
     
     const handleKeyDown = (event) => {
-        if (event && event.key === 'Enter' && event.shiftKey) {
+        if (event && event.key === 'Tab') {
             event.preventDefault(); 
             const selectionElement = activeElement
             if (selectionElement) {
@@ -725,6 +722,13 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
             const selectedNode = document.getElementsByClassName('activeElementClass')[0];
             if (selectedNode && !selectedNode.classList.contains('pageBody')) {
                 selectedNode.remove()   
+            }
+        }else if(event.shiftKey && event.key === 'ArrowDown'){
+            if(activeElement.tagName=='TD'){
+                const clonedNode = activeElement.parentElement.cloneNode(true);
+                activeElement.classList.remove('activeElementClass')
+                clonedNode.click();
+                insertAfter(clonedNode, activeElement.parentElement);
             }
         }
     };

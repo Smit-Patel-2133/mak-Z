@@ -216,7 +216,7 @@ app.post('/save', async (req, res) => {
         if(req.body.templateId==undefined){
             const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
             const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
-            const templat_visibility=(req.body.templateType=='public') ? true : false
+            const templat_visibility=(req.body.templateType=='public') ? true : false;
             const timestamp = Date.now();
             let generatedTemplateId=templat_name.substring(0,2)
             generatedTemplateId+=templat_label.substring(0,2)
@@ -225,7 +225,8 @@ app.post('/save', async (req, res) => {
             await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${generatedTemplateId},${templat_name},${templat_label},${templat_visibility})`;
             res.status(200).send('File Saved');
         }else{
-            await sql `UPDATE template SET templatehtmlfile = ${fileData}, templateimage = ${req.body.imageOfTemplate} WHERE templateid = ${req.body.templateId}`;
+            const templat_visibility=(req.body.templateType=='public') ? true : false
+            await sql `UPDATE template SET templatehtmlfile = ${fileData}, templateimage = ${req.body.imageOfTemplate}, templatename=${req.body.templateName}, templatetype=${req.body.templateLabel}, templatevisibility=${templat_visibility} WHERE templateid = ${req.body.templateId}`;
             res.status(200).send('File Updated');
         }
     }catch(error){

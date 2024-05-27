@@ -2,8 +2,6 @@ import React from 'react';
 
 const UserTemplateInfo = (props) => {
 
-    // function deleteButtonPress()
-
     return (
 
         <>

@@ -143,6 +143,8 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
   const [inputRequireValue, inputRequireFun] = useState(null);
   const aTarget = useRef(null);
   const [aTargetValue, aTargetFun] = useState(null);
+  const colspan = useRef(null);
+  const [colspanValue, colspanFun] = useState(null);
 
   const [activeElement,setActiveElement] = useState(null);
   const [expandTextTable,setExpandTextTable] = useState(false);
@@ -173,8 +175,10 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
     if (receivedData) {
       document.getElementsByClassName('forHyperLink')[0].style.display='none';
       document.getElementsByClassName('forInputTag')[0].style.display='none';
+      document.getElementsByClassName('forTable')[0].style.display='none';
       if(receivedData.tagName=='A') document.getElementsByClassName('forHyperLink')[0].style.display='block';
       if(receivedData.tagName=='INPUT') document.getElementsByClassName('forInputTag')[0].style.display='block';
+      if(receivedData.tagName=='TD' || receivedData.tagName=='TABLE' || receivedData.tagName=='TR') document.getElementsByClassName('forTable')[0].style.display='block';
       
       const computedStyle = window.getComputedStyle(receivedData);
       const targetFontSize = computedStyle.getPropertyValue('font-size');
@@ -368,6 +372,7 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
       inputValueFun(receivedData);
       inputRequireFun(receivedData);
       aTargetFun(receivedData);
+      colspanFun(receivedData);
       
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
@@ -604,6 +609,9 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
   }
   function aTargetOnChange(){
     aTargetValue.setAttribute('target',aTarget.current.value);
+  }
+  function colspanOnChange(){
+    colspanValue.setAttribute('colspan',colspan.current.value);
   }
   
   
@@ -1214,6 +1222,16 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
                   <option value="_top">Open in the topmost frame</option>
                   <option value="myFrame">Open in a custom named frame (myFrame)</option>
                 </select>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+          <table className='forTable' style={{display:'none'}}>
+          <tbody>
+            <tr>
+              <td><label htmlFor="colspan">colspan: </label></td>
+              <td>
+                <input ref={colspan} type='number' name='colspan' className='colspan' onChange={colspanOnChange} />
               </td>
             </tr>
           </tbody>
