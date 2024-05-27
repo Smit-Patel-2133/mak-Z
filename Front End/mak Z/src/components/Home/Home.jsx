@@ -12,7 +12,8 @@ import { faHeart, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './Home.css';
 import FetchUserProject from "../Single template/FetchUserProject.jsx";
 import LoginModal from '../login/LoginModal';
-import ProjectDetailsModal from './ProjectDetailsModal'; // New component
+import ProjectDetailsModal from './ProjectDetailsModal';
+import {BeatLoader, BounceLoader, ClimbingBoxLoader} from "react-spinners"; // New component
 
 const Home = () => {
     const user = useSelector(state => state.auth);
@@ -93,7 +94,9 @@ const Home = () => {
                 </div>
             </div>
             {isLoading ? (
-                <p className='mb-96'>Loading...</p>
+                <div className="flex justify-center items-center h-screen mt-[-74px]">
+                    <BounceLoader color={'#123abc'} loading={isLoading}/>
+                </div>
             ) : error ? (
                 <p>Error fetching templates: {error.message}</p>
             ) : (

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from "../Header/Header.jsx";
+import {BounceLoader} from "react-spinners";
 
 const Admin = () => {
     const [users, setUsers] = useState(0);
@@ -47,7 +48,13 @@ const Admin = () => {
         }
     };
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <BounceLoader color={'#123abc'} loading={isLoading}/>
+            </div>
+        );
+    }
     if (error) return <p>Error: {error}</p>;
 
     return (

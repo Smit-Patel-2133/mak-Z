@@ -49,12 +49,13 @@ let otpStorage = {};
 // Endpoint to send OTP to the user's email
 app.post('/api/send-otp', async (req, res) => {
     const { email } = req.body;
-
+    console.log("hhhh")
     try {
         // Check if the email exists in the database
         const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
         if (existingUser.length === 0) {
             // If user does not exist, send a message that the user doesn't exist
+            console.log("ddd")
             return res.status(404).json({ success: false, error: 'User not found' });
         }
 
@@ -63,7 +64,7 @@ app.post('/api/send-otp', async (req, res) => {
 
         // Store the OTP in memory (for verification later)
         otpStorage[email] = generatedOTP;
-
+        console.log("haaassss");
         // Send OTP to the user's email
         await sendEmail(email, generatedOTP);
 
@@ -77,6 +78,7 @@ app.post('/api/send-otp', async (req, res) => {
 // Function to send email using SMTP
 const sendEmail = async (email, otp) => {
     try {
+
         const mailOptions = {
             from: 'mak.z.official07@gmail.com', // Your Gmail address
             to: email,
@@ -325,8 +327,10 @@ app.post('/fetchThis/forhome', async (req, res) => {
               template.email = users.email
             WHERE
               template.templatevisibility = true
-              AND template.reported=false
+              AND template.reported = false
               ${userEmail ? sql`AND template.email != ${userEmail}` : sql``}
+            ORDER BY RANDOM()
+            LIMIT 10
         `;
 
         if (result.length === 0) {
