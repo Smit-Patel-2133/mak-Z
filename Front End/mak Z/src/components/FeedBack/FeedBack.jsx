@@ -87,33 +87,6 @@ function Feedback() {
             </div>
           </div>
         ))}
-        {feedback.map(feedback => (
-          <div className="mySlides">
-            <div>
-              <p>{feedback.feedback}</p>
-              <h6>{feedback.name}</h6>
-              <img src={`/src/assets/Profile picture/${feedback.profilepic}.png`} alt="abhay" />
-            </div>
-          </div>
-        ))}
-        {feedback.map(feedback => (
-          <div className="mySlides">
-            <div>
-              <p>{feedback.feedback}</p>
-              <h6>{feedback.name}</h6>
-              <img src={`/src/assets/Profile picture/${feedback.profilepic}.png`} alt="abhay" />
-            </div>
-          </div>
-        ))}
-        {feedback.map(feedback => (
-          <div className="mySlides">
-            <div>
-              <p>{feedback.feedback}</p>
-              <h6>{feedback.name}</h6>
-              <img src={`/src/assets/Profile picture/${feedback.profilepic}.png`} alt="abhay" />
-            </div>
-          </div>
-        ))}
       </div>
     </div>)
   }

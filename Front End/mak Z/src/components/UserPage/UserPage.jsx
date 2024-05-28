@@ -292,7 +292,8 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                     const widthContent = parseInt(computedStyleContent.getPropertyValue('width'));
                     contentVariable.style.width=`${pxToPr(widthContent,targetElement)+1}%`;
                 }else{
-                    targetElement.parentElement.insertBefore(contentVariable, targetElement);
+                    // targetElement.parentElement.insertBefore(contentVariable, targetElement);
+                    bodyPage.insertBefore(contentVariable, null);
                     const computedStyleContent = window.getComputedStyle(contentVariable);
                     const widthContent = parseInt(computedStyleContent.getPropertyValue('width'));
                     contentVariable.style.width=`${pxToPr(widthContent,bodyPage)+1}%`;
@@ -630,17 +631,21 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
         function table() {
             const bodyPage = bodyPageRef.current;
             const tableElement = document.createElement('table');
-            tableElement.style.height='fit-content';
-            tableElement.style.width='fit-content';
-            
+            tableElement.style.borderCollapse = 'separate';
+            tableElement.style.borderSpacing = '1px';
+            tableElement.style.padding = '5px';
+
             for (let i = 0; i < 5; i++) {
-                const row = tableElement.insertRow();
+                const row = document.createElement('tr');
                 for (let j = 0; j < 3; j++) {
-                    const cell = row.insertCell();
-                    cell.textContent = `MakZ`;
-                    cell.style.border = '1px solid black'; // Optional: to add borders to the cells
-                    cell.style.padding = '5px'; // Optional: to add some padding to the cells
+                    const col = document.createElement('td');
+                    col.textContent = `MakZ`;
+                    // col.style.border = '1px solid black'; 
+                    col.style.padding = '5px'; 
+                    // col.style.margin='40px';
+                    setCommonAttributes(col,row,null);
                 }
+                setCommonAttributes(row,tableElement,null);
             }
         
             const targetElement = findTargetElement(e);

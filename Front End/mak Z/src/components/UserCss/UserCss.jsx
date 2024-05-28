@@ -145,6 +145,8 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
   const [aTargetValue, aTargetFun] = useState(null);
   const colspan = useRef(null);
   const [colspanValue, colspanFun] = useState(null);
+  const cellSpace = useRef(null);
+  const [cellSpaceValue, cellSpaceFun] = useState(null);
 
   const [activeElement,setActiveElement] = useState(null);
   const [expandTextTable,setExpandTextTable] = useState(false);
@@ -373,6 +375,7 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
       inputRequireFun(receivedData);
       aTargetFun(receivedData);
       colspanFun(receivedData);
+      cellSpaceFun(receivedData);
       
 
       if(activeElement) activeElement.classList.remove('activeElementClass')
@@ -430,15 +433,43 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
     textTransformValue.style.textTransform = textTransform.current.value;
   }
   function borderWidthOnChange(){
+    if(borderWidthValue.tagName=='TD'){
+      const allCell=borderWidthValue.parentElement.parentElement.querySelectorAll('td');;
+      allCell.forEach(td => {
+        td.style.border=`${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
+      });
+      return;
+    }
     borderWidthValue.style.border=`${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
   }
   function borderStyleOnChange() {
+    if(borderWidthValue.tagName=='TD'){
+      const allCell=borderWidthValue.parentElement.parentElement.querySelectorAll('td');;
+      allCell.forEach(td => {
+        td.style.border=`${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
+      });
+      return;
+    }
     borderStyleValue.style.border =`${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
   }
   function borderColorOnChange() {
+    if(borderWidthValue.tagName=='TD'){
+      const allCell=borderWidthValue.parentElement.parentElement.querySelectorAll('td');;
+      allCell.forEach(td => {
+        td.style.border=`${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
+      });
+      return;
+    }
     borderColorValue.style.border = `${borderWidth.current.value}px ${borderStyle.current.value} ${borderColor.current.value}`;
   }
   function borderRadiusOnChange(){
+    if(borderWidthValue.tagName=='TD'){
+      const allCell=borderWidthValue.parentElement.parentElement.querySelectorAll('td');;
+      allCell.forEach(td => {
+        td.style.borderRadius=`${borderRadius.current.value}px`
+      });
+      return;
+    }
     borderRadiusValue.style.borderRadius=`${borderRadius.current.value}px`
   }
   function shadowHorizontalOffsetOnChange() {
@@ -612,6 +643,12 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
   }
   function colspanOnChange(){
     colspanValue.setAttribute('colspan',colspan.current.value);
+  }
+  function cellSpaceOnChange(){
+    if(cellSpaceValue.tagName=='TD'){
+      cellSpaceFun(cellSpaceValue.parentElement.parentElement)
+    }
+    cellSpaceValue.style.borderSpacing = `${cellSpace.current.value}px`;
   }
   
   
@@ -1232,6 +1269,12 @@ const UserCss = ({ styleHover, hardStyleHover, receivedData, getUserPage  }) => 
               <td><label htmlFor="colspan">colspan: </label></td>
               <td>
                 <input ref={colspan} type='number' name='colspan' className='colspan' onChange={colspanOnChange} />
+              </td>
+            </tr>
+            <tr>
+              <td><label htmlFor="cellSpace">Cell Space: </label></td>
+              <td>
+                <input ref={cellSpace} type='number' name='cellSpace' className='cellSpace' onChange={cellSpaceOnChange} />
               </td>
             </tr>
           </tbody>

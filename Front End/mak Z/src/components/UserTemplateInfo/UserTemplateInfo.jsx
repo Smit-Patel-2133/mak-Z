@@ -7,7 +7,7 @@ const UserTemplateInfo = (props) => {
         <>
         <div className='h-full w-full cursor-pointer' style={{color:'white'}}>
             <div className='float-left ml-2'>
-                <h5 className='pb-0'>{props.name}</h5>
+                <h5 className='pb-0' style={{maxWidth:'180px',width:'auto',overflow:'hidden',maxHeight:'25px'}}>{props.name}</h5>
                 <p className='opacity-50'>{props.label}</p>
             </div>
             <div className="float-left ml-2">
