@@ -89,11 +89,8 @@ const Admin = () => {
                         <td className="py-2 px-4 border-b">{template.reported_to}</td>
                         <td className="py-2 px-4 border-b">{template.description}</td>
                         <td className="py-2 px-4 border-b text-center">
-                            <input
-                                type="checkbox"
-                                checked={template.reported}
-                                onChange={() => handleCheckboxChange(template.templateid)}
-                            />
+                            <button>valid</button>
+                            <button>Invalid</button>
                         </td>
                     </tr>
                 ))}

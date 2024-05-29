@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginModal from '../login/LoginModal';
 import ProjectDetailsModalEdit from './ProjectDetailsModalEdit';
-import ReportTemplateModal from './ReportTemplateModal'; // Import the new component
+import ReportTemplateModal from './ReportTemplateModal';
+import axios from "axios";
 
 const FetchTemplate = ({ templateHeading, images }) => {
     const user = useSelector(state => state.auth);
@@ -20,10 +21,10 @@ const FetchTemplate = ({ templateHeading, images }) => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showProjectDetailsModal, setShowProjectDetailsModal] = useState(false);
     const [templateDetails, setTemplateDetails] = useState(null);
-    const [showReportModal, setShowReportModal] = useState(false); // State to control the visibility of the report modal
-    const [reportedTemplateName, setReportedTemplateName] = useState(''); // State to store the name of the reported template
-    const [reportedTemplateId, setReportedTemplateId] = useState(''); // State to store the ID of the reported template
-    const [reportDescription, setReportDescription] = useState(''); // State to store the report description
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportedTemplateName, setReportedTemplateName] = useState('');
+    const [reportedTemplateId, setReportedTemplateId] = useState('');
+    const [reportDescription, setReportDescription] = useState('');
 
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -56,17 +57,31 @@ const FetchTemplate = ({ templateHeading, images }) => {
     const userName = selectedImage ? selectedImage.name : 'Unknown';
     const navigate = useNavigate();
 
-    const handleEditClick = (template) => {
+    const handleEditClick = (image) => {
         if (user.isLogedin) {
-            const { id, name, visibility, type } = template;
-            setShowProjectDetailsModal(true);
-            setTemplateDetails({ id, name, visibility, type });
+            const { id, name, visibility, type } = image;
+            // Use Axios for making the POST request
+            console.log("eeeeee")
+            axios.post('http://localhost:5000/downloadCount', { templateId: image.id })
+                .then(response => {
+                    if (response.status === 200) {
+                        setShowProjectDetailsModal(true);
+                        setTemplateDetails({ id, name, visibility, type });
+                    } else {
+                        console.error('Error incrementing download count:', response.data.error);
+                    }
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error incrementing download count:', error);
+                    // Optionally, you can show an error message to the user
+                });
         } else {
             setShowLoginModal(true);
         }
     };
 
-    // Function to handle report button click
+
     const handleReportClick = (template) => {
         if (user.isLogedin) {
             setReportedTemplateName(template.name);
@@ -92,12 +107,12 @@ const FetchTemplate = ({ templateHeading, images }) => {
                 onClose={() => setShowProjectDetailsModal(false)}
                 templateDetails={templateDetails}
             />
-            <ReportTemplateModal // Render the report template modal
+            <ReportTemplateModal
                 show={showReportModal}
                 onClose={() => setShowReportModal(false)}
                 templateName={reportedTemplateName}
-                templateId={reportedTemplateId} // Pass the template ID
-                userEmail={user.email} // Pass the current user's email
+                templateId={reportedTemplateId}
+                userEmail={user.email}
                 reportDescription={reportDescription}
                 setReportDescription={setReportDescription}
             />
@@ -130,18 +145,14 @@ const FetchTemplate = ({ templateHeading, images }) => {
                                         />
                                         <div className="info">
                                             <div className='mt-1 '/>
-                                            <div className='flex items-center ml-2'>
-                                                <h6 className="name">{image.name}</h6>
-                                                <button
-                                                    className="like-button ml-auto mr-5 bg-emerald-400 hover:bg-emerald-500 focus:bg-emerald-500 h-10 w-10 flex items-center justify-center text-white rounded-full">
-                                                    <FontAwesomeIcon icon={faHeart}/>
-                                                    <span className="ml-2">{image.likes}</span>
-                                                </button>
+                                            <div className='flex items-center'>
+                                                <h5 className="ml-2">Name:  {image.username}</h5>
                                             </div>
-                                            <div className='flex items-center mb-3'>
-                                                <h5 className="ml-2">{image.username}</h5>
+                                            <div className='flex items-center'>
+                                                <h5 className="ml-2">{image.name}</h5>
                                             </div>
-                                            <div className="flex flex-row justify-between items-center">
+
+                                            <div className="flex flex-row justify-between items-center mt-10">
                                                 <button
                                                     className="mr-2 mb-2 ml-10 bg-emerald-400 rounded h-10 w-20 text-white"
                                                     onClick={() => handleEditClick(image)}>

@@ -77,21 +77,10 @@ const Home = () => {
             </div>
             <div className="divider" />
             <div className='outer'>
-                <h1 className='mt-3 italic'>Projects</h1>
-                <div className='flex'>
-                    <div className='mr-4'>
-                        <FetchUserProject email={user.email} />
-                    </div>
-                    <div className='inner' onClick={handleNewProjectClick}>
-                        <div className="plus-container" >
-                            <FontAwesomeIcon
-                                icon={faPlus}
-                                className="fa-plus-large"
-
-                            />
-                        </div>
-                    </div>
+                <div><h1 className='mt-3 italic'>Projects</h1>
+                <button onClick={handleNewProjectClick}>new Project</button>
                 </div>
+                <div className='-ml-10'><FetchUserProject email={user.email} /></div>
             </div>
             {isLoading ? (
                 <div className="flex justify-center items-center h-screen mt-[-74px]">

@@ -265,7 +265,7 @@ app.post('/fetchThis', async (req, res) => {
             SELECT
               template.templateid,
               template.templatename,
-              template.templatelikes,
+              
               template.templatedownloads,
               template.templatevisibility,
               template.templateimage,
@@ -291,7 +291,6 @@ app.post('/fetchThis', async (req, res) => {
         const templates = result.map((row) => ({
             id: row.templateid,
             name: row.templatename,
-            likes: row.templatelikes,
             downloads: row.templatedownloads,
             visibility: row.templatevisibility,
             htmlImg: row.templateimage,
@@ -315,7 +314,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
             SELECT
               template.templateid,
               template.templatename,
-              template.templatelikes,
               template.templatedownloads,
               template.templatevisibility,
               template.templateimage,
@@ -341,7 +339,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
         const templates = result.map((row) => ({
             id: row.templateid,
             name: row.templatename,
-            likes: row.templatelikes,
             downloads: row.templatedownloads,
             visibility: row.templatevisibility,
             htmlImg: row.templateimage,
@@ -357,14 +354,13 @@ app.post('/fetchThis/forhome', async (req, res) => {
 
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
-
+    console.log("heee");
     try {
         // Fetch only the necessary fields from the template table
         const result = await sql`
             SELECT
                 templateid,
                 templatename,
-                templatelikes,
                 templatedownloads,
                 templatevisibility,
                 templateimage
@@ -382,7 +378,7 @@ app.post('/fetchThis/userProjects', async (req, res) => {
             return {
                 id: row.templateid,
                 name: row.templatename,
-                likes: row.templatelikes,
+
                 downloads: row.templatedownloads,
                 visibility: row.templatevisibility,
                 htmlImg: row.templateimage // Ensure correct MIME type
@@ -641,6 +637,19 @@ app.post('/api/adminData', async (req, res) => {
     } catch (error) {
         console.error('Error in /api/adminData:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+app.post('/downloadCount', async (req, res) => {
+    const { templateId } = req.body;
+    try {
+        await sql`
+            UPDATE template
+            SET templatedownload = templatedownload + 1 
+            WHERE templateid = ${templateId}`;
+        res.status(200).json({ message: 'Download count incremented successfully.' });
+    } catch (error) {
+        console.error('Error incrementing download count:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
