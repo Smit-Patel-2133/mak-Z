@@ -30,6 +30,7 @@
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-heart": "^1.0.6",
+    "react-modal": "^3.16.1",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
     "react-spinners": "^0.13.8",

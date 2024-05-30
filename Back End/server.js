@@ -354,7 +354,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
 
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
-    console.log("heee");
     try {
         // Fetch only the necessary fields from the template table
         const result = await sql`
@@ -619,7 +618,7 @@ app.post('/getFeedbacks', async (req,res)=>{
 });
 // Node.js/Express API endpoint
 app.post('/api/adminData', async (req, res) => {
-    console.log("Fetching admin data");
+;
 
     try {
         const userCount = await sql`SELECT COUNT(*) FROM users`;
@@ -639,6 +638,33 @@ app.post('/api/adminData', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+// Add this route to your backend
+app.post('/api/templateHtml', async (req, res) => {
+    const { templateId } = req.body;
+
+    try {
+        const templateHtmlResult = await sql`
+            SELECT templatehtmlfile
+            FROM template
+            WHERE templateid = ${templateId}
+        `;
+
+        // Extract the Buffer object from the SQL result
+        const templateHtmlBuffer = templateHtmlResult[0].templatehtmlfile;
+
+        // Convert the Buffer object to a string
+        const templateHtmlString = templateHtmlBuffer.toString('utf-8');
+        console.log(templateHtmlString)
+        // Send the HTML content as a string in the response
+        res.status(200).json({ templateHtml: templateHtmlString });
+    } catch (error) {
+        console.error('Error in /api/templateHtml:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 app.post('/downloadCount', async (req, res) => {
     const { templateId } = req.body;
     try {

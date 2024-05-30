@@ -1,15 +1,20 @@
-// src/Admin.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal';
 import Header from "../Header/Header.jsx";
-import {BounceLoader} from "react-spinners";
-
+import { BounceLoader } from "react-spinners";
+import './admin.css';
+import TemplatePreviewModal from "./TemplatePreviewModal.jsx";
+// Set the app element for React Modal
+Modal.setAppElement('#root');
 const Admin = () => {
     const [users, setUsers] = useState(0);
     const [templateDownloads, setTemplateDownloads] = useState(0);
     const [reportedTemplates, setReportedTemplates] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [htmlContent, setHtmlContent] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,20 +46,42 @@ const Admin = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/api/saveTemplates', { templates: reportedTemplates });
+            console.log("sdfsdf")
+            const response = await axios.post(
+                'http://localhost:5000/api/saveTemplates',
+                { templates: reportedTemplates }
+            );
             console.log('Changes saved:', response.data);
         } catch (error) {
             console.error('Error saving data:', error);
         }
     };
 
+    const handlePreview = async (templateId) => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/templateHtml', { templateId });
+            if (response.status === 200) {
+                setHtmlContent(response.data.templateHtml);
+                setModalIsOpen(true);
+            }
+        } catch (error) {
+            console.error('Error fetching template HTML:', error);
+        }
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+        setHtmlContent('');
+    };
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen">
-                <BounceLoader color={'#123abc'} loading={isLoading}/>
+                <BounceLoader color={'#123abc'} loading={isLoading} />
             </div>
         );
     }
+
     if (error) return <p>Error: {error}</p>;
 
     return (
@@ -78,6 +105,7 @@ const Admin = () => {
                     <th className="py-2 px-4 border-b">Reported By</th>
                     <th className="py-2 px-4 border-b">Reported To</th>
                     <th className="py-2 px-4 border-b">Description</th>
+                    <th className="py-2 px-4 border-b">View</th>
                     <th className="py-2 px-4 border-b">Reported</th>
                 </tr>
                 </thead>
@@ -88,9 +116,17 @@ const Admin = () => {
                         <td className="py-2 px-4 border-b">{template.email}</td>
                         <td className="py-2 px-4 border-b">{template.reported_to}</td>
                         <td className="py-2 px-4 border-b">{template.description}</td>
+                        <td>
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded-full"
+                                onClick={() => handlePreview(template.templateid)}
+                            >
+                                preView
+                            </button>
+                        </td>
                         <td className="py-2 px-4 border-b text-center">
-                            <button>valid</button>
-                            <button>Invalid</button>
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded-full">valid</button>
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-full">Invalid</button>
                         </td>
                     </tr>
                 ))}
@@ -102,6 +138,11 @@ const Admin = () => {
             >
                 Save
             </button>
+            <TemplatePreviewModal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                htmlContent={htmlContent}
+            />
         </>
     );
 };
