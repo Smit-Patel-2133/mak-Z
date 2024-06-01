@@ -1,6 +1,10 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "nodemailer": "^6.9.13",
+=======
+    "react-loading-skeleton": "^3.4.0",
+>>>>>>> e9fdd63d6f95cd581abfd5ff954f23744523ed2d
     "react-spinners": "^0.13.8"
   }
 }

@@ -49,12 +49,13 @@ let otpStorage = {};
 // Endpoint to send OTP to the user's email
 app.post('/api/send-otp', async (req, res) => {
     const { email } = req.body;
-
+    console.log("hhhh")
     try {
         // Check if the email exists in the database
         const existingUser = await sql`SELECT * FROM users WHERE email = ${email}`;
         if (existingUser.length === 0) {
             // If user does not exist, send a message that the user doesn't exist
+            console.log("ddd")
             return res.status(404).json({ success: false, error: 'User not found' });
         }
 
@@ -63,7 +64,7 @@ app.post('/api/send-otp', async (req, res) => {
 
         // Store the OTP in memory (for verification later)
         otpStorage[email] = generatedOTP;
-
+        console.log("haaassss");
         // Send OTP to the user's email
         await sendEmail(email, generatedOTP);
 
@@ -77,6 +78,7 @@ app.post('/api/send-otp', async (req, res) => {
 // Function to send email using SMTP
 const sendEmail = async (email, otp) => {
     try {
+
         const mailOptions = {
             from: 'mak.z.official07@gmail.com', // Your Gmail address
             to: email,
@@ -216,7 +218,7 @@ app.post('/save', async (req, res) => {
         if(req.body.templateId==undefined){
             const templat_name=(req.body.templateName=='') ? 'Mak-Z' : req.body.templateName;
             const templat_label=(req.body.templateLabel=='') ? 'none' : req.body.templateLabel;
-            const templat_visibility=(req.body.templateType=='public') ? true : false
+            const templat_visibility=(req.body.templateType=='public') ? true : false;
             const timestamp = Date.now();
             let generatedTemplateId=templat_name.substring(0,2)
             generatedTemplateId+=templat_label.substring(0,2)
@@ -225,7 +227,8 @@ app.post('/save', async (req, res) => {
             await sql`INSERT INTO template (email, templatehtmlfile, templateimage, templateid, templatename, templatetype, templatevisibility) VALUES (${req.body.userEmail},${fileData},${req.body.imageOfTemplate},${generatedTemplateId},${templat_name},${templat_label},${templat_visibility})`;
             res.status(200).send('File Saved');
         }else{
-            await sql `UPDATE template SET templatehtmlfile = ${fileData}, templateimage = ${req.body.imageOfTemplate} WHERE templateid = ${req.body.templateId}`;
+            const templat_visibility=(req.body.templateType=='public') ? true : false
+            await sql `UPDATE template SET templatehtmlfile = ${fileData}, templateimage = ${req.body.imageOfTemplate}, templatename=${req.body.templateName}, templatetype=${req.body.templateLabel}, templatevisibility=${templat_visibility} WHERE templateid = ${req.body.templateId}`;
             res.status(200).send('File Updated');
         }
     }catch(error){
@@ -262,7 +265,7 @@ app.post('/fetchThis', async (req, res) => {
             SELECT
               template.templateid,
               template.templatename,
-              template.templatelikes,
+              
               template.templatedownloads,
               template.templatevisibility,
               template.templateimage,
@@ -288,7 +291,6 @@ app.post('/fetchThis', async (req, res) => {
         const templates = result.map((row) => ({
             id: row.templateid,
             name: row.templatename,
-            likes: row.templatelikes,
             downloads: row.templatedownloads,
             visibility: row.templatevisibility,
             htmlImg: row.templateimage,
@@ -312,7 +314,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
             SELECT
               template.templateid,
               template.templatename,
-              template.templatelikes,
               template.templatedownloads,
               template.templatevisibility,
               template.templateimage,
@@ -325,8 +326,10 @@ app.post('/fetchThis/forhome', async (req, res) => {
               template.email = users.email
             WHERE
               template.templatevisibility = true
-              AND template.reported=false
+              AND template.reported = false
               ${userEmail ? sql`AND template.email != ${userEmail}` : sql``}
+            ORDER BY RANDOM()
+            LIMIT 10
         `;
 
         if (result.length === 0) {
@@ -336,7 +339,6 @@ app.post('/fetchThis/forhome', async (req, res) => {
         const templates = result.map((row) => ({
             id: row.templateid,
             name: row.templatename,
-            likes: row.templatelikes,
             downloads: row.templatedownloads,
             visibility: row.templatevisibility,
             htmlImg: row.templateimage,
@@ -352,14 +354,12 @@ app.post('/fetchThis/forhome', async (req, res) => {
 
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
-
     try {
         // Fetch only the necessary fields from the template table
         const result = await sql`
             SELECT
                 templateid,
                 templatename,
-                templatelikes,
                 templatedownloads,
                 templatevisibility,
                 templateimage
@@ -377,7 +377,7 @@ app.post('/fetchThis/userProjects', async (req, res) => {
             return {
                 id: row.templateid,
                 name: row.templatename,
-                likes: row.templatelikes,
+
                 downloads: row.templatedownloads,
                 visibility: row.templatevisibility,
                 htmlImg: row.templateimage // Ensure correct MIME type
@@ -565,18 +565,34 @@ app.post('/changeUserProfile', async (req,res)=>{
     }
 });
 app.post("/api/report", async (req, res) => {
+    const { templateId, userEmail, reportDescription } = req.body;
+
     try {
-        const { templateId, userEmail, reportDescription } = req.body;
+        // First, retrieve the creator's email from the template table
+        const creator = await sql`
+            SELECT email
+            FROM template
+            WHERE templateid = ${templateId}
+        `;
 
+        if (creator.count === 0) {
+            return res.status(404).send('Template not found');
+        }
 
-        await sql`UPDATE template SET reported = true WHERE templateid=${templateId}`;
+        const creatorEmail = creator[0].email; // Assuming the query returns at least one result
+
+        // Update the template's reported status
+        await sql`UPDATE template SET reported = true WHERE templateid = ${templateId}`;
 
         // Insert the report details into the reportedtemplate table
-        await sql`INSERT INTO reportedtemplate (description, email, templateid) VALUES (${reportDescription}, ${userEmail}, ${templateId})`;
+        await sql`
+            INSERT INTO reportedtemplate (description, email, reported_to, templateid)
+            VALUES (${reportDescription}, ${userEmail}, ${creatorEmail}, ${templateId})
+        `;
 
         res.status(200).send('Report submitted successfully');
-    } catch (e) {
-        console.error('Error handling report submission:', e);
+    } catch (error) {
+        console.error('Error handling report submission:', error);
         res.status(500).send('Failed to submit report');
     }
 });
@@ -600,6 +616,69 @@ app.post('/getFeedbacks', async (req,res)=>{
         console.error('Error in getFeedbacks '+error);
     }
 });
+// Node.js/Express API endpoint
+app.post('/api/adminData', async (req, res) => {
+;
+
+    try {
+        const userCount = await sql`SELECT COUNT(*) FROM users`;
+        const templateDownloadsCount = await sql`SELECT SUM(templatedownloads) AS totalDownloads FROM template`;
+        const reportedTemplates = await sql`
+            SELECT templateid, email, reported_to, description
+            FROM reportedtemplate
+        `;
+
+        res.status(200).json({
+            userCount: userCount[0].count,
+            templateDownloadsCount: templateDownloadsCount[0].totalDownloads,
+            reportedTemplates: reportedTemplates
+        });
+    } catch (error) {
+        console.error('Error in /api/adminData:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Add this route to your backend
+app.post('/api/templateHtml', async (req, res) => {
+    const { templateId } = req.body;
+
+    try {
+        const templateHtmlResult = await sql`
+            SELECT templatehtmlfile
+            FROM template
+            WHERE templateid = ${templateId}
+        `;
+
+        // Extract the Buffer object from the SQL result
+        const templateHtmlBuffer = templateHtmlResult[0].templatehtmlfile;
+
+        // Convert the Buffer object to a string
+        const templateHtmlString = templateHtmlBuffer.toString('utf-8');
+        console.log(templateHtmlString)
+        // Send the HTML content as a string in the response
+        res.status(200).json({ templateHtml: templateHtmlString });
+    } catch (error) {
+        console.error('Error in /api/templateHtml:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+app.post('/downloadCount', async (req, res) => {
+    const { templateId } = req.body;
+    try {
+        await sql`
+            UPDATE template
+            SET templatedownload = templatedownload + 1 
+            WHERE templateid = ${templateId}`;
+        res.status(200).json({ message: 'Download count incremented successfully.' });
+    } catch (error) {
+        console.error('Error incrementing download count:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
