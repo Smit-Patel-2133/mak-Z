@@ -2,7 +2,7 @@ import React from "react";
 import Header from '../Header/Header';
 import './AboutUs.css'
 import dhruv from '../../assets/picture/feedback_dhruv.png';
-import abhay from '../../assets/picture/feedback_abhay.jpg';
+import abhay from '../../assets/picture/AbhayPatel.jpeg';
 import ak from '../../assets/picture/Adarsh.png'
 import smit from '../../assets/picture/smit.jpg'
 import Black_noBG from '../../assets/picture/white_noBG.png';

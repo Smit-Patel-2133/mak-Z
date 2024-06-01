@@ -3,7 +3,7 @@ import axios from 'axios';
 import Header from '../Header/Header.jsx';
 import FetchTemplate from '../Single template/FetchTemplate.jsx';
 import {useSelector} from "react-redux";
-import { ClimbingBoxLoader } from 'react-spinners';
+import {BounceLoader, ClimbingBoxLoader} from 'react-spinners';
 
 const Templates = () => {
     const user = useSelector(state => state.auth);
@@ -14,6 +14,7 @@ const Templates = () => {
         landing: [],
     });
     const [isLoading, setIsLoading] = useState(true);
+
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -25,6 +26,7 @@ const Templates = () => {
                 try {
                     const response = await axios.post('http://localhost:5000/fetchThis', { type,userEmail: user.email});
                     if (Array.isArray(response.data)) {
+                        console.log(data[type])
                         data[type] = response.data;
                     }
                 } catch (err) {
@@ -59,7 +61,7 @@ const Templates = () => {
             <Header />
             {isLoading ? (
                 <div className="flex justify-center items-center h-screen mt-[-74px]">
-                    <ClimbingBoxLoader color={'#123abc'} loading={isLoading}/>
+                    <BounceLoader    color={'#123abc'} loading={isLoading}/>
                 </div>
             ) : error ? (
                 <p>Error fetching templates: {error.message}</p>

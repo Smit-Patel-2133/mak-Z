@@ -36,4 +36,11 @@ margin-top: -8px !important;
 .navbar a{
     color: white;
     text-decoration: none;
+    opacity: .8;
+}
+.navbar a:hover{
+    opacity: 1 !important;
+}
+.activeHeader{
+    opacity: 1 !important;
 }

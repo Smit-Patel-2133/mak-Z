@@ -103,4 +103,61 @@
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
 }
+/* General styles */
+.fetch-template-container {
+    padding-left: 50px;
+    overflow: hidden; /* Hide any overflow */
+}
+
+.scrollable {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 16px;
+    -ms-overflow-style: none; /* Hide scrollbar on IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar on Firefox */
+}
+
+/* Hide the scrollbar for WebKit browsers */
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
+
+/* List styles */
+.image-list {
+    display: flex;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Image container */
+.inner {
+    width: 300px;
+    height: 400px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden; /* Hide any overflow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and box-shadow */
+}
+
+.inner:hover {
+    transform: translateY(-10px); /* Moves the element up */
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2); /* Stronger shadow to give depth */
+}
+
+/* Image styles */
+.inner img {
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+    border-radius: 20px 20px 0 0;
+}
+
 

@@ -18,6 +18,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
         const code = bodyPageRef.current.outerHTML;
         const templateName=name.value;
         const templateLabel=label.value;
+        console.log(templateName)
         const templateType=type.value;
         const userEmail=user.email;
         const allElements=document.getElementsByClassName('editableBorder');
@@ -248,7 +249,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
             'button': button,
             'form': form,
             'navbar': navbar,
-            'dropdown': dropdown,
+            'table': table,
             'input': input,
             'link': link
         };
@@ -276,7 +277,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 contentVariable.addEventListener('dragend',handlePagebodyElementDragEnd);
                 contentVariable.addEventListener('drag',handlePagebodyElementDrag);
                 contentVariable.style.left=`${pxToPr(cursorValueX-bodyPagePosition.left,bodyPage)}%`;
-                contentVariable.style.top=`${pxToPr(cursorValueY-bodyPagePosition.top,bodyPage)}%`;
+                contentVariable.style.top=`${cursorValueY-bodyPagePosition.top}px`;
                 if(contentVariable.tagName.toLowerCase()=='nav') contentVariable.style.left=`0px`;
             }
             if(targetElement){
@@ -284,14 +285,15 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
                 const cotentTagName=contentVariable.tagName.toLowerCase();
                 if(TargetTagName=='div' || TargetTagName=='section' || TargetTagName=='header' || TargetTagName=='footer' || cotentTagName=='strong' || cotentTagName=='del' || cotentTagName=='ins' || cotentTagName=='sup' || cotentTagName=='sub' || cotentTagName=='em'){
                     const targetElementPosition=targetElement.getBoundingClientRect();
-                    contentVariable.style.left=`${(cursorValueX-targetElementPosition.left)}px`;
+                    contentVariable.style.left=`${pxToPr(cursorValueX-targetElementPosition.left,targetElement)}%`;
                     contentVariable.style.top=`${(cursorValueY-targetElementPosition.top)}px`;
                     targetElement.appendChild(contentVariable)
                     const computedStyleContent = window.getComputedStyle(contentVariable);
                     const widthContent = parseInt(computedStyleContent.getPropertyValue('width'));
                     contentVariable.style.width=`${pxToPr(widthContent,targetElement)+1}%`;
                 }else{
-                    targetElement.parentElement.insertBefore(contentVariable, targetElement);
+                    // targetElement.parentElement.insertBefore(contentVariable, targetElement);
+                    bodyPage.insertBefore(contentVariable, null);
                     const computedStyleContent = window.getComputedStyle(contentVariable);
                     const widthContent = parseInt(computedStyleContent.getPropertyValue('width'));
                     contentVariable.style.width=`${pxToPr(widthContent,bodyPage)+1}%`;
@@ -626,28 +628,28 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
             return liElement;
         }
         
-        function dropdown() {
+        function table() {
             const bodyPage = bodyPageRef.current;
-            
-            // Create dropdown select element
-            const dropDownElement = document.createElement('select');
-            dropDownElement.classList.add('form-control'); // Add Bootstrap form-control class
-            
-            // Create dropdown options
-            const dropDownoptionElement1 = document.createElement('option');
-            dropDownoptionElement1.textContent = 'DropDown1';
-            const dropDownoptionElement2 = document.createElement('option');
-            dropDownoptionElement2.textContent = 'DropDown2';
-            const dropDownoptionElement3 = document.createElement('option');
-            dropDownoptionElement3.textContent = 'DropDown3';
-            
-            // Append options to select element
-            setCommonAttributes(dropDownoptionElement1,dropDownElement,null);
-            setCommonAttributes(dropDownoptionElement2,dropDownElement,null);
-            setCommonAttributes(dropDownoptionElement3,dropDownElement,null);
-            
-            // Append dropdown container to body or a target element
-            setCommonAttributes(dropDownElement,bodyPage,null); // Or replace bodyPage with the target element
+            const tableElement = document.createElement('table');
+            tableElement.style.borderCollapse = 'separate';
+            tableElement.style.borderSpacing = '1px';
+            tableElement.style.padding = '5px';
+
+            for (let i = 0; i < 5; i++) {
+                const row = document.createElement('tr');
+                for (let j = 0; j < 3; j++) {
+                    const col = document.createElement('td');
+                    col.textContent = `MakZ`;
+                    // col.style.border = '1px solid black'; 
+                    col.style.padding = '5px'; 
+                    // col.style.margin='40px';
+                    setCommonAttributes(col,row,null);
+                }
+                setCommonAttributes(row,tableElement,null);
+            }
+        
+            const targetElement = findTargetElement(e);
+            setCommonAttributes(tableElement, bodyPage, targetElement);
         }
 
         function input(){
@@ -697,7 +699,7 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
     }
     
     const handleKeyDown = (event) => {
-        if (event && event.key === 'Enter' && event.shiftKey) {
+        if (event && event.key === 'Tab') {
             event.preventDefault(); 
             const selectionElement = activeElement
             if (selectionElement) {
@@ -725,6 +727,13 @@ const UserPage = ({props , templateId, bodyPageRef, sendDataToUserCss, styleHove
             const selectedNode = document.getElementsByClassName('activeElementClass')[0];
             if (selectedNode && !selectedNode.classList.contains('pageBody')) {
                 selectedNode.remove()   
+            }
+        }else if(event.shiftKey && event.key === 'ArrowDown'){
+            if(activeElement.tagName=='TD'){
+                const clonedNode = activeElement.parentElement.cloneNode(true);
+                activeElement.classList.remove('activeElementClass')
+                clonedNode.click();
+                insertAfter(clonedNode, activeElement.parentElement);
             }
         }
     };

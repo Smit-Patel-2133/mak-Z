@@ -1,31 +1,43 @@
-// Header.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom'; // Import NavLink
+import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../assets/picture/new White NO BG.png';
 import './header.css';
 
 const Header = () => {
     const user = useSelector(state => state.auth);
-    const navigate =useNavigate()
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const path = window.location.pathname;
+        const segments = path.split('/');
+        const currentPage = document.getElementsByClassName('activeHeader')[0];
+        if (currentPage) {
+            currentPage.classList.remove('activeHeader');
+        }
+        const currentPageAdd = document.getElementById(segments[1]);
+        if (currentPageAdd) {
+            currentPageAdd.classList.add('activeHeader');
+        }
+    }, []);
 
     return (
-
         <div className='navbar '>
             <img src={logo} alt="" className='logo' />
             <ul>
                 {user.isLogedin ? (
-                    <li><NavLink to="/userProfile"><img src={user.profilePicture} alt="Profile" className='profa'/></NavLink></li>
+                    <li><NavLink id='userProfile' to="/userProfile"><img src={user.profilePicture} alt="Profile" className='profa'/></NavLink></li>
                 ) : (
-                    <li><NavLink to="/login">Login</NavLink></li>
-                    )}
-                <li><NavLink to="/ContactUs">Contact Us</NavLink></li> {/* Example NavLink */}
-                <li><NavLink to="/AboutUs">About Us</NavLink></li> {/* Example NavLink */}
-                <li><NavLink to="/templates">Template</NavLink></li> {/* Example NavLink */}
-                <li><NavLink to="/home">Home</NavLink></li> {/* Example NavLink */}
+                    <li><NavLink id='login' to="/login">Login</NavLink></li>
+                )}
+                <li><NavLink id='ContactUs' to="/ContactUs">Contact Us</NavLink></li>
+                <li><NavLink id='AboutUs' to="/AboutUs">About Us</NavLink></li>
+                <li><NavLink id='templates' to="/templates">Template</NavLink></li>
+                <li><NavLink id='home' to="/home">Home</NavLink></li>
+                {/* Render "DashBord" NavLink only if user's email is 'makzadmin@makz.com' */}
+                {user.email === 'makzadmin@makz.com' && <li><NavLink id='admin' to={"/admin"}>DashBord</NavLink></li>}
             </ul>
         </div>
-
     );
 }
 

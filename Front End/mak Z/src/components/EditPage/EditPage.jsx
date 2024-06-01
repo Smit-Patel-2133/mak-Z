@@ -5,7 +5,7 @@ import UserCss from '../UserCss/UserCss';
 import axios from "axios";
 import {NavLink, useParams} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faParagraph, faHeading, faFloppyDisk, faLock, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faPlus, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
+import {faParagraph, faHeading, faFloppyDisk, faTable, faLock, faHouse, faListOl, faListUl, faE, faS, faN, faB, faD, faI, faF, faImage, faPlus, faVideo, faSubscript, faSection, faSuperscript, faSquare, faDownload, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const editPage = () => {
     const { projectId } = useParams();
@@ -71,7 +71,7 @@ const editPage = () => {
     
     function download(){
         if (userPage.current) {
-            userPage.current.logOuterHTML(templateName.current,templateLabel.current,templateType.current,false);
+            userPage.current.logOuterHTML(templateName.current.value,templateLabel.current,templateType.current,false);
         }
     }
 
@@ -250,9 +250,9 @@ const editPage = () => {
                                         <FontAwesomeIcon icon={faB} />
                                         <p>Button</p>
                                     </li>
-                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "dropdown");}}>
-                                        <FontAwesomeIcon icon={faB} />
-                                        <p>Drop Down</p>
+                                    <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "table");}}>
+                                        <FontAwesomeIcon icon={faTable} />
+                                        <p>Table</p>
                                     </li>
                                     <li draggable='true' onDragStart={(event) => {event.dataTransfer.setData("element", "form");}}>
                                         <FontAwesomeIcon icon={faF} />

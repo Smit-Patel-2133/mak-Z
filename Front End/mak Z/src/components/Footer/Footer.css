@@ -44,3 +44,40 @@
     color: white;
     text-decoration: none;
 }
+.col3 h1,.col4 h1{
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+.col3 h1::before ,.col4 h1::before{
+    position: absolute;
+    content: '';
+    height: 3px;
+    width: 143px;
+    top: 47px;
+    background-color: white;
+}
+.col3 textarea{
+    background-color: black;
+    border: 1px solid #2c2a2a;
+    padding: 10px;
+    border-radius: 10px;
+}
+.feedbackSubmit{
+    margin-left: 28%;
+    border:  1px solid white;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+.col4 li{
+    padding: 5px;
+}
+.col4 a{
+    text-decoration: none;
+    color: white;
+    transition: .3s ease-in-out;
+}
+.col4 a:hover{
+    color: rgb(221, 148, 79);
+}

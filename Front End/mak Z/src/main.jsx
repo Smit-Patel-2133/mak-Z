@@ -17,6 +17,7 @@ import Templates from "./components/Templates/Templates.jsx";
 import AboutUs from "./components/AboutUs/AboutUs.jsx";
 import ContactUs from"./components/ContactUs/contact.jsx";
 import UserProfile from"./components/UserProfile/UserProfile.jsx";
+import Admin from "./components/Admin/Admin.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<App/>}>
@@ -29,6 +30,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path='/templates' element={<Templates/>} />
         <Route path='/aboutus' element={<AboutUs/>} />
         <Route path='/ContactUs' element={<ContactUs/>}/>
+        <Route path='/admin' element={<Admin/>}/>
         <Route path='/userProfile' element={<UserProfile/>}/>
     </Route>
 ));

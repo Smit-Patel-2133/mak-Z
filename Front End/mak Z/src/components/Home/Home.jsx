@@ -12,7 +12,8 @@ import { faHeart, faPlus } from '@fortawesome/free-solid-svg-icons';
 import './Home.css';
 import FetchUserProject from "../Single template/FetchUserProject.jsx";
 import LoginModal from '../login/LoginModal';
-import ProjectDetailsModal from './ProjectDetailsModal'; // New component
+import ProjectDetailsModal from './ProjectDetailsModal';
+import {BeatLoader, BounceLoader, ClimbingBoxLoader} from "react-spinners"; // New component
 
 const Home = () => {
     const user = useSelector(state => state.auth);
@@ -76,24 +77,15 @@ const Home = () => {
             </div>
             <div className="divider" />
             <div className='outer'>
-                <h1 className='mt-3 italic'>Projects</h1>
-                <div className='flex'>
-                    <div className='mr-4'>
-                        <FetchUserProject email={user.email} />
-                    </div>
-                    <div className='inner' onClick={handleNewProjectClick}>
-                        <div className="plus-container" >
-                            <FontAwesomeIcon
-                                icon={faPlus}
-                                className="fa-plus-large"
-
-                            />
-                        </div>
-                    </div>
+                <div><h1 className='mt-3 italic'>Projects</h1>
+                <button onClick={handleNewProjectClick}>new Project</button>
                 </div>
+                <div className='-ml-10'><FetchUserProject email={user.email} /></div>
             </div>
             {isLoading ? (
-                <p className='mb-96'>Loading...</p>
+                <div className="flex justify-center items-center h-screen mt-[-74px]">
+                    <BounceLoader color={'#123abc'} loading={isLoading}/>
+                </div>
             ) : error ? (
                 <p>Error fetching templates: {error.message}</p>
             ) : (
