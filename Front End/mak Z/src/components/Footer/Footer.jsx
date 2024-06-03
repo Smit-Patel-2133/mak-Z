@@ -12,6 +12,7 @@ const Footer = () => {
     const user = useSelector(state => state.auth);
 
     function newFeedback(){
+        console.log('111')
         let feedback=document.getElementById('feedback').value;
         document.getElementById('feedback').value='';
         if(feedback.length<5) return;
@@ -19,7 +20,11 @@ const Footer = () => {
         let name=(user.name) ? user.name : 'Mak-Z';
         let profilePic=(user.profilePicture) ? user.profilePicture : '1';
         if(profilePic.length>2){
-            profilePic=profilePic[profilePic.length-5];
+            if(profilePic[profilePic.length-6] == '/'){
+                profilePic=profilePic[profilePic.length-5];
+            }else{
+                profilePic=profilePic[profilePic.length-6]+profilePic[profilePic.length-5];
+            }
         }
         parseInt(profilePic)
         axios.post('http://localhost:5000/addFeedbacks', {email,name,profilePic,feedback})
@@ -38,10 +43,10 @@ const Footer = () => {
                     <img src={whiteLogo} alt="logo" />
                     <p>Flow into growth with Mak-Z</p>
                     <ul>
-                        <li><a href="https://www.instagram.com/wordpress/" target="_blank"><FontAwesomeIcon icon={faInstagram} /><FontAwesomeIcon icon={faInstagram} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
-                        <li><a href="https://www.instagram.com/wordpress/" target="_blank"><FontAwesomeIcon icon={faXTwitter} /><FontAwesomeIcon icon={faXTwitter} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
-                        <li><a href="https://www.instagram.com/wordpress/" target="_blank"><FontAwesomeIcon icon={faFacebookF} /><FontAwesomeIcon icon={faFacebookF} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
-                        <li><a href="https://www.instagram.com/wordpress/" target="_blank"><FontAwesomeIcon icon={faLinkedinIn} /><FontAwesomeIcon icon={faLinkedinIn} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
+                        <li><a href="https://github.com/AbhayHingrajiya/mak-Z" target="_blank"><FontAwesomeIcon icon={faInstagram} /><FontAwesomeIcon icon={faInstagram} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
+                        <li><a href="https://github.com/AbhayHingrajiya/mak-Z" target="_blank"><FontAwesomeIcon icon={faXTwitter} /><FontAwesomeIcon icon={faXTwitter} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
+                        <li><a href="https://github.com/AbhayHingrajiya/mak-Z" target="_blank"><FontAwesomeIcon icon={faFacebookF} /><FontAwesomeIcon icon={faFacebookF} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
+                        <li><a href="https://github.com/AbhayHingrajiya/mak-Z" target="_blank"><FontAwesomeIcon icon={faLinkedinIn} /><FontAwesomeIcon icon={faLinkedinIn} style={{backgroundColor:'rgb(21, 76, 123)'}}/></a></li>
                     </ul>
                 </div>
                 <div className="col-sm-1 col2"></div>

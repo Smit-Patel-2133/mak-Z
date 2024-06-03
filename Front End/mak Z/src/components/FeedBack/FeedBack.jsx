@@ -14,7 +14,6 @@ function Feedback() {
     axios.post('http://localhost:5000/getFeedbacks')
       .then((response) => {
         setFeedback(response.data)
-        console.log(response.data)
       })
       .catch(error => {
         console.error('Error in get Feedbacks:', error);
