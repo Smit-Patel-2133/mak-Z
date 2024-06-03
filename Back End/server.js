@@ -679,6 +679,24 @@ app.post('/downloadCount', async (req, res) => {
     }
 });
 
+app.post('/addHomeSlider', async (req, res) => {
+    try {
+        console.log('start')
+        let result=await sql`
+            SELECT templateid, templateimage
+            FROM template
+            ORDER BY templatedownload DESC
+            LIMIT 5`;
+            console.log('end')
+        console.log(result)
+        res.status(200).send(result);
+    } catch (error) {
+        console.log('end')
+        console.error('Error in addHomeSlider:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
