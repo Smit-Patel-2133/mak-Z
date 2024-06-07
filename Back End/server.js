@@ -731,7 +731,54 @@ app.post('/api/feedback', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+// Fetch contact data
+app.post('/api/getContactUs', async (req, res) => {
+    try {
+        const result = await sql`SELECT id, email, name, message FROM contact`;
+        res.status(200).json({ contact: result });
+    } catch (e) {
+        res.status(500).json({ error: 'Failed to fetch contact data' });
+    }
+});
+app.post('/api/sendEmailAndDelete', async (req, res) => {
+    const { id, email, message } = req.body;
 
+    try {
+        // Check if the contact entry exists in the database
+        const existingContact = await sql`SELECT * FROM contact WHERE id = ${id}`;
+        if (existingContact.length === 0) {
+            return res.status(404).json({ success: false, error: 'Contact entry not found' });
+        }
+
+        // Send email using existing transporter
+        let mailOptions = {
+            from: 'mak.z.official07@gmail.com',
+            to: email,
+            subject: 'Response to your message',
+            text: message
+        };
+        await transporter.sendMail(mailOptions);
+
+        // Delete entry from database
+        await sql`DELETE FROM contact WHERE id = ${id}`;
+
+        res.status(200).json({ success: true, message: 'Email sent and contact entry deleted' });
+    } catch (error) {
+        console.error('Error sending email and deleting entry:', error);
+        res.status(500).json({ success: false, error: 'Failed to send email and delete entry. Please try again later.' });
+    }
+});
+app.post('/api/DeleteContectRequest',async (req,res)=>{
+    const {id}=req.body;
+    try{
+    await  sql`DELETE FROM contact WHERE id = ${id}`
+    }
+    catch (e) {
+        console.error('Error deleting entry:', error);
+        res.status(500).json({ success: false, error: 'Failed delete entry. Please try again later.' });
+
+    }
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
