@@ -76,18 +76,28 @@ const Home = () => {
                 <h1 className='mt-3 italic'>Welcome {user.name}</h1>
             </div>
             <div className="divider" />
-            <div className='outer'>
-                <div><h1 className='mt-3 italic'>Projects</h1>
-                <button onClick={handleNewProjectClick}>new Project</button>
+            {user.isLogedin && (
+                <div className='outer'>
+                    <div className="flex justify-between items-center">
+                        <h1 className='mt-3 italic'>Projects</h1>
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-5"
+                            onClick={handleNewProjectClick}
+                        >
+                            new Project
+                        </button>
+                    </div>
+                    <div className='-ml-10'>
+                        <FetchUserProject email={user.email}/>
+                    </div>
                 </div>
-                <div className='-ml-10'><FetchUserProject email={user.email} /></div>
-            </div>
+            )}
             {isLoading ? (
                 <div className="flex justify-center items-center h-screen mt-[-74px]">
                     <BounceLoader color={'#123abc'} loading={isLoading}/>
                 </div>
             ) : error ? (
-                <p>Error fetching templates: {error.message}</p>
+                <p></p>
             ) : (
                 <FetchTemplate images={templates} templateHeading="Templates" />
             )}

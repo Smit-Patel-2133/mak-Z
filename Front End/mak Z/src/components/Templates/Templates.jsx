@@ -4,7 +4,6 @@ import Header from '../Header/Header.jsx';
 import FetchTemplate from '../Single template/FetchTemplate.jsx';
 import {useSelector} from "react-redux";
 import {BounceLoader, ClimbingBoxLoader} from 'react-spinners';
-
 const Templates = () => {
     const user = useSelector(state => state.auth);
     const [templates, setTemplates] = useState({
@@ -14,14 +13,11 @@ const Templates = () => {
         landing: [],
     });
     const [isLoading, setIsLoading] = useState(true);
-
     const [error, setError] = useState(null);
-
     useEffect(() => {
         const fetchTemplates = async () => {
             let data = { ...templates }; // Start with current templates to avoid overwriting with errors
             let hadError = false; // Track if any errors occurred
-
             const fetchTemplate = async (type) => {
                 try {
                     const response = await axios.post('http://localhost:5000/fetchThis', { type,userEmail: user.email});
@@ -39,23 +35,19 @@ const Templates = () => {
                     }
                 }
             };
-
             await Promise.all([
                 fetchTemplate('login'),
                 fetchTemplate('home'),
                 fetchTemplate('signup'),
                 fetchTemplate('landing'),
             ]);
-
             setTemplates(data);
             if (!hadError) {
                 setIsLoading(false);
             }
         };
-
         fetchTemplates();
     }, []);
-
     return (
         <div>
             <Header />
@@ -84,5 +76,4 @@ const Templates = () => {
         </div>
     );
 };
-
 export default Templates;

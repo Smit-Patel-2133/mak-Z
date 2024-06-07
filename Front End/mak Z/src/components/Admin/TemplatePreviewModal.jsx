@@ -1,6 +1,8 @@
 import React from 'react';
+import './TemplatePreviewModal.css'; // Create a CSS file for custom styles
 
 const TemplatePreviewModal = ({ isOpen, onRequestClose, htmlContent }) => {
+    console.log("this is the html content:=", htmlContent);
     return (
         <div>
             {isOpen && (
@@ -9,8 +11,10 @@ const TemplatePreviewModal = ({ isOpen, onRequestClose, htmlContent }) => {
                     </button>
 
                     <div className="modal">
-                        {/* Display entire HTML content received from the server */}
-                        <div dangerouslySetInnerHTML={{__html: htmlContent}}/>
+                        {/* Display the base64 image content */}
+                        <div className="modal-content">
+                            <img src={`data:image/jpeg;base64,${htmlContent}`} alt="Template Preview" />
+                        </div>
                         {/* Additional close button */}
                         <button className="absolute bottom-2 right-2 text-xl" onClick={onRequestClose}>Close</button>
                     </div>

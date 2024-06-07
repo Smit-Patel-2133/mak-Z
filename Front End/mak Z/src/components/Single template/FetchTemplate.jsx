@@ -1,21 +1,16 @@
 import React, { useRef, useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import ImageZoom from './ImageZoom.jsx';
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginModal from '../login/LoginModal';
 import ProjectDetailsModalEdit from './ProjectDetailsModalEdit';
 import ReportTemplateModal from './ReportTemplateModal';
 import axios from "axios";
-
 const FetchTemplate = ({ templateHeading, images }) => {
     const user = useSelector(state => state.auth);
     const sliderRef = useRef(null);
     const isDown = useRef(false);
     const startX = useRef(null);
     const scrollLeft = useRef(null);
-
     const [isZoomed, setIsZoomed] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [showLoginModal, setShowLoginModal] = useState(false);
@@ -25,42 +20,33 @@ const FetchTemplate = ({ templateHeading, images }) => {
     const [reportedTemplateName, setReportedTemplateName] = useState('');
     const [reportedTemplateId, setReportedTemplateId] = useState('');
     const [reportDescription, setReportDescription] = useState('');
-
     const handleMouseDown = (e) => {
         e.preventDefault();
         isDown.current = true;
         startX.current = e.pageX - sliderRef.current.offsetLeft;
         scrollLeft.current = sliderRef.current.scrollLeft;
     };
-
     const handleMouseUp = () => {
         isDown.current = false;
     };
-
     const handleMouseMove = (e) => {
         if (!isDown.current) return;
         const x = e.pageX - sliderRef.current.offsetLeft;
         const walk = (x - startX.current) * 2;
         sliderRef.current.scrollLeft = scrollLeft.current - walk;
     };
-
     const handleImageDoubleClick = (image) => {
         setSelectedImage(image);
         setIsZoomed(true);
     };
-
     const handleZoomDoubleClick = () => {
         setIsZoomed(false);
         setSelectedImage(null);
     };
-
     const userName = selectedImage ? selectedImage.name : 'Unknown';
-    const navigate = useNavigate();
-
     const handleEditClick = (image) => {
         if (user.isLogedin) {
             const { id, name, visibility, type } = image;
-            // Use Axios for making the POST request
             axios.post('http://localhost:5000/downloadCount', { templateId: image.id })
                 .then(response => {
                     if (response.status === 200) {
@@ -79,8 +65,6 @@ const FetchTemplate = ({ templateHeading, images }) => {
             setShowLoginModal(true);
         }
     };
-
-
     const handleReportClick = (template) => {
         if (user.isLogedin) {
             setReportedTemplateName(template.name);
@@ -90,7 +74,6 @@ const FetchTemplate = ({ templateHeading, images }) => {
             setShowLoginModal(true);
         }
     };
-
     return (
         <div className="fetch-template-container">
             <h1 className="mt-3 italic">{templateHeading}</h1>
@@ -176,5 +159,4 @@ const FetchTemplate = ({ templateHeading, images }) => {
         </div>
     );
 };
-
 export default FetchTemplate;

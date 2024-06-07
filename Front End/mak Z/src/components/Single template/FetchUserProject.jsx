@@ -115,14 +115,11 @@ const FetchUserProject = ({ email }) => {
                                             src={`data:image/png;base64,${project.htmlImg}`}
                                             alt={project.name}
                                         />
-                                        <div className="info">
+                                        <div className="justify-center items-center content-center">
                                             <h6 className="name">{project.name}</h6>
-                                            <button className="like-button">
-                                                <FontAwesomeIcon icon={faHeart} />
-                                                <span>{project.likes}</span>
-                                            </button>
+
                                             <button
-                                                className="edit-button"
+                                                className="mr-2 mb-2 ml-10 bg-emerald-400 rounded h-10 w-20 text-white"
                                                 onClick={() => handleEditClick(project.id)}
                                             >
                                                 Edit
