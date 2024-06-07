@@ -590,7 +590,9 @@ app.post('/addFeedbacks', async (req,res)=>{
 
 app.post('/getFeedbacks', async (req,res)=>{
     try{
-        let feedback=await sql`SELECT name, profilePic, feedback FROM feedback`;
+        let feedback=await sql`SELECT name, profilePic, feedback 
+        FROM feedback 
+        WHERE email != 'Mak-Z@gmail.com';`;
         res.status(200).send(feedback);
     }catch(error){
         console.error('Error in getFeedbacks '+error);

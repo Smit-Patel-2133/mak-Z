@@ -74,7 +74,7 @@ const SliderImages = () => {
         <div className='content'>
           <h3>Static website generator,cerate HTML website</h3><br />
           {/* <Link to={`/editPage/${index.templateid}`}> */}
-            <button onClick={() => handleEditClick(index)}>Explore Now &gt;&gt;</button>
+            <button onClick={() => handleEditClick(index)}>Create New Project &gt;&gt;</button>
           {/* </Link> */}
         </div>
       </Carousel.Item>
