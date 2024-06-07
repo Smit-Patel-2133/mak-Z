@@ -73,19 +73,23 @@ const Admin = () => {
     };
 
     const handlePreview = async (templateId) => {
-        try {
-            const response = await axios.post('http://localhost:5000/api/templateHtml', { templateId });
-            if (response.status === 200) {
-                setHtmlContent(response.data.templateImage);
+        if (templateId) {
+            try {
+                const res = await axios.post('http://localhost:5000/fetchCodeFromId', { templateId });
+                setHtmlContent(res.data.pageBodyContent);
                 setModalIsOpen(true);
+
+                await axios.delete('http://localhost:5000/delete/Mak-Z.html');
+                console.log('File deleted successfully');
+            } catch (error) {
+                console.error('Error in admin preview:', error);
             }
-        } catch (error) {
-            console.error('Error fetching template HTML:', error);
         }
     };
 
     const closeModal = () => {
         setModalIsOpen(false);
+        console.log('close button press')
         setHtmlContent('');
     };
 

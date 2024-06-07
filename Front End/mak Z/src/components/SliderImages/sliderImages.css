@@ -1,7 +1,7 @@
 .slider img{
     width:100%;
     opacity: .8;
-    height: 500px !important;
+    height: 600px !important;
     overflow: hidden;
 }
 .main{
@@ -10,7 +10,7 @@
 }
 .content{
     position: absolute;
-    color: white;
+    color: black;
     top: 50%;
     left: 10%;
 }

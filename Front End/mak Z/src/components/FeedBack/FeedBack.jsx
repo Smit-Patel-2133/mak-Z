@@ -7,6 +7,7 @@ function Feedback() {
   
   const [feedback,setFeedback] = useState(null);
   const [loding, setLoding]= useState(false);
+  // var flag=true;
 
   useEffect(()=>{
     setLoding(true);
@@ -20,13 +21,14 @@ function Feedback() {
       });
       
       setLoding(false);
-  
+      setTimeout(showSlide, 3000);
   },[]);
       
   let slideIndex=0;
   function showSlide(){
   let slides=document.querySelectorAll(".mySlides");
   if(slides){
+    flag=false;
     if(slideIndex != 0){
       slides[slideIndex-1].style.animation="slideActive1 2s forwards";
     }
@@ -56,18 +58,18 @@ function Feedback() {
         setTimeout(showSlide,10000);
       }
 
-  function waitForClass(className, callback) {
-    var checkInterval = setInterval(function() {
-        var elements = document.getElementsByClassName(className);
-        if (elements.length > 0) {
-            clearInterval(checkInterval);
-            callback();
-        }
-    }, 100);
-  }
-  waitForClass('mySlides', function() {
-      showSlide();
-  });
+  // function waitForClass(className, callback) {
+  //   var checkInterval = setInterval(function() {
+  //       var elements = document.getElementsByClassName(className);
+  //       if (elements.length > 0 && flag) {
+  //           clearInterval(checkInterval);
+  //           callback();
+  //       }
+  //   }, 100);
+  // }
+  // waitForClass('mySlides', function() {
+  //     showSlide();
+  // });
 
   return (
     <>
