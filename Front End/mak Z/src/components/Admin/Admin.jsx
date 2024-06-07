@@ -5,8 +5,9 @@ import Header from "../Header/Header.jsx";
 import { BounceLoader } from "react-spinners";
 import './admin.css';
 import TemplatePreviewModal from "./TemplatePreviewModal.jsx";
-// Set the app element for React Modal
+
 Modal.setAppElement('#root');
+
 const Admin = () => {
     const [users, setUsers] = useState(0);
     const [templateDownloads, setTemplateDownloads] = useState(0);
@@ -17,60 +18,78 @@ const Admin = () => {
     const [htmlContent, setHtmlContent] = useState('');
 
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            setError('');
-            try {
-                const response = await axios.post('http://localhost:5000/api/adminData');
-                if (response.status === 200) {
-                    setUsers(response.data.userCount);
-                    setTemplateDownloads(response.data.templateDownloadsCount);
-                    setReportedTemplates(response.data.reportedTemplates);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setError('Failed to fetch data');
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         fetchData();
     }, []);
 
-    const handleCheckboxChange = (templateId) => {
-        setReportedTemplates(reportedTemplates.map(template =>
-            template.templateid === templateId ? { ...template, reported: !template.reported } : template
-        ));
+    const fetchData = async () => {
+        setIsLoading(true);
+        setError('');
+        try {
+            // Fetch user count
+            const userResponse = await axios.post('http://localhost:5000/api/getUserCount');
+            setUsers(userResponse.data.userCount);
+
+            // Fetch template downloads count
+            const templateDownloadsResponse = await axios.post('http://localhost:5000/api/getTemplateDownloadsCount');
+            setTemplateDownloads(templateDownloadsResponse.data.templateDownloadsCount);
+
+            // Fetch reported templates
+            const reportedTemplatesResponse = await axios.post('http://localhost:5000/api/getReportedTemplates');
+            setReportedTemplates(reportedTemplatesResponse.data.reportedTemplates);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setError('Failed to fetch data');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const handleSave = async () => {
+    const handleCheckboxChange = (templateId, isValid) => {
+        // Update the reportedTemplates state with the modified validity status for the template
+        setReportedTemplates(reportedTemplates.map(template =>
+            template.templateid === templateId ? { ...template, isValid: isValid } : template
+        ));
+
+        // Send the updated validity status and template ID to the backend
+        sendValidityStatus(templateId, isValid);
+    };
+
+    const sendValidityStatus = async (templateId, isValid) => {
         try {
-            console.log("sdfsdf")
+            // Send the validity status and template ID to the backend
             const response = await axios.post(
-                'http://localhost:5000/api/saveTemplates',
-                { templates: reportedTemplates }
+                'http://localhost:5000/api/updateValidityStatus',
+                { id: templateId, valid: isValid }
             );
-            console.log('Changes saved:', response.data);
+            console.log('Validity status updated:', response.data);
+
+            // If the response is successful, fetch the reported templates again to update the UI
+            if (response.status === 200) {
+                fetchData();
+            }
         } catch (error) {
-            console.error('Error saving data:', error);
+            console.error('Error updating validity status:', error);
         }
     };
 
     const handlePreview = async (templateId) => {
-        try {
-            const response = await axios.post('http://localhost:5000/api/templateHtml', { templateId });
-            if (response.status === 200) {
-                setHtmlContent(response.data.templateHtml);
+        if (templateId) {
+            try {
+                const res = await axios.post('http://localhost:5000/fetchCodeFromId', { templateId });
+                setHtmlContent(res.data.pageBodyContent);
                 setModalIsOpen(true);
+
+                await axios.delete('http://localhost:5000/delete/Mak-Z.html');
+                console.log('File deleted successfully');
+            } catch (error) {
+                console.error('Error in admin preview:', error);
             }
-        } catch (error) {
-            console.error('Error fetching template HTML:', error);
         }
     };
 
     const closeModal = () => {
         setModalIsOpen(false);
+        console.log('close button press')
         setHtmlContent('');
     };
 
@@ -121,23 +140,28 @@ const Admin = () => {
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded-full"
                                 onClick={() => handlePreview(template.templateid)}
                             >
-                                preView
+                                Preview
                             </button>
                         </td>
                         <td className="py-2 px-4 border-b text-center">
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded-full">valid</button>
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-full">Invalid</button>
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded-full"
+                                onClick={() => handleCheckboxChange(template.templateid, true)} // Pass true for valid
+                            >
+                                Valid
+                            </button>
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-full"
+                                onClick={() => handleCheckboxChange(template.templateid, false)} // Pass false for invalid
+                            >
+                                Invalid
+                            </button>
                         </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
-            <button
-                onClick={handleSave}
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-            >
-                Save
-            </button>
+
             <TemplatePreviewModal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}

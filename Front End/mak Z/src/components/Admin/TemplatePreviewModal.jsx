@@ -1,20 +1,29 @@
-import React from 'react';
+import React,{ useState, useEffect } from 'react';
+import './TemplatePreviewModal.css'; // Create a CSS file for custom styles
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faRectangleXmark} from '@fortawesome/free-solid-svg-icons';
+
+
 
 const TemplatePreviewModal = ({ isOpen, onRequestClose, htmlContent }) => {
+
+    useEffect(() => {
+        let divOfCode=document.getElementsByClassName('modal-content')[0];
+        if(divOfCode && htmlContent) divOfCode.innerHTML+=htmlContent;
+    }, [isOpen]);
+
+    function closePress(){
+        console.log('aaa')
+    }
+
     return (
         <div>
             {isOpen && (
-                <div className="modal-overlay">
-                    <button className="absolute top-2 right-2 text-xl h-25 w-20 bg-red-950" onClick={onRequestClose}>×
-                    </button>
-
-                    <div className="modal">
-                        {/* Display entire HTML content received from the server */}
-                        <div dangerouslySetInnerHTML={{__html: htmlContent}}/>
-                        {/* Additional close button */}
-                        <button className="absolute bottom-2 right-2 text-xl" onClick={onRequestClose}>Close</button>
-                    </div>
+                <>
+                <button className="closeButtonPreview" onClick={onRequestClose}><FontAwesomeIcon icon={faRectangleXmark} /></button>
+                <div className='modal-content'>
                 </div>
+                </>
             )}
         </div>
     );

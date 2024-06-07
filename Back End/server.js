@@ -180,7 +180,7 @@ app.post('/download', async (req, res) => {
                             <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
                         </head>
                     <body>`;
-    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','').replaceAll("forCursorGrab","").replaceAll('activeElementClass','');
+    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','').replaceAll("forCursorGrab","").replaceAll('activeElementClass','').replaceAll('draggable="true"','');
     codeData += `   </body>
                 </html>`;
     codeData = beautify(codeData, { indent_size: 4 });
@@ -355,39 +355,22 @@ app.post('/fetchThis/forhome', async (req, res) => {
 app.post('/fetchThis/userProjects', async (req, res) => {
     const { email } = req.body; // Get the email from the request body
     try {
-        // Fetch only the necessary fields from the template table
         const result = await sql`
-            SELECT
-                templateid,
-                templatename,
-                templatedownloads,
-                templatevisibility,
-                templateimage
-            FROM
-                template
-            WHERE
-                email = ${email}
-        `;
-
+            SELECT templateid,templatename,templatedownloads,templatevisibility,templateimage FROM template WHERE email = ${email}`;
         if (result.length === 0) {
             return res.status(404).json({ error: 'No projects found for the specified email' });
         }
-
         const templates = result.map(row => {
             return {
                 id: row.templateid,
                 name: row.templatename,
-
                 downloads: row.templatedownloads,
                 visibility: row.templatevisibility,
                 htmlImg: row.templateimage // Ensure correct MIME type
             };
         });
-
-
         res.status(200).json(templates); // Return the fetched projects
     } catch (error) {
-        console.error('Error fetching user projects:', error);
         res.status(500).json({ error: 'An error occurred while fetching user projects' });
     }
 });
@@ -396,17 +379,14 @@ app.post('/fetchThis/userProjects', async (req, res) => {
 app.get('/user/details', async (req, res) => {
     const {email} = req.query;
     let emailid = email
-    console.log("comming email:", emailid)
     try {
         const user = await sql`SELECT * FROM users WHERE email=${emailid}`;
         if (user.length === 0) {
             return res.status(404).json({error: 'Not found', message: 'User not found'});
         }
         const {username, email, profile_pic} = user[0];
-        console.log("username:-", username, "email:-", email, "pro pic:", profile_pic)
         res.json({username, email, profile_pic});
     } catch (error) {
-        console.error('Error fetching user details:', error);
         res.status(500).json({error: 'Internal server error', details: error.message});
     }
 });
@@ -530,7 +510,7 @@ app.post('/deleteTemplateFromProfile', async (req,res)=>{
 });
 
 app.post('/createNewTemplate', async (req,res)=>{
-    try{    
+    try{
         const templat_name=(req.body.projectName=='') ? 'Mak-Z' : req.body.projectName;
         const templat_label=(req.body.projectType=='') ? 'none' : req.body.projectType;
         const templat_visibility=(req.body.visibility=='public') ? true : false
@@ -547,7 +527,7 @@ app.post('/createNewTemplate', async (req,res)=>{
 });
 
 app.post('/getTemplateInfoForEditPage', async (req,res)=>{
-    try{    
+    try{
         const info = await sql`SELECT templatename,templatetype,templatevisibility FROM template WHERE templateid = ${req.body.projectId}`;
         res.send(info)
     }catch(error){
@@ -557,7 +537,7 @@ app.post('/getTemplateInfoForEditPage', async (req,res)=>{
 
 
 app.post('/changeUserProfile', async (req,res)=>{
-    try{    
+    try{
         await sql `UPDATE users SET profile_pic = ${req.body.userProfileOption}, username = ${req.body.newName} WHERE email = ${req.body.userEmail}`;
         res.status(200).send('update');
     }catch(error){
@@ -616,48 +596,64 @@ app.post('/getFeedbacks', async (req,res)=>{
         console.error('Error in getFeedbacks '+error);
     }
 });
-// Node.js/Express API endpoint
-app.post('/api/adminData', async (req, res) => {
-;
-
+// Endpoint to fetch user count
+app.post('/api/getUserCount', async (req, res) => {
     try {
-        const userCount = await sql`SELECT COUNT(*) FROM users`;
-        const templateDownloadsCount = await sql`SELECT SUM(templatedownloads) AS totalDownloads FROM template`;
+        const userCount = await sql`SELECT COUNT(*) AS count FROM users`;
+        res.status(200).json({ userCount: userCount[0].count });
+    } catch (error) {
+        console.error('Error in /api/getUserCount:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Endpoint to fetch template downloads count
+app.post('/api/getTemplateDownloadsCount', async (req, res) => {
+    try {
+        const templateDownloadsCount = await sql`SELECT SUM(templatedownload) AS totalDownloads FROM template`;
+
+        // Accessing the total downloads count
+        const totalDownloads = templateDownloadsCount[0].totaldownloads;
+        console.log("Total Downloads:", totalDownloads);
+
+        res.status(200).json({ templateDownloadsCount: totalDownloads });
+    } catch (error) {
+        console.error('Error in /api/getTemplateDownloadsCount:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Endpoint to fetch reported templates
+app.post('/api/getReportedTemplates', async (req, res) => {
+    try {
         const reportedTemplates = await sql`
             SELECT templateid, email, reported_to, description
             FROM reportedtemplate
         `;
-
-        res.status(200).json({
-            userCount: userCount[0].count,
-            templateDownloadsCount: templateDownloadsCount[0].totalDownloads,
-            reportedTemplates: reportedTemplates
-        });
+        res.status(200).json({ reportedTemplates: reportedTemplates });
     } catch (error) {
-        console.error('Error in /api/adminData:', error);
+        console.error('Error in /api/getReportedTemplates:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 
 // Add this route to your backend
 app.post('/api/templateHtml', async (req, res) => {
     const { templateId } = req.body;
 
     try {
-        const templateHtmlResult = await sql`
-            SELECT templatehtmlfile
+        const templateImageResult = await sql`
+            SELECT templateimage
             FROM template
             WHERE templateid = ${templateId}
         `;
 
-        // Extract the Buffer object from the SQL result
-        const templateHtmlBuffer = templateHtmlResult[0].templatehtmlfile;
-
-        // Convert the Buffer object to a string
-        const templateHtmlString = templateHtmlBuffer.toString('utf-8');
-        console.log(templateHtmlString)
-        // Send the HTML content as a string in the response
-        res.status(200).json({ templateHtml: templateHtmlString });
+        const base64Image = templateImageResult[0].templateimage.toString('base64');
+        console.log("Image Base64:", base64Image);
+        // Send the base64 string in the response
+        res.status(200).json({ templateImage: base64Image });
     } catch (error) {
         console.error('Error in /api/templateHtml:', error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -665,30 +661,26 @@ app.post('/api/templateHtml', async (req, res) => {
 });
 
 
+
+
 app.post('/downloadCount', async (req, res) => {
     const { templateId } = req.body;
     try {
-        await sql`
-            UPDATE template
-            SET templatedownload = templatedownload + 1 
-            WHERE templateid = ${templateId}`;
+        await sql`UPDATE template SET templatedownload = templatedownload + 1 WHERE templateid = ${templateId}`;
         res.status(200).json({ message: 'Download count incremented successfully.' });
     } catch (error) {
-        console.error('Error incrementing download count:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
 app.post('/addHomeSlider', async (req, res) => {
     try {
-        console.log('start')
         let result=await sql`
-            SELECT templateid, templateimage
+            SELECT templateid AS id, templatename AS name, templatevisibility AS visibility, templatetype AS name, templateimage
             FROM template
             ORDER BY templatedownload DESC
-            LIMIT 5`;
-            console.log('end')
-        console.log(result)
+            LIMIT 5;
+            `;
         res.status(200).send(result);
     } catch (error) {
         console.log('end')
@@ -696,7 +688,40 @@ app.post('/addHomeSlider', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.post('/api/updateValidityStatus', async (req, res) => {
+    const { valid, id } = req.body;
+    console.log("hshhssh")
+    console.log(valid);
+    try {
+        if (!valid) { // Use `valid` instead of `isValid`
+            let result = await sql`DELETE FROM reportedtemplate WHERE templateid = ${id}`;
+            console.log("mid");
+            let result2 = await sql`UPDATE templates SET report = false WHERE templateid = ${id}`;
+            res.status(200).send({ result, result2 });
+        } else {
+            let result = await sql`DELETE FROM reportedtemplate WHERE templateid = ${id}`; // Use `id` instead of `templateId`
+            res.status(200).send(result);
+        }
+    } catch (error) {
+        console.error('Error updating validity status:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
+
+
+app.post('/addContacts', async (req, res) => {
+    const { name,email,message } = req.body;
+    try {
+        await sql`
+        INSERT INTO contact (email, name, message) 
+        VALUES (${email}, ${name}, ${message})`;
+        res.status(200).json({ message: 'contect add successfully' });
+    } catch (error) {
+        console.error('Error in addContacts:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
