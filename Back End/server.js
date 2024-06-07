@@ -180,7 +180,7 @@ app.post('/download', async (req, res) => {
                             <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
                         </head>
                     <body>`;
-    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','').replaceAll("forCursorGrab","").replaceAll('activeElementClass','');
+    codeData += req.body.code.toString().replaceAll('contenteditable="true"','').replaceAll('editableBorder','').replaceAll('class="editable active" ','').replaceAll("forCursorGrab","").replaceAll('activeElementClass','').replaceAll('draggable="true"','');
     codeData += `   </body>
                 </html>`;
     codeData = beautify(codeData, { indent_size: 4 });
