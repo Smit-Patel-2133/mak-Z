@@ -681,14 +681,12 @@ app.post('/downloadCount', async (req, res) => {
 
 app.post('/addHomeSlider', async (req, res) => {
     try {
-        console.log('start')
         let result=await sql`
-            SELECT templateid, templateimage
+            SELECT templateid AS id, templatename AS name, templatevisibility AS visibility, templatetype AS name, templateimage
             FROM template
             ORDER BY templatedownload DESC
-            LIMIT 5`;
-            console.log('end')
-        console.log(result)
+            LIMIT 5;
+            `;
         res.status(200).send(result);
     } catch (error) {
         console.log('end')
@@ -697,6 +695,19 @@ app.post('/addHomeSlider', async (req, res) => {
     }
 });
 
+
+app.post('/addContacts', async (req, res) => {
+    const { name,email,message } = req.body;
+    try {
+        await sql`
+        INSERT INTO contact (email, name, message) 
+        VALUES (${email}, ${name}, ${message})`;
+        res.status(200).json({ message: 'contect add successfully' });
+    } catch (error) {
+        console.error('Error in addContacts:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

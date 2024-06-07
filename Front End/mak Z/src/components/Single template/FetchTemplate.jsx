@@ -61,7 +61,6 @@ const FetchTemplate = ({ templateHeading, images }) => {
         if (user.isLogedin) {
             const { id, name, visibility, type } = image;
             // Use Axios for making the POST request
-            console.log("eeeeee")
             axios.post('http://localhost:5000/downloadCount', { templateId: image.id })
                 .then(response => {
                     if (response.status === 200) {

@@ -11,7 +11,6 @@ const ProjectDetailsModalEdit = ({ show, onClose, templateDetails }) => {
     const [visibility, setVisibility] = useState('public');
     const [showError, setShowError] = useState(false);
     const user = useSelector(state => state.auth);
-    console.log(templateDetails)
     useEffect(() => {
         if (templateDetails) {
             const { id,name, type, visibility } = templateDetails;
