@@ -724,6 +724,16 @@ app.post('/addContacts', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.post('/api/feedback', async (req, res) => {
+    try {
+        const result = await sql`SELECT email, name, feedback FROM feedback`;
+        res.status(200).json({ feedback: result });
+    } catch (e) {
+        console.error('Error fetching feedback:', e);
+        res.status(500).send('Server error');
+    }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
