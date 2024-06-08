@@ -6,29 +6,30 @@ import feedBackBd from '../../assets/picture/feedBackBg.jpeg';
 function Feedback() {
   
   const [feedback,setFeedback] = useState(null);
-  const [loding, setLoding]= useState(false);
+  const [loding, setLoading]= useState(false);
   // var flag=true;
 
-  useEffect(()=>{
-    setLoding(true);
-
-    axios.post('http://localhost:5000/getFeedbacks')
-      .then((response) => {
-        setFeedback(response.data)
-      })
-      .catch(error => {
+  useEffect(() => {
+    const fetchFeedbacks = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.post('http://localhost:5000/getFeedbacks');
+        setFeedback(response.data);
+      } catch (error) {
         console.error('Error in get Feedbacks:', error);
-      });
-      
-      setLoding(false);
-      setTimeout(showSlide, 3000);
-  },[]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeedbacks();
+    setTimeout(showSlide, 1000);
+  }, []);
       
   let slideIndex=0;
   function showSlide(){
   let slides=document.querySelectorAll(".mySlides");
   if(slides){
-    flag=false;
     if(slideIndex != 0){
       slides[slideIndex-1].style.animation="slideActive1 2s forwards";
     }

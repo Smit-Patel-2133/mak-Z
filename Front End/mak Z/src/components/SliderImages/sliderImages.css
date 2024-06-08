@@ -1,11 +1,12 @@
 .slider img{
     width:100%;
     opacity: .8;
-    height: 600px !important;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .main{
     position: relative;
+    height: 650px !important;
+    overflow: hidden;
     background-color: black;
 }
 .content{

@@ -1,15 +1,41 @@
 // LandingPage.js
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import WLNB from '../../assets/picture/new White NO BG.png';
 import l1 from "../../assets/landin images/landing image 1.png";
+import axios from "axios";
 
 
 
 const LandingPage = () => {
     const navigate = useNavigate();
+    const [userCount, setUserCount] = useState(0);
+    const [templateDownloadsCount, setTemplateDownloadsCount] = useState(0);
+const[templateCount,setTemplateCountResponse]=useState(0)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userCountResponse = await axios.post('http://localhost:5000/api/getUserCount');
+                setUserCount(userCountResponse.data.userCount);
+                console.log("sddsd");
 
+                const templateCountResponse = await axios.post('http://localhost:5000/api/getTemplateCount');
+                setTemplateCountResponse(templateCountResponse.data.TemplateCount);
+
+                const templateDownloadsCountResponse = await axios.post('http://localhost:5000/api/getTemplateDownloadsCount');
+                setTemplateDownloadsCount(templateDownloadsCountResponse.data.templateDownloadsCount);
+
+
+
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
     return (
         <>
             <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white relative">
@@ -101,20 +127,16 @@ const LandingPage = () => {
                             <div className="flex justify-center md:col-span-1 lg:col-span-1">
                                 <div className="flex flex-col items-center">
                                     <div className="text-center mb-4">
-                                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">10,000</h1>
-                                        <p>Templates</p>
+                                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">{userCount}</h1>
+                                        <p>Total User</p>
                                     </div>
                                     <div className="text-center mb-4">
-                                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">2500</h1>
+                                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">{templateDownloadsCount}</h1>
                                         <p>Templates downloads</p>
                                     </div>
                                     <div className="text-center mb-4">
-                                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">1,05,015</h1>
-                                        <p>Total</p>
-                                    </div>
-                                    <div className="text-center">
-                                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">60</h1>
-                                        <p>Agent's are Working</p>
+                                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">{templateCount}</h1>
+                                        <p>Templates</p>
                                     </div>
                                 </div>
                             </div>
