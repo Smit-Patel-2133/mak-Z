@@ -608,10 +608,24 @@ app.post('/api/getUserCount', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+app.post('/api/getTemplateCount', async (req, res) => {
+    try {
+        // Correcting the SQL query to count rows in the 'template' table
+        const templateCount = await sql`SELECT COUNT(*) AS count FROM template`;
+        console.log(templateCount[0].count);  // Logging the correct property
+
+        res.status(200).json({ TemplateCount: templateCount[0].count });
+    } catch (error) {
+        console.error('Error in /api/getTemplateCount:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 // Endpoint to fetch template downloads count
 app.post('/api/getTemplateDownloadsCount', async (req, res) => {
     try {
+
         const templateDownloadsCount = await sql`SELECT SUM(templatedownload) AS totalDownloads FROM template`;
 
         // Accessing the total downloads count
