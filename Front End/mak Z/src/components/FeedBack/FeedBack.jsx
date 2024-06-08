@@ -23,7 +23,7 @@ function Feedback() {
     };
 
     fetchFeedbacks();
-    setTimeout(showSlide, 1000);
+    setTimeout(showSlide, 3000);
   }, []);
       
   let slideIndex=0;

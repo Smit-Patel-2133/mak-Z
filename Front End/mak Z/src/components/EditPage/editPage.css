@@ -5,6 +5,7 @@
     position: fixed;
     box-sizing: border-box; 
     display: inline;
+    z-index: -3;
 }
 
 .toolBar ul,
