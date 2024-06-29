@@ -18,16 +18,12 @@ const[templateCount,setTemplateCountResponse]=useState(0)
             try {
                 const userCountResponse = await axios.post('http://localhost:5000/api/getUserCount');
                 setUserCount(userCountResponse.data.userCount);
-                console.log("sddsd");
 
                 const templateCountResponse = await axios.post('http://localhost:5000/api/getTemplateCount');
                 setTemplateCountResponse(templateCountResponse.data.TemplateCount);
 
                 const templateDownloadsCountResponse = await axios.post('http://localhost:5000/api/getTemplateDownloadsCount');
                 setTemplateDownloadsCount(templateDownloadsCountResponse.data.templateDownloadsCount);
-
-
-
 
             } catch (error) {
                 console.error('Error fetching data:', error);
