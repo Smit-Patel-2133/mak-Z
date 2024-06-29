@@ -1,4 +1,4 @@
-# Mak-Z Project Documentation
+# Mak-Z Documentation
 
 ## 1. INTRODUCTION
 
